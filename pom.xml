@@ -6,15 +6,51 @@
 
     <groupId>net.mademocratie.gae</groupId>
     <artifactId>mademae-rest</artifactId>
-    <version>0.1-rest</version>
+    <version>rest-0-1-alpha</version>
     <packaging>war</packaging>
 
     <properties>
         <mademocratie.version>${project.version}</mademocratie.version>
         <jersey.version>1.14</jersey.version>
+
+        <!-- Sets the project's default encoding.
+       http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!--
+          AppEngine version
+
+          It should match SDK version pointed to
+          by ${gae.home} property (Typically, one used by your Eclipse plug-in)
+        <gae.version>1.7.1</gae.version>
+        -->
+        <gae.version>1.7.0</gae.version>
+        <!-- Upload to http://test.latest.<applicationName>.appspot.com by default -->
+        <gae.application.version>test</gae.application.version>
+        <!-- port defaults to 8080 -->
+        <gae.port>8080</gae.port>
     </properties>
 
     <dependencies>
+        <!-- Dependencies for Jersey support -->
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.4</version>
+        </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
@@ -71,6 +107,33 @@
                         </resource>
                     </webResources>
                 </configuration>
+            </plugin>
+            <!--
+              The actual maven-gae-plugin.
+                Type "mvn gae:run" to run project,
+                     "mvn gae:update" to upload to GAE.
+            -->
+            <plugin>
+                <groupId>net.kindleit</groupId>
+                <artifactId>maven-gae-plugin</artifactId>
+                <version>0.9.4</version>
+                <configuration>
+                    <unpackVersion>${gae.version}</unpackVersion>
+                    <!-- http://code.google.com/p/maven-gae-plugin/issues/detail?id=38
+                    <sdkDir>${gae.home}</sdkDir>
+                     <jvmFlags>
+                      <jvmFlag>-Xdebug</jvmFlag>
+                      <jvmFlag>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000</jvmFlag>
+                    </jvmFlags>
+                    -->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-archiver</artifactId>
+                        <version>2.1.2</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
 

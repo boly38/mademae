@@ -8,7 +8,7 @@
   </head>
   <body>
   <p>
-      url is  ${url}
+      url is  <a href="${url}">${url}</a>.
   </p>
   </body>
 </html>
