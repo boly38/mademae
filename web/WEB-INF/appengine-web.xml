@@ -9,6 +9,9 @@
       <property name="log4j.configuration" value="WEB-INF/classes/log4j.properties"/>
   </system-properties>
    -->
+    <system-properties>
+        <property name="com.sun.xml.bind.v2.bytecode.ClassTailor.noOptimize" value="true" />
+    </system-properties>
   <sessions-enabled>true</sessions-enabled>
   <threadsafe>true</threadsafe>
 </appengine-web-app>
