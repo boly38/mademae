@@ -103,6 +103,13 @@
             <artifactId>mail</artifactId>
             <version>1.4.5</version>
         </dependency>
+
+        <!-- resource servlet -->
+        <dependency>
+            <groupId>org.springframework.webflow</groupId>
+            <artifactId>org.springframework.js</artifactId>
+            <version>2.0.5.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>

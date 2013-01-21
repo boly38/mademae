@@ -5,6 +5,10 @@
       http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
     <servlet>
+        <servlet-name>resource</servlet-name>
+        <servlet-class>org.springframework.js.resource.ResourceServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>mademae-rest</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
@@ -22,6 +26,13 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>resource</servlet-name>
+        <url-pattern>/images/*.jpg</url-pattern>
+        <url-pattern>/js/*.js</url-pattern>
+        <url-pattern>/css/*.css</url-pattern>
+        <url-pattern>/${bootstrap-version}/*</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>mademae-rest</servlet-name>
         <url-pattern>/json/*</url-pattern>

@@ -8,7 +8,7 @@
 <body>
 <%@include file="header/menu.jsp" %>
 
-url is  <a href="${url}">${url}</a>.
+TODO
 
 <%@include file="footer/javascript.jsp" %>
 <%@include file="footer/analytics.jsp" %>
