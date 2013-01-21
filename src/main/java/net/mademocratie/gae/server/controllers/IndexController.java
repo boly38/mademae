@@ -8,11 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class IndexController {
+public class
+        IndexController {
         @RequestMapping("/index")
         protected ModelAndView index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
             ModelAndView modelAndView = new ModelAndView("jsp/index.jsp");
-            modelAndView.addObject("url", "/resources/about");
+            modelAndView.addObject("url", "/json/about");
             return modelAndView;
         }
     }

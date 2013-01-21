@@ -10,8 +10,11 @@
     <packaging>war</packaging>
 
     <properties>
+        <maven.build.timestamp.format>dd/MM/yyyy-HH:mm</maven.build.timestamp.format>
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+
         <mademocratie.version>${project.version}</mademocratie.version>
-        <jersey.version>1.14</jersey.version>
+        <jersey.version>1.16</jersey.version>
 
         <!-- Sets the project's default encoding.
        http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
@@ -35,17 +38,36 @@
         <!-- Dependencies for Jersey support -->
         <dependency>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-client</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
+            <artifactId>jersey-bundle</artifactId>
             <version>${jersey.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.3</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-json</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>1.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
             <version>${jersey.version}</version>
         </dependency>
         <dependency>
@@ -58,7 +80,7 @@
             <artifactId>jersey-core</artifactId>
             <version>${jersey.version}</version>
         </dependency>
-
+        -->
 
         <dependency>
             <groupId>org.springframework</groupId>
