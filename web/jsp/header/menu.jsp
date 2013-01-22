@@ -2,7 +2,6 @@
 Placed at the top of the document
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <div class="navbar navbar-inverse navbar-fixed-top" id="topmenu">
     <div class="navbar-inner">
         <div class="container">
@@ -33,4 +32,3 @@ Placed at the top of the document
         </div>
     </div>
 </div>
-</html>

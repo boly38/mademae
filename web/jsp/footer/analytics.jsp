@@ -2,7 +2,6 @@
 Placed at the end of the document so the pages load faster
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-1988442-12']);
@@ -14,4 +13,3 @@ Placed at the end of the document so the pages load faster
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
 </script>
-</html>
