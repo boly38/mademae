@@ -5,20 +5,15 @@ Placed at the top of the document
 <div class="navbar navbar-inverse navbar-fixed-top" id="topmenu">
     <div class="navbar-inner">
         <div class="container">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
             <a class="brand" href="/">Ma d&eacute;mocratie</a>
             <div class="nav-collapse collapse">
                 <ul class="nav nav-pills"><!--  class="active" for the current menu  -->
-                    <li wicket:id="li-home"><a wicket:id="a-home" href="/"><i class="icon-home icon-white"></i>&#160;home</a></li>
+                    <li><a href="/"><i class="icon-home icon-white"></i>&#160;home</a></li>
                 </ul>
                 <ul class="nav pull-right">
                     <!-- *** helpmenu -->
                     <li class="dropdown pull-right" id="help-menu-dropdown">
-                        <a href="#help-menu-dropdown" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#help-menu-dropdown" class="dropdown-toggle">
                             <i class="icon-question-sign icon-white"></i> Help
                             <b class="caret"></b>
                         </a>

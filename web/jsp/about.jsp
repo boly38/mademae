@@ -14,7 +14,7 @@
    aboutdiv
 </div>
 <%@include file="footer/javascript.jsp" %>
-<script>
+<script type="text/javascript">
   function async_get(addr,func) {
     $.ajax({
     url: addr,

@@ -13,7 +13,7 @@
 url is  <a href="${url}">${url}</a>.
 
 <%@include file="footer/javascript.jsp" %>
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
       $('.dropdown-toggle').dropdown()
     });
