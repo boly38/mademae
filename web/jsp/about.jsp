@@ -22,13 +22,22 @@
     });
   }
 
-  $(document).ready(function () {
-    $('.dropdown-toggle').dropdown()
+  function updateAbout() {
+    $.getJSON('json/about', function(aboutJsonData) {
+      $.get('/js-templates/about.html', function(htmlTemplate) {
+        $.template("aboutHtmlTemplate", htmlTemplate);
+        var aboutHtmlResult = $.tmpl("aboutHtmlTemplate", aboutJsonData);
+         $('#aboutDiv').html(aboutHtmlResult);
+      })
+    });
+  }
+
+
+    $(document).ready(function () {
+    $('.dropdown-toggle').dropdown();
+    updateAbout();
     /*  async_get('http://localhost:8080/json/about',function(data){$('#aboutDiv').html(data)});
      */
-    $.getJSON('json/about', function(data) {
-        $('#aboutDiv').html(data.version)
-    });
   });
 
 </script>
