@@ -21,6 +21,9 @@
         <festassert.version>1.4</festassert.version>
         <junit.version>4.8.2</junit.version>
         <mockito.version>1.8.5</mockito.version>
+        <maven-failsafe-plugin.version>2.12.4</maven-failsafe-plugin.version>
+        <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
+        <skipUTs>false</skipUTs>
 
         <!-- Sets the project's default encoding.
        http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
@@ -177,8 +180,35 @@
             <version>${gae.version}</version>
         </dependency>
     </dependencies>
-
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                            <configuration>
+                                <!-- Fork to be sure that context are clean (avoid transaction problems) -->
+                                <forkMode>always</forkMode>
+                                <argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <!-- unit tests are skipped date skipTests = true or skipUTs=true -->
+                        <!-- see properties for further details -->
+                        <skipTests>${skipUTs}</skipTests>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -187,6 +217,11 @@
                     <source>1.5</source>
                     <target>1.5</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <version>${maven-surefire-plugin.version}</version>
             </plugin>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
