@@ -4,12 +4,11 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
-import java.io.Serializable;
 import java.util.Date;
 
 
 @Entity
-public class Citizen implements Serializable {
+public class Citizen {
 
     @Id
     private Long id;
@@ -47,7 +46,6 @@ public class Citizen implements Serializable {
     private String location;
 
     public Citizen() {
-        super();
     }
 
     public Citizen(String pseudo, User googleUser) {

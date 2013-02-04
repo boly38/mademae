@@ -24,6 +24,8 @@ public interface IManageCitizen {
      */
     List<Citizen> latest(int max);
 
+    public Citizen findCitizenByEmail(String email);
+
     /**
      * Authenticate a citizen and return it (or null)
      * @param email
@@ -60,4 +62,6 @@ public interface IManageCitizen {
     Citizen addCitizen(Citizen myAuthorA) throws CitizenAlreadyExistsException;
 
     void removeAll();
+
+    void delete(Citizen testUser);
 }
