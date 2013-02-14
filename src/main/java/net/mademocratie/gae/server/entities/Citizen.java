@@ -1,8 +1,10 @@
 package net.mademocratie.gae.server.entities;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 import java.util.Date;
 
@@ -30,7 +32,8 @@ public class Citizen {
      */
     private String password;
 
-    private String email;
+    @Index
+    private Email email;
 
     private CitizenState citizenState;
 
@@ -51,7 +54,8 @@ public class Citizen {
     public Citizen(String pseudo, User googleUser) {
         this.pseudo = pseudo;
         this.googleUser = googleUser;
-        this.email = googleUser.getEmail();
+        String ggEmail = googleUser.getEmail();
+        this.email = (ggEmail != null ? new Email(ggEmail) : null);
         date = new Date();
         citizenState = CitizenState.ACTIVE;
         citizenStateData = (new Date()).toString();
@@ -61,7 +65,7 @@ public class Citizen {
         this.pseudo = pseudo;
         this.googleUser = null;
         this.password = password;
-        this.email = email;
+        this.email = (email != null ? new Email(email) : null);
         date = new Date();
         citizenState = CitizenState.CREATED;
         citizenStateData = accessKey;
@@ -96,11 +100,11 @@ public class Citizen {
     }
 
     public String getEmail() {
-        return email;
+        return email.getEmail();
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = (email != null ? new Email(email) : null);
     }
 
     public String getLocation() {
@@ -137,7 +141,7 @@ public class Citizen {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("citizen[");
+        sb.append("Citizen[");
         sb.append("id:").append(id);
         sb.append(", pseudo:").append(pseudo);
         sb.append(", email:").append(email);

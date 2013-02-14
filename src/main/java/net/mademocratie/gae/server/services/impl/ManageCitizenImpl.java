@@ -1,8 +1,10 @@
 package net.mademocratie.gae.server.services.impl;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.CitizenState;
 import net.mademocratie.gae.server.exception.*;
@@ -50,11 +52,18 @@ public class ManageCitizenImpl implements IManageCitizen {
             throw new CitizenAlreadyExistsException();
         }
         ofy().save().entity(inputCitizen).now();
+        LOGGER.fine("addCitizen result " + inputCitizen.toString());
         return inputCitizen;
     }
 
     public Citizen findCitizenByEmail(String email) {
-        return ofy().load().type(Citizen.class).filter("email", email).first().get();
+        List<Key<Citizen>> list = ofy().load().type(Citizen.class).keys().list();
+
+        Email emailVal = new Email(email);
+        List<Citizen> citizens = ofy().load().type(Citizen.class).filter("email", emailVal).list();
+        Citizen c = (citizens.size() >= 1 ? citizens.iterator().next() : null);
+        LOGGER.info("findCitizenByEmail result " + (c != null ? c.toString() : "(none)"));
+        return c;
     }
 
     public void removeAll() {
@@ -64,6 +73,7 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public void delete(Citizen testUser) {
+        LOGGER.info("delete testUser " + testUser.toString());
         ofy().delete().type(Citizen.class).id(testUser.getId()).now();
     }
 
