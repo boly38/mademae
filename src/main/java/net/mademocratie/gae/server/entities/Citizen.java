@@ -100,7 +100,7 @@ public class Citizen {
     }
 
     public String getEmail() {
-        return email.getEmail();
+        return (email != null ? email.getEmail() : null);
     }
 
     public void setEmail(String email) {

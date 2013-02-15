@@ -24,8 +24,4 @@ public class VoteContribution extends Vote implements IContribution{
     public Citizen getCitizen() {
         return citizen;
     }
-
-    public Proposal getProposal() {
-        return proposal;
-    }
 }

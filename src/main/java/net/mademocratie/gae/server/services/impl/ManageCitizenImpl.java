@@ -4,7 +4,6 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.CitizenState;
 import net.mademocratie.gae.server.exception.*;
@@ -57,11 +56,8 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public Citizen findCitizenByEmail(String email) {
-        List<Key<Citizen>> list = ofy().load().type(Citizen.class).keys().list();
-
         Email emailVal = new Email(email);
-        List<Citizen> citizens = ofy().load().type(Citizen.class).filter("email", emailVal).list();
-        Citizen c = (citizens.size() >= 1 ? citizens.iterator().next() : null);
+        Citizen c= ofy().load().type(Citizen.class).filter("email", emailVal).first().get();
         LOGGER.info("findCitizenByEmail result " + (c != null ? c.toString() : "(none)"));
         return c;
     }

@@ -1,7 +1,10 @@
 package net.mademocratie.gae.server.entities;
 
+import com.google.appengine.api.datastore.Email;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,25 +17,30 @@ public class Vote implements Serializable {
 
     private Date date;
 
-    private String citizenEmail;
+    @Index
+    private Email citizenEmail;
 
-    private Long proposalId;
+    @Index
+    private Key<Proposal> proposal;
 
     private VoteKind kind;
 
+    public Vote() {
+    }
+
     public Vote(String citizenEmail, Long proposalId, VoteKind kind) {
-        this.citizenEmail = citizenEmail;
+        this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
         this.kind = kind;
-        this.proposalId = proposalId;
+        this.proposal = Key.create(Proposal.class, proposalId);
         this.date = new Date();
     }
 
     public String getCitizenEmail() {
-        return citizenEmail;
+        return (citizenEmail != null ? citizenEmail.getEmail() : null);
     }
 
     public void setCitizenEmail(String citizenEmail) {
-        this.citizenEmail = citizenEmail;
+        this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
     }
 
     public Long getId() {
@@ -59,12 +67,12 @@ public class Vote implements Serializable {
         this.kind = kind;
     }
 
-    public Long getProposalId() {
-        return proposalId;
+    public Long getProposal() {
+        return proposal.getId();
     }
 
-    public void setProposalId(Long proposalId) {
-        this.proposalId = proposalId;
+    public void setProposal(Long proposal) {
+        this.proposal =  Key.create(Proposal.class, proposal);
     }
 
     @Override
@@ -77,7 +85,7 @@ public class Vote implements Serializable {
         sb.append(":").append(getDate());
         sb.append("|").append(getKind())
                 .append(" by ").append(getCitizenEmail())
-                .append(" on proposal#").append(getProposalId())
+                .append(" on proposal#").append(getProposal())
                 .append("]");
         return sb.toString();
     }
