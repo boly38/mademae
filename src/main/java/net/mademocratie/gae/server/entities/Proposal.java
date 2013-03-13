@@ -1,5 +1,6 @@
 package net.mademocratie.gae.server.entities;
 
+import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
@@ -7,21 +8,25 @@ import java.util.Date;
 
 
 @Entity
-public class Proposal {
+public class Proposal implements IContribution {
     @Id
     Long id;
     private String authorEmail;
     private String authorPseudo;
     private String title;
-    private String content;
+    private Text content;
     private Date date;
 
     private Proposal() {
     }
 
     public Proposal(String content, String title) {
-        this.content = content;
         this.title = title;
+        this.content = new Text(content);
+    }
+
+    public String getContributionDetails() {
+        return "create proposition " + getTitle();
     }
 
     public String getAuthorEmail() {
@@ -41,11 +46,10 @@ public class Proposal {
     }
 
     public String getContent() {
-        return content;
+        return (content != null ? content.getValue():null);
     }
-
     public void setContent(String content) {
-        this.content = content;
+        this.content = new Text(content);
     }
 
     public Date getDate() {
