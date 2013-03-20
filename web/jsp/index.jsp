@@ -10,12 +10,16 @@
 <body>
 <%@include file="header/menu.jsp" %>
 
-url is  <a href="${url}">${url}</a>.
+
+<div id="mainContent">
+    <i>welcome</i>
+</div>
 
 <%@include file="footer/javascript.jsp" %>
 <script type="text/javascript">
+    var md = new MaDemocratie();
     $(document).ready(function () {
-      $('.dropdown-toggle').dropdown()
+        md.init();
     });
 </script>
 <%@include file="footer/analytics.jsp" %>

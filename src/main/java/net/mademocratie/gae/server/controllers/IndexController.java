@@ -13,7 +13,7 @@ public class IndexController  extends AbstractController {
         protected ModelAndView index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
             ModelAndView modelAndView = new ModelAndView("jsp/index.jsp");
             populateCommons(modelAndView);
-            modelAndView.addObject("url", "/about.do");
+            // modelAndView.addObject("url", "/about.do");
             return modelAndView;
         }
     }

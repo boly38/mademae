@@ -6,10 +6,12 @@
 
     <groupId>net.mademocratie.gae</groupId>
     <artifactId>mademae-rest</artifactId>
-    <version>rest-0-1-alpha</version>
+    <version>rest-0-2-alpha</version>
     <packaging>war</packaging>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.build.timestamp.format>dd/MM/yyyy-HH:mm</maven.build.timestamp.format>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
 
@@ -25,24 +27,63 @@
         <maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
         <skipUTs>false</skipUTs>
 
-        <!-- Sets the project's default encoding.
-       http://docs.codehaus.org/display/MAVENUSER/POM+Element+for+Source+File+Encoding -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!--
           AppEngine version
-
-          It should match SDK version pointed to
-          by ${gae.home} property (Typically, one used by your Eclipse plug-in)
-        <gae.version>1.7.1</gae.version>
         -->
-        <gae.version>1.7.0</gae.version>
+        <gae.version>1.7.5</gae.version>
+        <gae-runtime.version>1.7.5.1</gae-runtime.version>
         <!-- Upload to http://test.latest.<applicationName>.appspot.com by default -->
         <gae.application.version>test</gae.application.version>
         <!-- port defaults to 8080 -->
         <gae.port>8080</gae.port>
+        <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>
+        <webappDirectory>target/mademae-rest-${project.version}</webappDirectory>
     </properties>
+    <pluginRepositories>
+    <pluginRepository>
+        <id>maven.org</id>
+        <url>http://repo1.maven.org/maven/</url>
+        <releases><enabled>true</enabled></releases>
+        <snapshots><enabled>true</enabled></snapshots>
+    </pluginRepository>
+    </pluginRepositories>
+    <!--
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mvnrepository.com</id>
+            <url>http://mvnrepository.com/artifact/</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>sonatypePl</id>
+            <url>http://repository.sonatype.org</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>datanucleus</id>
+            <url>http://www.datanucleus.org/downloads/maven2</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>mavenHub</id>
+            <url>http://mavenhub.com/mvn/central/</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>sonatype</id>
+            <url>http://repository.sonatype.org</url>
+            <releases><enabled>true</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+        <repository>
+            <id>mavenHub</id>
+            <url>http://mavenhub.com/mvn/central/</url>
+        </repository>
+    </repositories>
 
+        -->
     <dependencies>
         <!-- Dependencies for Jersey support -->
         <dependency>
@@ -238,30 +279,27 @@
                     </webResources>
                 </configuration>
             </plugin>
+
             <!--
-              The actual maven-gae-plugin.
-                Type "mvn gae:run" to run project,
+              maven-gae-plugin.
+                Type "mvn gae:unpack" one time to get local runtime
                      "mvn gae:update" to upload to GAE.
             -->
             <plugin>
                 <groupId>net.kindleit</groupId>
                 <artifactId>maven-gae-plugin</artifactId>
-                <version>0.9.4</version>
+                <version>${maven-gae-plugin.version}</version>
                 <configuration>
                     <unpackVersion>${gae.version}</unpackVersion>
-                    <!-- http://code.google.com/p/maven-gae-plugin/issues/detail?id=38
-                    <sdkDir>${gae.home}</sdkDir>
-                     <jvmFlags>
-                      <jvmFlag>-Xdebug</jvmFlag>
-                      <jvmFlag>-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000</jvmFlag>
-                    </jvmFlags>
-                    -->
+                    <serverId>appengine.google.com</serverId>
+                    <appDir>${webappDirectory}</appDir>
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-archiver</artifactId>
-                        <version>2.1.2</version>
+                        <groupId>net.kindleit</groupId>
+                        <artifactId>gae-runtime</artifactId>
+                        <version>${gae-runtime.version}</version>
+                        <type>pom</type>
                     </dependency>
                 </dependencies>
             </plugin>

@@ -18,7 +18,7 @@ Placed at the top of the document
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="/about.do">About</a></li>
+                            <li><a href="javascript:md.about()">About</a></li>
                             <li><a href="#"><i class="icon-envelope"></i> Contact</a></li>
                         </ul>
                     </li><!-- *** /helpmenu -->

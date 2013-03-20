@@ -9,3 +9,5 @@ Placed at the end of the document so the pages load faster
 <script type="text/javascript" src="/${bootstrap_version}/js/bootstrap-button.js"></script>
 <script type="text/javascript" src="/${bootstrap_version}/js/bootstrap-dropdown.js"></script>
 <script type="text/javascript" src="/${bootstrap_version}/js/bootstrap-typeahead.js"></script>
+<script type="text/javascript" src="/js/md/jtools.js"></script>
+<script type="text/javascript" src="/js/md/jmd.js"></script>
