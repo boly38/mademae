@@ -19,7 +19,7 @@ Placed at the top of the document
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="javascript:md.about()">About</a></li>
-                            <li><a href="#"><i class="icon-envelope"></i> Contact</a></li>
+                            <li><a href="javascript:md.contact()"><i class="icon-envelope"></i> Contact</a></li>
                         </ul>
                     </li><!-- *** /helpmenu -->
                 </ul>

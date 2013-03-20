@@ -11,4 +11,4 @@ Placed at the top
 <meta name="keywords" content="democracy, MaDemocratie, MaD&eacute;mocratie, democratie, d&eacute;mocratie, proposals, proposal"/>
 <meta name="title" content="MaDemocratie"/>
 <meta name="google-site-verification" content="k4gaiWCNovCfrbbTAgNBnPa8h_6x2L4aqaCywfDWQg0" />
-<title>MaDemAe : about</title>
+<title>Ma Democratie</title>
