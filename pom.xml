@@ -37,7 +37,7 @@
         <!-- port defaults to 8080 -->
         <gae.port>8080</gae.port>
         <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>
-        <webappDirectory>target/mademae-rest-${project.version}</webappDirectory>
+        <webappDirectory>target/${project.artifactId}</webappDirectory>
     </properties>
     <pluginRepositories>
     <pluginRepository>
@@ -269,7 +269,7 @@
                 <version>2.3</version>
                 <configuration>
                     <outputDirectory>target/</outputDirectory>
-                    <webappDirectory>target/${project.artifactId}</webappDirectory>
+                    <webappDirectory>${webappDirectory}</webappDirectory>
                     <warName>${project.artifactId}</warName>
                     <webResources>
                         <resource>
