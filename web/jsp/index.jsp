@@ -17,7 +17,6 @@
 
 <%@include file="footer/javascript.jsp" %>
 <script type="text/javascript">
-    var md = new MaDemocratie();
     $(document).ready(function () {
         md.init();
     });

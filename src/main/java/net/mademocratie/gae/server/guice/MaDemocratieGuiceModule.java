@@ -1,10 +1,13 @@
 package net.mademocratie.gae.server.guice;
 
-import com.google.inject.AbstractModule;
+import com.google.inject.servlet.ServletModule;
 import com.googlecode.objectify.ObjectifyService;
+import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.Vote;
+import net.mademocratie.gae.server.json.About;
+import net.mademocratie.gae.server.json.Contributions;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -14,10 +17,12 @@ import net.mademocratie.gae.server.services.impl.ManageContributionsImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 
-public class MaDemocratieGuiceModule extends AbstractModule {
+import java.util.HashMap;
+import java.util.Map;
 
-    @Override
-    protected void configure() {
+public class MaDemocratieGuiceModule extends ServletModule {
+
+    public void configureServlets() {
         // Persistence registrations
         // Objectify register
         ObjectifyService.register(Citizen.class);
@@ -29,5 +34,14 @@ public class MaDemocratieGuiceModule extends AbstractModule {
         bind(IManageProposal.class).to(ManageProposalImpl.class);
         bind(IManageVote.class).to(ManageVoteImpl.class);
         bind(IManageContributions.class).to(ManageContributionsImpl.class);
+
+        Map<String,String> jerseyParams = new HashMap<String,String>();
+        jerseyParams.put("com.sun.jersey.config.property.packages",
+                         "net.mademocratie.gae.server.json");
+
+        serve("/json/*").with(GuiceContainer.class, jerseyParams);
+        bind(About.class);
+        bind(Contributions.class);
+
     }
 }

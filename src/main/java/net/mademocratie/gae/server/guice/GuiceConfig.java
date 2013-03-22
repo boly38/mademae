@@ -15,7 +15,9 @@ public class GuiceConfig extends GuiceServletContextListener {
 
     Logger log = Logger.getLogger(GuiceConfig.class.getName());
 
+    @Override
     protected Injector getInjector() {
+        log.info("GuiceConfig.getInjector()");
         final Map<String, String> params = new HashMap<String, String>();
 
         params.put(JERSEY_CONFIG_PROPERTY_PACKAGES, BAAS_SERVER_RESOURCES_PACKAGE);
