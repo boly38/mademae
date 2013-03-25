@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Vote implements Serializable {
+public class Vote extends Contribution implements Serializable {
     public static final String VOTE_DATE = "date";
     @Id
     private Long id;
@@ -51,6 +51,7 @@ public class Vote implements Serializable {
         this.id = id;
     }
 
+    @Override
     public Date getDate() {
         return date;
     }
@@ -88,5 +89,10 @@ public class Vote implements Serializable {
                 .append(" on proposal#").append(getProposal())
                 .append("]");
         return sb.toString();
+    }
+
+    @Override
+    public String getContributionDetails() {
+        return "vote on proposal '" + getProposal() + "'";
     }
 }

@@ -1,8 +1,7 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.domain.ContributionsInformations;
-import net.mademocratie.gae.server.entities.IContribution;
+import net.mademocratie.gae.server.entities.Contribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -10,7 +9,9 @@ import net.mademocratie.gae.server.services.IManageProposal;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,10 +27,10 @@ public class Contributions {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public ContributionsInformations getInJSON() {
+    public Response getContributions() {
         addSampleProposition();
-        List<IContribution> lastContributions = manageContributions.getLastContributions(10);
-        return new ContributionsInformations(lastContributions);
+        List<Contribution> lastContributions = manageContributions.getLastContributions(10);
+        return Response.ok(new GenericEntity<List<Contribution>>(lastContributions) {}).build();
     }
 
     private void addSampleProposition() {

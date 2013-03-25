@@ -48,7 +48,7 @@ public class ManageContributionsImplIT extends BaseIT {
     private int contributionsCount;
     private Vote bForANeutral;
     private Vote bForAPro;
-    private VoteContribution contribution_bForAPro;
+    private Contribution contribution_bForAPro;
     private Proposal testProposalAnonB;
 
     @Before
@@ -92,12 +92,12 @@ public class ManageContributionsImplIT extends BaseIT {
         // GIVEN
         int askedMaxContributions = 50; // 5; because of order
         // WHEN
-        List<IContribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
+        List<Contribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
         // THEN
         assertThat(lastContributions)
                 .isNotNull().isNotEmpty();
         logger.info(lastContributions.toString());
-        for (IContribution contribution : lastContributions) {
+        for (Contribution contribution : lastContributions) {
             logger.info("/CONTRIBUTION/ '" + contribution.getContributionDetails()
                     +"' on '" + contribution.getDate().toString());
             // +"' accessible using " + contribution.getContributionPage().getSimpleName());

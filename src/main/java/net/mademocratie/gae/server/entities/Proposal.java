@@ -8,7 +8,7 @@ import java.util.Date;
 
 
 @Entity
-public class Proposal implements IContribution {
+public class Proposal extends Contribution {
     @Id
     Long id;
     private String authorEmail;
@@ -17,7 +17,7 @@ public class Proposal implements IContribution {
     private Text content;
     private Date date;
 
-    private Proposal() {
+    public Proposal() {
     }
 
     public Proposal(String content, String title) {
@@ -25,6 +25,7 @@ public class Proposal implements IContribution {
         this.content = new Text(content);
     }
 
+    @Override
     public String getContributionDetails() {
         return "create proposition " + getTitle();
     }
@@ -52,6 +53,7 @@ public class Proposal implements IContribution {
         this.content = new Text(content);
     }
 
+    @Override
     public Date getDate() {
         return date;
     }
