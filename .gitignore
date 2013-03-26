@@ -10,3 +10,10 @@ target/
 # IntelliJ files#
 .idea/
 *.iml
+
+# GAE generated
+datastore-indexes-auto.xml
+local_db.bin
+
+#Custom
+updateGAE.sh
