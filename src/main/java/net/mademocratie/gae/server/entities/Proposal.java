@@ -3,6 +3,8 @@ package net.mademocratie.gae.server.entities;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Date;
 
@@ -10,7 +12,7 @@ import java.util.Date;
 @Entity
 public class Proposal extends Contribution {
     @Id
-    Long id;
+    Long proposalId;
     private String authorEmail;
     private String authorPseudo;
     private String title;
@@ -62,12 +64,12 @@ public class Proposal extends Contribution {
         this.date = date;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProposalId() {
+        return proposalId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProposalId(Long proposalId) {
+        this.proposalId = proposalId;
     }
 
     public String getTitle() {
@@ -79,9 +81,22 @@ public class Proposal extends Contribution {
     }
 
     public String toString() {
+        try {
+            return new JSONObject()
+                    .put("proposalId", proposalId)
+                    .put("title", title)
+                    .put("authorPseudo", authorPseudo)
+                    .put("content", (content!= null ?content.getValue() : ""))
+                    .toString();
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+
+    public String toLogString() {
         StringBuilder sb = new StringBuilder();
         sb.append("proposal[");
-        sb.append("id:").append(id);
+        sb.append("proposalId:").append(proposalId);
         sb.append(", title:").append(title);
         if (authorPseudo != null)
             sb.append(", authorPseudo:").append(authorPseudo);

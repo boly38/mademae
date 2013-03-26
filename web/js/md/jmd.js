@@ -9,7 +9,7 @@ function MaDemocratie() {
 
     this.home= function() {
         var parentMd = this;
-        $.getJSON('json/contributions', function(contributionsJsonData) {
+        $.getJSON('json/contributions/last', function(contributionsJsonData) {
             $.get('/js-templates/contributions.html', function(htmlTemplate) {
                 $.template("contributionsTemplate", htmlTemplate);
                 var contributionsHtmlResult = $.tmpl("contributionsTemplate", contributionsJsonData);
@@ -24,7 +24,7 @@ function MaDemocratie() {
 
     this.about= function() {
         var parentMd = this;
-        $.getJSON('json/about', function(aboutJsonData) {
+        $.getJSON('json/about/info', function(aboutJsonData) {
             $.get('/js-templates/about.html', function(htmlTemplate) {
                 $.template("aboutHtmlTemplate", htmlTemplate);
                 var aboutHtmlResult = $.tmpl("aboutHtmlTemplate", aboutJsonData);

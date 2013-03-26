@@ -77,8 +77,8 @@ public class ManageContributionsImplIT extends BaseIT {
         manageProposal.addProposal(testProposalAnonB, null);
         manageProposal.addProposal(testProposalA, myAuthorA);
 
-        bForANeutral = manageVote.vote(myAuthorB.getEmail(), testProposalA.getId(), VoteKind.NEUTRAL);
-        bForAPro = manageVote.vote(myAuthorB.getEmail(), testProposalA.getId(), VoteKind.PRO);
+        bForANeutral = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.NEUTRAL);
+        bForAPro = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.PRO);
 
         manageProposal.addProposal(testProposalB, myAuthorB);
         manageProposal.addProposal(testProposalA2, myAuthorA);

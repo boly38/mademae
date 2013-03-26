@@ -9,9 +9,7 @@ import net.mademocratie.gae.server.services.IManageProposal;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -25,12 +23,12 @@ public class Contributions {
     IManageContributions manageContributions;
 
     @GET
-    @Path("/")
+    @Path("/last")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getContributions() {
+    public String getContributions() {
         addSampleProposition();
         List<Contribution> lastContributions = manageContributions.getLastContributions(10);
-        return Response.ok(new GenericEntity<List<Contribution>>(lastContributions) {}).build();
+        return lastContributions.toString();
     }
 
     private void addSampleProposition() {

@@ -10,9 +10,9 @@ import javax.ws.rs.core.MediaType;
 @Path("/about")
 public class About {
     @GET
-    @Path("/")
+    @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)
-    public AboutInformations getInJSON() {
+    public AboutInformations getInfo() {
         return new AboutInformations();
     }
 }
