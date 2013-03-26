@@ -9,6 +9,7 @@ Placed at the top of the document
             <div class="nav-collapse collapse">
                 <ul class="nav nav-pills"><!--  class="active" for the current menu  -->
                     <li><a href="javascript:md.home()"><i class="icon-home icon-white"></i>&#160;home</a></li>
+                    <li><a href="javascript:md.addSampleProposition()"><i class="icon-home icon-plus-sign"></i>&#160;add a sample</a></li>
                 </ul>
                 <ul class="nav pull-right">
                     <!-- *** helpmenu -->

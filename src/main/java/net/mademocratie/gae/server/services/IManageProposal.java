@@ -14,7 +14,7 @@ public interface IManageProposal {
      * add a new proposal to the database
      * @param inputProposal
      */
-    public void addProposal(Proposal inputProposal, Citizen author);
+    public Proposal addProposal(Proposal inputProposal, Citizen author);
 
     /**
      * Return the latest proposals, ordered by descending date.

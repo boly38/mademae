@@ -6,7 +6,7 @@
 
     <groupId>net.mademocratie.gae</groupId>
     <artifactId>mademae-rest</artifactId>
-    <version>rest-0-2-alpha</version>
+    <version>rest-0-3-alpha</version>
     <packaging>war</packaging>
 
     <properties>
@@ -47,43 +47,7 @@
         <snapshots><enabled>true</enabled></snapshots>
     </pluginRepository>
     </pluginRepositories>
-    <!--
-    <pluginRepositories>
-        <pluginRepository>
-            <id>mvnrepository.com</id>
-            <url>http://mvnrepository.com/artifact/</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>sonatypePl</id>
-            <url>http://repository.sonatype.org</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>datanucleus</id>
-            <url>http://www.datanucleus.org/downloads/maven2</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>mavenHub</id>
-            <url>http://mavenhub.com/mvn/central/</url>
-        </pluginRepository>
-    </pluginRepositories>
-    <repositories>
-        <repository>
-            <id>sonatype</id>
-            <url>http://repository.sonatype.org</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>mavenHub</id>
-            <url>http://mavenhub.com/mvn/central/</url>
-        </repository>
-    </repositories>
 
-        -->
     <dependencies>
         <!-- Dependencies for Jersey support -->
         <dependency>

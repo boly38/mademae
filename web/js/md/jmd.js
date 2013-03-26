@@ -18,6 +18,18 @@ function MaDemocratie() {
         });
     };
 
+    this.addSampleProposition= function() {
+        var parentMd = this;
+        $.getJSON('json/contributions/addSample', function(addSampleJsonData) {
+            console.info(addSampleJsonData);
+            $.get('/js-templates/jsonServiceResponse.html', function(htmlTemplate) {
+                $.template("jsonServiceResponse", htmlTemplate);
+                var jsonServiceResponseHtmlResult = $.tmpl("jsonServiceResponse", addSampleJsonData);
+                parentMd.updateContent(jsonServiceResponseHtmlResult);
+            });
+        });
+    };
+
     this.contact= function() {
         $('#mainContent').html("<i>info - at - mademocratie (dot) net</i> should be able to answer ! ;)");
     };

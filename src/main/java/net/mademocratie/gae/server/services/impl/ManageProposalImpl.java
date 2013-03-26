@@ -13,7 +13,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class ManageProposalImpl implements IManageProposal {
     private final static Logger LOGGER = Logger.getLogger(ManageProposalImpl.class.getName());
 
-    public void addProposal(Proposal inputProposal, Citizen author) {
+    public Proposal addProposal(Proposal inputProposal, Citizen author) {
         if (author != null) {
             inputProposal.setAuthorEmail(author.getEmail());
             inputProposal.setAuthorPseudo(author.getPseudo());
@@ -21,6 +21,7 @@ public class ManageProposalImpl implements IManageProposal {
         inputProposal.setDate(new Date());
         ofy().save().entity(inputProposal).now();
         LOGGER.info("* Proposal ADDED : " + inputProposal);
+        return inputProposal;
     }
 
     public List<Proposal> latest(int max) {
