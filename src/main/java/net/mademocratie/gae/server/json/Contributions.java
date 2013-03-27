@@ -28,7 +28,7 @@ public class Contributions {
     @Produces(MediaType.APPLICATION_JSON)
     public String getContributions() {
         List<Contribution> lastContributions = manageContributions.getLastContributions(10);
-        return lastContributions.toString();
+        return "{\"Contributions\":"+ lastContributions.toString() +"}";
     }
 
 

@@ -10,8 +10,8 @@ function MaDemocratie() {
     this.home= function() {
         var parentMd = this;
         $.getJSON('json/contributions/last', function(contributionsJsonData) {
-            $.get('/js-templates/contributions.html', function(htmlTemplate) {
-                $.template("contributionsTemplate", htmlTemplate);
+            $.get('/js-templates/contributions.html', function(contributionsTemplate) {
+                $.template("contributionsTemplate", contributionsTemplate);
                 var contributionsHtmlResult = $.tmpl("contributionsTemplate", contributionsJsonData);
                 parentMd.updateContent(contributionsHtmlResult);
             });

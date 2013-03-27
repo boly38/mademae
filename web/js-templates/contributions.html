@@ -1,3 +1,13 @@
-<p>
-    proposalId : ${proposalId}
-    title : ${title}</p><br/>
+<div class="span12 well">
+    <div class="page-header">
+        <h3>Last contributions :</h3>
+    </div>
+    <div>
+        {{each Contributions}}
+        <div>
+            <p><span style="font-weight: bold">author of proposal id ${proposalId} ${authorPseudo}</span> wrote:</p>
+            <blockquote><a href="#">${title}</a></blockquote>
+        </div>
+        {{/each}}
+    </div>
+</div>
