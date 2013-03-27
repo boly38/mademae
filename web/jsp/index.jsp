@@ -7,12 +7,10 @@
 <head>
 <%@include file="header/head.jsp" %>
 </head>
-<body>
-<%@include file="header/menu.jsp" %>
-
-
+<body><%@include file="header/menu.jsp" %><div id="mainPanel">
 <div id="mainContent">
     <i>welcome</i>
+</div>
 </div>
 
 <%@include file="footer/javascript.jsp" %>
