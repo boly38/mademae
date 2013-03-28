@@ -14,7 +14,9 @@ Placed at the top of the document
             <div class="nav-collapse collapse">
                 <ul class="nav">
                     <li class=""><a href="javascript:md.home()"><i class="icon-home icon-white"></i>&#160;home</a></li>
-                    <li class=""><a href="javascript:md.addSampleProposition()"><i class="icon-home icon-plus-sign"></i>&#160;add a sample</a></li>
+                    <li class=""><a href="javascript:md.addProposalAction()"><i class="icon-home icon-plus-sign"></i>&#160;add a proposal</a></li>
+                    <!-- <li class=""><a href="javascript:md.addSampleProposal()"><i class="icon-home icon-plus-sign"></i>&#160;add a sample</a></li>
+                      -->
                 </ul>
                 <ul class="nav pull-right">
                     <!-- *** help menu -->

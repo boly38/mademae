@@ -1,8 +1,30 @@
 // MaDemocratie instance
 var md = new MaDemocratie();
+
+function addProposalForm() {
+    this.init= function(mainDivId) {
+        this.mainDivId = mainDivId;
+        this.showForm();
+    };
+
+    this.showForm= function() {
+        var parentAP = this;
+        $.get('/js-templates/addProposal.html', function(addProposalTemplate) {
+            $.template("addProposalTemplate", addProposalTemplate);
+            var addProposalHtmlResult = $.tmpl("addProposalTemplate", "");
+            parentAP.updateContent(addProposalHtmlResult);
+        });
+    };
+
+    this.updateContent= function(htmlContent) {
+        $('#' + this.mainDivId).html(htmlContent);
+    };
+}
+
 // MaDemocratie object
 function MaDemocratie() {
-    this.init= function() {
+    this.init= function(mainDivId) {
+        this.mainDivId = mainDivId;
         $('.dropdown-toggle').dropdown();
         this.home();
     };
@@ -18,7 +40,7 @@ function MaDemocratie() {
         });
     };
 
-    this.addSampleProposition= function() {
+    this.addSampleProposal= function() {
         var parentMd = this;
         $.getJSON('json/contributions/addSample', function(addSampleJsonData) {
             console.info(addSampleJsonData);
@@ -30,8 +52,19 @@ function MaDemocratie() {
         });
     };
 
+    this.addProposalAction= function() {
+        var parentMd = this;
+        this.addProposalForm = new addProposalForm();
+        this.addProposalForm.init(this.mainDivId);
+    };
+
+    this.addProposal= function(title, content) {
+         this.updateContent("<p>[implementation in progress] you wanna add a proposal title:<br/>" + title + "</p>");
+         setTimeout(function() {md.home();}, 10000);
+    };
+
     this.contact= function() {
-        $('#mainContent').html("<i>info - at - mademocratie (dot) net</i> should be able to answer ! ;)");
+        this.updateContent("<i>info - at - mademocratie (dot) net</i> should be able to answer ! ;)");
     };
 
     this.about= function() {
@@ -46,6 +79,6 @@ function MaDemocratie() {
     };
 
     this.updateContent= function(htmlContent) {
-        $('#mainContent').html(htmlContent);
+        $('#' + this.mainDivId).html(htmlContent);
     };
 }

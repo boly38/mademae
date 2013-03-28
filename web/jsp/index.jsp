@@ -16,7 +16,8 @@
 <%@include file="footer/javascript.jsp" %>
 <script type="text/javascript">
     $(document).ready(function () {
-        md.init();
+        $('.dropdown-toggle').dropdown();
+        md.init("mainContent");
     });
 </script>
 <%@include file="footer/analytics.jsp" %>

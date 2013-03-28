@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12 well">
+            <h3>Add a proposal</h3>
+            <div class="span8">
+                <form name="propForm" class="well form-horizontal" action="">
+                    <fieldset>
+                        <div class="control-group">
+                            <label class="control-label" for="proposalTitle">Title</label>
+                            <div class="controls docs-input-sizes">
+                                <input class="span7" type="text" placeholder="proposal title" id="proposalTitle" name="title">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="proposalContent">Description</label>
+                            <div class="controls">
+                                <textarea class="input-xlarge" cols="60" rows="3" placeholder="proposal content" id="proposalContent" name="content"></textarea>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="controls docs-input-sizes">
+                                <a name="propCreateSubmit" class="btn" href="javascript:md.addProposal($('#proposalTitle').val(), $('#proposalContent').val())"><span>Create</span></a>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div><!-- container -->

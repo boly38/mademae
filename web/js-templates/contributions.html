@@ -1,13 +1,15 @@
-<div class="span12 well">
-    <div class="page-header">
-        <h3>Last contributions :</h3>
-    </div>
-    <div>
-        {{each Contributions}}
-        <div>
-            <p><span style="font-weight: bold">author of proposal id ${proposalId} ${authorPseudo}</span> wrote:</p>
-            <blockquote><a href="#">${title}</a></blockquote>
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12 well">
+            <div class="page-header"><h3>Last contributions :</h3></div>
+            <div>
+                {{each Contributions}}
+                <div>
+                    <p><span style="font-weight: bold">author of proposal id ${proposalId} ${authorPseudo}</span> wrote:</p>
+                    <blockquote><a href="#">${title}</a></blockquote>
+                </div>
+                {{/each}}
+            </div>
         </div>
-        {{/each}}
     </div>
 </div>
