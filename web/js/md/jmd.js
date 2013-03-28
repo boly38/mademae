@@ -1,3 +1,14 @@
+// jQuery plugin to serialize in json a form object
+(function( $ ){
+    $.fn.serializeJSON=function() {
+        var json = {};
+        jQuery.map($(this).serializeArray(), function(n, i){
+            json[n['name']] = n['value'];
+        });
+    return json;
+    };
+})( jQuery );
+
 // MaDemocratie instance
 var md = new MaDemocratie();
 
@@ -58,9 +69,21 @@ function MaDemocratie() {
         this.addProposalForm.init(this.mainDivId);
     };
 
-    this.addProposal= function(title, content) {
-         this.updateContent("<p>[implementation in progress] you wanna add a proposal title:<br/>" + title + "</p>");
-         setTimeout(function() {md.home();}, 10000);
+    this.addProposal= function(addProposalFormId) {
+         var addProposalEndPoint = "json/proposals/add";
+         var proposalData = $("#" + addProposalFormId).serializeJSON();
+         var title = proposalData.title;
+         $.ajax({
+           type: "POST",
+           url: addProposalEndPoint,
+           data: JSON.stringify(proposalData),
+           dataType: "json",
+           contentType: 'application/json',
+           success: function() {
+             md.updateContent("<div class='container'><div class='row-fluid'><h4>Proposal addition</h4><p>you just add a proposal (title:" + title + ")</p></div></div>");
+             setTimeout(function() {md.home();}, 5000);
+           }
+         });
     };
 
     this.contact= function() {

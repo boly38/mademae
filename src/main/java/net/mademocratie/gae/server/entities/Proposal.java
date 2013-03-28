@@ -6,9 +6,11 @@ import com.googlecode.objectify.annotation.Id;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 
+@XmlRootElement
 @Entity
 public class Proposal extends Contribution {
     @Id

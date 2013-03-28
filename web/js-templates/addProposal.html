@@ -3,7 +3,7 @@
         <div class="span12 well">
             <h3>Add a proposal</h3>
             <div class="span8">
-                <form name="propForm" class="well form-horizontal" action="">
+                <form name="propForm" class="well form-horizontal" action="" id="addProposalForm">
                     <fieldset>
                         <div class="control-group">
                             <label class="control-label" for="proposalTitle">Title</label>
@@ -19,7 +19,7 @@
                         </div>
                         <div class="control-group">
                             <div class="controls docs-input-sizes">
-                                <a name="propCreateSubmit" class="btn" href="javascript:md.addProposal($('#proposalTitle').val(), $('#proposalContent').val())"><span>Create</span></a>
+                                <a name="propCreateSubmit" class="btn" href="javascript:md.addProposal('addProposalForm')"><span>Create</span></a>
                             </div>
                         </div>
                     </fieldset>
