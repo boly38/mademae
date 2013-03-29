@@ -57,9 +57,9 @@ public class ManageVoteImplIT extends BaseIT {
      **/
     @Test
     public void testAddProposalVoteConAnonymousProposal() throws Exception {
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnon.getProposalId(), VoteKind.CON);
+        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnon.getItemIt(), VoteKind.CON);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getId()).isNotNull();
+        assertThat(testVote.getItemIt()).isNotNull();
     }
 
     /**
@@ -67,9 +67,9 @@ public class ManageVoteImplIT extends BaseIT {
      **/
     @Test
     public void testAddProposalVoteProAnonymousProposal() throws Exception {
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnon.getProposalId(), VoteKind.PRO);
+        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnon.getItemIt(), VoteKind.PRO);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getId()).isNotNull();
+        assertThat(testVote.getItemIt()).isNotNull();
     }
 
     /**
@@ -77,9 +77,9 @@ public class ManageVoteImplIT extends BaseIT {
      **/
     @Test
     public void testAddProposalVoteNeutralAuthoredProposal() throws Exception {
-        Vote testVote = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.NEUTRAL);
+        Vote testVote = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getId()).isNotNull();
+        assertThat(testVote.getItemIt()).isNotNull();
     }
 
     /**
@@ -87,10 +87,10 @@ public class ManageVoteImplIT extends BaseIT {
      **/
     @Test
     public void testAddProposalTwoDistinctVotesOnAuthoredProposal() throws Exception {
-        Vote testVote = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.NEUTRAL);
-        Vote testVoteBis = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.PRO);
+        Vote testVote = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
+        Vote testVoteBis = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
         assertThat(testVoteBis).isNotNull();
-        assertThat(testVoteBis.getId()).isNotNull();
+        assertThat(testVoteBis.getItemIt()).isNotNull();
     }
 
     /**
@@ -99,11 +99,11 @@ public class ManageVoteImplIT extends BaseIT {
     @Test
     public void testGetProposalVote() throws Exception {
         // GIVEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getProposalId(), VoteKind.PRO);
+        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getId()).isNotNull();
+        assertThat(testVote.getItemIt()).isNotNull();
         // WHEN
-        Vote retrievedVote = manageVote.getProposalVoteOfACitizen(myAuthorA.getEmail(), testProposalA.getProposalId());
+        Vote retrievedVote = manageVote.getProposalVoteOfACitizen(myAuthorA.getEmail(), testProposalA.getItemIt());
         // THEN
         assertThat(retrievedVote)
                 .as("unable to retrieve a vote of a citizen")
@@ -119,11 +119,11 @@ public class ManageVoteImplIT extends BaseIT {
     @Test
     public void testGetProposalVotes() throws Exception {
         // GIVEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getProposalId(), VoteKind.PRO);
-        Vote testVoteB = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.NEUTRAL);
-        assertThat(testVote.getId()).isNotNull();
+        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
+        Vote testVoteB = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
+        assertThat(testVote.getItemIt()).isNotNull();
         // WHEN
-        ProposalVotes retrievedVotes = manageVote.getProposalVotes(testProposalA.getProposalId());
+        ProposalVotes retrievedVotes = manageVote.getProposalVotes(testProposalA.getItemIt());
         //THEN
         assertThat(retrievedVotes)
                 .as("unable to retrieve a proposal's vote")

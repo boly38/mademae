@@ -2,8 +2,6 @@ package net.mademocratie.gae.server.entities;
 
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -12,20 +10,13 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Proposal extends Contribution implements IContribution {
-    @Id
-    Long proposalId;
     private String authorEmail;
     private String authorPseudo;
     private String title;
     private Text content;
-    private Date date;
 
     public Proposal() {
-    }
-
-    @Override
-    public String getContributionId() {
-        return String.valueOf(getProposalId());
+        this.content = new Text("");
     }
 
     @Override
@@ -33,9 +24,19 @@ public class Proposal extends Contribution implements IContribution {
         return ContributionType.PROPOSAL.toString();
     }
 
-    public Proposal(String content, String title) {
+    public Proposal(String title, String content) {
         this.title = title;
-        this.content = new Text(content);
+        this.content = new Text(content != null ? content : "");
+    }
+
+    @Override                   // json need id
+    public Date getDate() {
+        return super.getDate();
+    }
+
+    @Override                    // json need id
+    public Long getItemIt() {
+        return super.getItemIt();
     }
 
     @Override
@@ -66,20 +67,15 @@ public class Proposal extends Contribution implements IContribution {
         return (content != null ? content.getValue():null);
     }
     public void setContent(String content) {
-        this.content = new Text(content);
+        this.content = new Text(content != null ? content : "");
     }
 
-    @Override
-    public Date getDate() {
-        return date;
+    public void setContent(Text content) {
+        this.content = content;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Long getProposalId() {
-        return proposalId;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTitle() {
@@ -87,34 +83,32 @@ public class Proposal extends Contribution implements IContribution {
     }
 
     public String toString() {
-            return new JSONObject(this).toString();
-            /*
-            return new JSONObject()
-                    .put("contributionId", getContributionId())
-                    .put("contributionType", getContributionType())
-                    .put("contributionDetails", getContributionDetails())
-                    .put("proposalId", getProposalId())
-                    .put("title", getTitle())
-                    .put("date", getDate())
-                    .put("authorPseudo", getAuthorPseudo())
-                    .put("content", (content!= null ?content.getValue() : ""))
-                    .toString();
-                    */
+            return toLogString();
     }
-
     /*
+    return new JSONObject()
+            .put("contributionId", getContributionId())
+            .put("contributionType", getContributionType())
+            .put("contributionDetails", getContributionDetails())
+            .put("proposalId", getProposalId())
+            .put("title", getTitle())
+            .put("date", getDate())
+            .put("authorPseudo", getAuthorPseudo())
+            .put("content", (content!= null ?content.getValue() : ""))
+            .toString();
+            */
+
     public String toLogString() {
         StringBuilder sb = new StringBuilder();
         sb.append("proposal[");
-        sb.append("proposalId:").append(proposalId);
-        sb.append(", title:").append(title);
-        if (authorPseudo != null)
-            sb.append(", authorPseudo:").append(authorPseudo);
-        if (authorEmail != null)
-            sb.append(", authorEmail:").append(authorEmail);
-        sb.append(", content:").append(content);
+        sb.append("id:").append(getItemIt());
+        sb.append(", title:").append(getTitle());
+        if (getAuthorPseudo() != null)
+            sb.append(", authorPseudo:").append(getAuthorPseudo());
+        if (getAuthorEmail() != null)
+            sb.append(", authorEmail:").append(getAuthorEmail());
+        sb.append(", content:").append(getContent());
         sb.append("]");
         return sb.toString();
     }
-    */
 }

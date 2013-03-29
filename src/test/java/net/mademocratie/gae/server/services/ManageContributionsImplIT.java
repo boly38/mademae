@@ -77,8 +77,8 @@ public class ManageContributionsImplIT extends BaseIT {
         manageProposal.addProposal(testProposalAnonB, null);
         manageProposal.addProposal(testProposalA, myAuthorA);
 
-        bForANeutral = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.NEUTRAL);
-        bForAPro = manageVote.vote(myAuthorB.getEmail(), testProposalA.getProposalId(), VoteKind.PRO);
+        bForANeutral = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
+        bForAPro = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
 
         manageProposal.addProposal(testProposalB, myAuthorB);
         manageProposal.addProposal(testProposalA2, myAuthorA);
@@ -92,7 +92,7 @@ public class ManageContributionsImplIT extends BaseIT {
         // GIVEN
         int askedMaxContributions = 50; // 5; because of order
         // WHEN
-        List<IContribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
+        List<Contribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
         // THEN
         assertThat(lastContributions)
                 .isNotNull().isNotEmpty();

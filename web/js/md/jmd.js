@@ -42,10 +42,12 @@ function ProposalDetails() {
 
     this.showDetails= function() {
         var parentPD = this;
-        $.get('/js-templates/proposal.html', function(proposalTemplate) {
-            $.template("proposalTemplate", proposalTemplate);
-            var proposalHtmlResult = $.tmpl("proposalTemplate", "");
-            parentPD.updateContent(proposalHtmlResult);
+        $.getJSON('json/proposals/proposal/' + this.proposalId, function(proposalJsonData) {
+            $.get('/js-templates/proposal.html', function(proposalTemplate) {
+                $.template("proposalTemplate", proposalTemplate);
+                var proposalHtmlResult = $.tmpl("proposalTemplate", proposalJsonData);
+                parentPD.updateContent(proposalHtmlResult);
+            });
         });
     };
 

@@ -56,7 +56,7 @@ public class ManageProposalImplIT extends BaseIT {
         logger.info("addProposal result " + testProposal.toString());
         assertThat(testProposal).as("just created proposal is null")
                     .isNotNull();
-        assertThat(testProposal.getProposalId()).as("just created proposal don't have id")
+        assertThat(testProposal.getItemIt()).as("just created proposal don't have id")
                     .isNotNull();
         Assert.assertEquals("just created proposal title has been updated", PROPOSAL_TITLE, testProposal.getTitle());
         Assert.assertEquals("just created proposal content has been updated",PROPOSAL_CONTENT, testProposal.getContent());
@@ -74,7 +74,7 @@ public class ManageProposalImplIT extends BaseIT {
         manageProposal.addProposal(testProposal, myAuthor);
         logger.info("addProposal result " + testProposal.toString());
         Assert.assertNotNull("just created proposal is null", testProposal);
-        Assert.assertNotNull("just created proposal don't have id", testProposal.getProposalId());
+        Assert.assertNotNull("just created proposal don't have id", testProposal.getItemIt());
         Assert.assertEquals("just created proposal title has been updated", PROPOSAL_TITLE, testProposal.getTitle());
         Assert.assertEquals("just created proposal content has been updated",PROPOSAL_CONTENT, testProposal.getContent());
     }
@@ -96,13 +96,13 @@ public class ManageProposalImplIT extends BaseIT {
         manageProposal.addProposal(testProposalA2, myAuthorA);
         logger.info("last addProposal result " + testProposalA2.toString());
         assertNotNull("last created proposal is null", testProposalA2);
-        assertNotNull("last created proposal don't have id", testProposalA2.getProposalId());
+        assertNotNull("last created proposal don't have id", testProposalA2.getItemIt());
         assertEquals("last created proposal title has been updated", PROPOSAL_TITLE, testProposalA2.getTitle());
         assertEquals("last created proposal content has been updated", PROPOSAL_CONTENT, testProposalA2.getContent());
-        assertNull(manageProposal.getById(testProposalAnon.getProposalId()).getAuthorEmail());
-        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA.getProposalId()).getAuthorEmail());
-        assertEquals(myAuthorB.getEmail(), manageProposal.getById(testProposalB.getProposalId()).getAuthorEmail());
-        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA2.getProposalId()).getAuthorEmail());
+        assertNull(manageProposal.getById(testProposalAnon.getItemIt()).getAuthorEmail());
+        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA.getItemIt()).getAuthorEmail());
+        assertEquals(myAuthorB.getEmail(), manageProposal.getById(testProposalB.getItemIt()).getAuthorEmail());
+        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA2.getItemIt()).getAuthorEmail());
     }
 
     /**

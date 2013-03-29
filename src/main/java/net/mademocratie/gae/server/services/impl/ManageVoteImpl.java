@@ -48,7 +48,7 @@ public class ManageVoteImpl implements IManageVote {
     public Vote vote(String citizenEmail, Long proposalId, VoteKind kind) {
         Vote existingVote = findProposalVoteByUserEmail(citizenEmail, proposalId);
         if (existingVote != null) {
-            removeVoteById(existingVote.getId());
+            removeVoteById(existingVote.getItemIt());
         }
         Vote vote = new Vote(citizenEmail, proposalId, kind);
         addVote(vote);
@@ -57,7 +57,7 @@ public class ManageVoteImpl implements IManageVote {
     }
 
     private Vote addVote(Vote vote) {
-        Vote existingVote = findVoteById(vote.getId());
+        Vote existingVote = findVoteById(vote.getItemIt());
         if (existingVote != null) return existingVote;
         ofy().save().entity(vote).now();
         LOGGER.fine("addVote result " + vote.toString());

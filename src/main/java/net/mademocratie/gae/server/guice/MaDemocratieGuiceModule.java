@@ -4,6 +4,7 @@ import com.google.inject.servlet.ServletModule;
 import com.googlecode.objectify.ObjectifyService;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.entities.Contribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.Vote;
 import net.mademocratie.gae.server.json.About;
@@ -25,6 +26,7 @@ public class MaDemocratieGuiceModule extends ServletModule {
     public void configureServlets() {
         // Persistence registrations
         // Objectify register
+        ObjectifyService.register(Contribution.class);
         ObjectifyService.register(Citizen.class);
         ObjectifyService.register(Proposal.class);
         ObjectifyService.register(Vote.class);

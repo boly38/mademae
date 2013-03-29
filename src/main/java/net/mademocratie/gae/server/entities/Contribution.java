@@ -1,13 +1,30 @@
 package net.mademocratie.gae.server.entities;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+
 import java.util.Date;
 
+@Entity
 public abstract class Contribution implements IContribution {
+    @Id
+    protected Long itemIt;
+
+    protected Date date;
+
     public Contribution() {};
 
-    public abstract String getContributionId();
+    public Long getItemIt() {
+        return itemIt;
+    }
 
-    public abstract Date getDate();
+    public void setItemIt(Long itemIt) {
+        this.itemIt = itemIt;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 
     public abstract String getContributionDetails();
 
@@ -17,4 +34,7 @@ public abstract class Contribution implements IContribution {
 
     public abstract String getContributionType();
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }

@@ -5,8 +5,9 @@
             <div>
                 {{each contributions}}
                 <div>
-                    <p>${date} <span style="font-weight: bold">${authorPseudo}</span> wrote:</p>
-                    <blockquote><a href="javascript:md.contribution('${contributionId}', '${contributionType}');">${contributionDetails}</a></blockquote>
+                    <p>${date} <span style="font-weight: bold">${authorPseudo}</span>
+                        <a href="javascript:md.contribution('${itemIt}', '${contributionType}');">${contributionDetails}</a>
+                    </p>
                 </div>
                 {{/each}}
             </div>

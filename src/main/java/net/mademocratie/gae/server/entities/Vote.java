@@ -3,19 +3,12 @@ package net.mademocratie.gae.server.entities;
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 import java.util.Date;
 
 @Entity
 public class Vote extends Contribution implements IContribution {
-    public static final String VOTE_DATE = "date";
-    @Id
-    private Long id;
-
-    private Date date;
-
     @Index
     private Email citizenEmail;
 
@@ -24,19 +17,13 @@ public class Vote extends Contribution implements IContribution {
 
     private VoteKind kind;
 
-    public Vote() {
-    }
+    public Vote() {}
 
     public Vote(String citizenEmail, Long proposalId, VoteKind kind) {
         this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
         this.kind = kind;
         this.proposal = Key.create(Proposal.class, proposalId);
         this.date = new Date();
-    }
-
-    @Override
-    public String getContributionId() {
-        return String.valueOf(getId());
     }
 
     @Override
@@ -50,14 +37,6 @@ public class Vote extends Contribution implements IContribution {
 
     public void setCitizenEmail(String citizenEmail) {
         this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     @Override
@@ -89,8 +68,8 @@ public class Vote extends Contribution implements IContribution {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[Vote");
-        if (getId() != null) {
-            sb.append("#").append(getId());
+        if (getItemIt() != null) {
+            sb.append("#").append(getItemIt());
         }
         sb.append(":").append(getDate());
         sb.append("|").append(getKind())

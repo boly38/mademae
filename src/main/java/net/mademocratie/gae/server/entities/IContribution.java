@@ -12,7 +12,7 @@ import java.util.Date;
  * @version : $Revision$
  */
 public interface IContribution extends Serializable {
-    public abstract String getContributionId();
+    public abstract Long getItemIt();
 
     public abstract Date getDate();
 
