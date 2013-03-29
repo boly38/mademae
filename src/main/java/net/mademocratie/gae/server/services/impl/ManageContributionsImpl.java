@@ -2,6 +2,7 @@ package net.mademocratie.gae.server.services.impl;
 
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.entities.Contribution;
+import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.Vote;
 import net.mademocratie.gae.server.services.IManageContributions;
@@ -33,10 +34,10 @@ public class ManageContributionsImpl implements IManageContributions {
     private IManageProposal manageProposal;
 
 
-    public List<Contribution> getLastContributions(int maxContributions) {
+    public List<IContribution> getLastContributions(int maxContributions) {
         List<Proposal> latestProposals = manageProposal.latest(maxContributions);
         List<Vote> latestVotes = manageVote.latest(maxContributions);
-        List<Contribution> latestContributions = new ArrayList<Contribution>();
+        List<IContribution> latestContributions = new ArrayList<IContribution>();
         latestContributions.addAll(latestProposals);
         latestContributions.addAll(latestVotes);
         if (latestContributions.size() == 0) {

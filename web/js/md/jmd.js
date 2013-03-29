@@ -32,6 +32,28 @@ function addProposalForm() {
     };
 }
 
+
+function ProposalDetails() {
+    this.init= function(mainDivId, proposalId) {
+        this.mainDivId = mainDivId;
+        this.proposalId = proposalId;
+        this.showDetails();
+    };
+
+    this.showDetails= function() {
+        var parentPD = this;
+        $.get('/js-templates/proposal.html', function(proposalTemplate) {
+            $.template("proposalTemplate", proposalTemplate);
+            var proposalHtmlResult = $.tmpl("proposalTemplate", "");
+            parentPD.updateContent(proposalHtmlResult);
+        });
+    };
+
+    this.updateContent= function(htmlContent) {
+        $('#' + this.mainDivId).html(htmlContent);
+    };
+}
+
 // MaDemocratie object
 function MaDemocratie() {
     this.init= function(mainDivId) {
@@ -64,7 +86,6 @@ function MaDemocratie() {
     };
 
     this.addProposalAction= function() {
-        var parentMd = this;
         this.addProposalForm = new addProposalForm();
         this.addProposalForm.init(this.mainDivId);
     };
@@ -99,6 +120,13 @@ function MaDemocratie() {
                 parentMd.updateContent(aboutHtmlResult);
             });
         });
+    };
+
+    this.contribution = function(contributionId, contributionType) {
+        if (contributionType == 'PROPOSAL') {
+            this.proposalDetails = new ProposalDetails();
+            this.proposalDetails.init(this.mainDivId, contributionId);
+        }
     };
 
     this.updateContent= function(htmlContent) {

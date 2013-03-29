@@ -3,7 +3,6 @@ package net.mademocratie.gae.server.entities;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,7 +11,7 @@ import java.util.Date;
 
 @XmlRootElement
 @Entity
-public class Proposal extends Contribution {
+public class Proposal extends Contribution implements IContribution {
     @Id
     Long proposalId;
     private String authorEmail;
@@ -22,6 +21,16 @@ public class Proposal extends Contribution {
     private Date date;
 
     public Proposal() {
+    }
+
+    @Override
+    public String getContributionId() {
+        return String.valueOf(getProposalId());
+    }
+
+    @Override
+    public String getContributionType() {
+        return ContributionType.PROPOSAL.toString();
     }
 
     public Proposal(String content, String title) {
@@ -43,7 +52,10 @@ public class Proposal extends Contribution {
     }
 
     public String getAuthorPseudo() {
-        return authorPseudo;
+        if (authorPseudo != null) {
+            return authorPseudo;
+        }
+        return super.getAuthorPseudo();
     }
 
     public void setAuthorPseudo(String authorPseudo) {
@@ -70,31 +82,27 @@ public class Proposal extends Contribution {
         return proposalId;
     }
 
-    public void setProposalId(Long proposalId) {
-        this.proposalId = proposalId;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String toString() {
-        try {
+            return new JSONObject(this).toString();
+            /*
             return new JSONObject()
-                    .put("proposalId", proposalId)
-                    .put("title", title)
-                    .put("authorPseudo", authorPseudo)
+                    .put("contributionId", getContributionId())
+                    .put("contributionType", getContributionType())
+                    .put("contributionDetails", getContributionDetails())
+                    .put("proposalId", getProposalId())
+                    .put("title", getTitle())
+                    .put("date", getDate())
+                    .put("authorPseudo", getAuthorPseudo())
                     .put("content", (content!= null ?content.getValue() : ""))
                     .toString();
-        } catch (JSONException e) {
-            return null;
-        }
+                    */
     }
 
+    /*
     public String toLogString() {
         StringBuilder sb = new StringBuilder();
         sb.append("proposal[");
@@ -108,4 +116,5 @@ public class Proposal extends Contribution {
         sb.append("]");
         return sb.toString();
     }
+    */
 }

@@ -2,10 +2,11 @@ package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.entities.Contribution;
+import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
+import org.json.JSONObject;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -23,12 +24,43 @@ public class Contributions {
     @Inject
     IManageContributions manageContributions;
 
+    public class GetContributionsResult {
+        private String description;
+        private List<IContribution> contributions;
+
+        GetContributionsResult(String description, List<IContribution> contributions) {
+            this.description = description;
+            this.contributions = contributions;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public List<IContribution> getContributions() {
+            return contributions;
+        }
+
+        public void setContributions(List<IContribution> contributions) {
+            this.contributions = contributions;
+        }
+        public JSONObject toJSON() {
+             return new JSONObject(this);
+        }
+    }
+
     @GET
     @Path("/last")
     @Produces(MediaType.APPLICATION_JSON)
     public String getContributions() {
-        List<Contribution> lastContributions = manageContributions.getLastContributions(10);
-        return "{\"Contributions\":"+ lastContributions.toString() +"}";
+        List<IContribution> lastContributions = manageContributions.getLastContributions(10);
+        String resultTitle = lastContributions.size() + " last contributions";
+        GetContributionsResult result = new GetContributionsResult(resultTitle, lastContributions);
+        return result.toJSON().toString();
     }
 
 

@@ -92,12 +92,12 @@ public class ManageContributionsImplIT extends BaseIT {
         // GIVEN
         int askedMaxContributions = 50; // 5; because of order
         // WHEN
-        List<Contribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
+        List<IContribution> lastContributions = manageContributions.getLastContributions(askedMaxContributions);
         // THEN
         assertThat(lastContributions)
                 .isNotNull().isNotEmpty();
         logger.info(lastContributions.toString());
-        for (Contribution contribution : lastContributions) {
+        for (IContribution contribution : lastContributions) {
             logger.info("/CONTRIBUTION/ '" + contribution.getContributionDetails()
                     +"' on '" + contribution.getDate().toString());
             // +"' accessible using " + contribution.getContributionPage().getSimpleName());

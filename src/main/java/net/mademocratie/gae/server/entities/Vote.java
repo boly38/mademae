@@ -6,11 +6,10 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Vote extends Contribution implements Serializable {
+public class Vote extends Contribution implements IContribution {
     public static final String VOTE_DATE = "date";
     @Id
     private Long id;
@@ -33,6 +32,16 @@ public class Vote extends Contribution implements Serializable {
         this.kind = kind;
         this.proposal = Key.create(Proposal.class, proposalId);
         this.date = new Date();
+    }
+
+    @Override
+    public String getContributionId() {
+        return String.valueOf(getId());
+    }
+
+    @Override
+    public String getContributionType() {
+        return ContributionType.VOTE.toString();
     }
 
     public String getCitizenEmail() {
