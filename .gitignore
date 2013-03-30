@@ -9,6 +9,7 @@ target/
 
 # IntelliJ files#
 .idea/
+<<<<<<< HEAD
 *.iml
 
 # GAE generated
@@ -17,3 +18,7 @@ local_db.bin
 
 #Custom
 updateGAE.sh
+*.iml
+
+# GAE generated
+WEB-INF/
