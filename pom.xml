@@ -283,6 +283,10 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
+                <directory>web/js-templates</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
@@ -298,4 +302,21 @@
             </resource>
         </resources>
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation><activeByDefault>true</activeByDefault></activation>
+            <properties>
+                <!-- development (wicket)-->
+                <mademocratie.application>ma-dem-ae</mademocratie.application>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <!-- development (wicket)-->
+                <mademocratie.application>ma-democratie</mademocratie.application>
+            </properties>
+        </profile>
+    </profiles>
 </project>

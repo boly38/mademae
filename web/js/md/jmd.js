@@ -73,6 +73,7 @@ function MaDemocratie() {
                 parentMd.updateContent(contributionsHtmlResult);
             });
         });
+        this.track("/home");
     };
 
     this.addSampleProposal= function() {
@@ -85,11 +86,13 @@ function MaDemocratie() {
                 parentMd.updateContent(jsonServiceResponseHtmlResult);
             });
         });
+        this.track("/addSampleProposal");
     };
 
     this.addProposalAction= function() {
         this.addProposalForm = new addProposalForm();
         this.addProposalForm.init(this.mainDivId);
+        this.track("/addProposalAction");
     };
 
     this.addProposal= function(addProposalFormId) {
@@ -107,10 +110,12 @@ function MaDemocratie() {
              setTimeout(function() {md.home();}, 5000);
            }
          });
+        this.track("/addProposal");
     };
 
     this.contact= function() {
-        this.updateContent("<i>info - at - mademocratie (dot) net</i> should be able to answer ! ;)");
+        this.updateContent("<div class='container'><div class='row-fluid'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div></div>");
+        this.track("/contact");
     };
 
     this.about= function() {
@@ -122,16 +127,24 @@ function MaDemocratie() {
                 parentMd.updateContent(aboutHtmlResult);
             });
         });
+        this.track("/about");
     };
 
     this.contribution = function(contributionId, contributionType) {
         if (contributionType == 'PROPOSAL') {
             this.proposalDetails = new ProposalDetails();
             this.proposalDetails.init(this.mainDivId, contributionId);
+            this.track("/proposal/" + contributionId);
         }
     };
 
     this.updateContent= function(htmlContent) {
         $('#' + this.mainDivId).html(htmlContent);
     };
+
+    /* src : http://stackoverflow.com/questions/9026252/google-analytics-how-to-track-fake-pageview
+     */
+    this.track = function(someurl) {
+        _gaq.push(['trackPageview', someurl]);
+    }
 }

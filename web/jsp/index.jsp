@@ -9,7 +9,13 @@
 </head>
 <body><%@include file="header/menu.jsp" %><div id="mainPanel">
 <div id="mainContent">
-    <i>welcome</i>
+    <div class="container">
+        <div class="row">
+            <div class="span12 well">
+                Welcome on MaD&eacutemocratie ${mademocratie.version} - ${version}
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 
