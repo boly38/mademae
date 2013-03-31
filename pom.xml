@@ -309,6 +309,7 @@
             <properties>
                 <!-- development (wicket)-->
                 <mademocratie.application>ma-dem-ae</mademocratie.application>
+                <mademocratie.ga-code>UA-1988442-16</mademocratie.ga-code>
             </properties>
         </profile>
         <profile>
@@ -316,6 +317,7 @@
             <properties>
                 <!-- development (wicket)-->
                 <mademocratie.application>ma-democratie</mademocratie.application>
+                <mademocratie.ga-code>UA-1988442-12</mademocratie.ga-code>
             </properties>
         </profile>
     </profiles>
