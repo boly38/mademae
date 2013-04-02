@@ -38,6 +38,9 @@
         <gae.port>8080</gae.port>
         <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>
         <webappDirectory>target/${project.artifactId}</webappDirectory>
+
+        <bootstrap.version>bootstrap-2-2-2</bootstrap.version>
+        <jquery.version>jquery-1.8.1</jquery.version>
     </properties>
     <pluginRepositories>
     <pluginRepository>

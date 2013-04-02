@@ -8,11 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class IndexController  extends AbstractController {
+public class IndexController {
         @RequestMapping("/index")
         protected ModelAndView index(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
             ModelAndView modelAndView = new ModelAndView("jsp/index.jsp");
-            populateCommons(modelAndView);
             // modelAndView.addObject("url", "/about.do");
             return modelAndView;
         }

@@ -8,8 +8,8 @@ http://twitter.github.com/bootstrap/scaffolding.html#responsive
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link type="text/css" rel="stylesheet" href="/${bootstrap_version}/css/bootstrap.css"/>
-<link type="text/css" rel="stylesheet" href="/${bootstrap_version}/css/bootstrap-responsive.css"/>
+<link type="text/css" rel="stylesheet" href="/${bootstrap.version}/css/bootstrap.css"/>
+<link type="text/css" rel="stylesheet" href="/${bootstrap.version}/css/bootstrap-responsive.css"/>
 <link type="text/css" rel="stylesheet" href="/css/MaDemocratie.css"/>
 <link href="favicon.ico" rel="shortcut icon"/>
 <meta name="description" content="MaDemocratie : the collaborative &#38; democratic way to find goods proposals for our politicians..."/>
