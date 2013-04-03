@@ -42,7 +42,7 @@ function ProposalDetails() {
 
     this.showDetails= function() {
         var parentPD = this;
-        $.getJSON('json/proposals/proposal/' + this.proposalId, function(proposalJsonData) {
+        $.getJSON('json/proposal/proposal/' + this.proposalId, function(proposalJsonData) {
             $.get('/js-templates/proposal.html', function(proposalTemplate) {
                 $.template("proposalTemplate", proposalTemplate);
                 var proposalHtmlResult = $.tmpl("proposalTemplate", proposalJsonData);
@@ -58,15 +58,44 @@ function ProposalDetails() {
 
 // MaDemocratie object
 function MaDemocratie() {
-    this.init= function(mainDivId) {
+    this.init= function(mainMenuDivId, mainDivId) {
+        this.mainMenuDivId = mainMenuDivId;
         this.mainDivId = mainDivId;
-        $('.dropdown-toggle').dropdown();
-        this.home();
+        this.menu(function(){
+              $('.dropdown-toggle').dropdown();
+        });
+        if ($.urlParameter('redirect') == "login") {
+            this.login();
+        } else {
+            this.home();
+        }
     };
+
+    this.menu= function(callback) {
+        var parentMD = this;
+        $.get('/js-templates/mainMenu.html', function(mainMenuTemplate) {
+            $.template("mainMenuTemplate", mainMenuTemplate);
+            var mainMenuHtmlResult = $.tmpl("mainMenuTemplate", "");
+            parentMD.updateMenu(mainMenuHtmlResult);
+            callback();
+        });
+    };
+
+    this.login= function() {
+        var parentMd = this;
+        $.getJSON('json/citizen/login', function(loginJsonData) {
+            $.get('/js-templates/login.html', function(loginTemplate) {
+                $.template("loginTemplate", loginTemplate);
+                var loginHtmlResult = $.tmpl("loginTemplate", loginJsonData);
+                parentMd.updateContent(loginHtmlResult);
+            });
+        });
+        this.track("login");
+    }
 
     this.home= function() {
         var parentMd = this;
-        $.getJSON('json/contributions/last', function(contributionsJsonData) {
+        $.getJSON('json/contribution/last', function(contributionsJsonData) {
             $.get('/js-templates/contributions.html', function(contributionsTemplate) {
                 $.template("contributionsTemplate", contributionsTemplate);
                 var contributionsHtmlResult = $.tmpl("contributionsTemplate", contributionsJsonData);
@@ -78,7 +107,7 @@ function MaDemocratie() {
 
     this.addSampleProposal= function() {
         var parentMd = this;
-        $.getJSON('json/contributions/addSample', function(addSampleJsonData) {
+        $.getJSON('json/contribution/addSample', function(addSampleJsonData) {
             console.info(addSampleJsonData);
             $.get('/js-templates/jsonServiceResponse.html', function(htmlTemplate) {
                 $.template("jsonServiceResponse", htmlTemplate);
@@ -96,7 +125,7 @@ function MaDemocratie() {
     };
 
     this.addProposal= function(addProposalFormId) {
-         var addProposalEndPoint = "json/proposals/add";
+         var addProposalEndPoint = "json/proposal/add";
          var proposalData = $("#" + addProposalFormId).serializeJSON();
          var title = proposalData.title;
          $.ajax({
@@ -140,6 +169,9 @@ function MaDemocratie() {
 
     this.updateContent= function(htmlContent) {
         $('#' + this.mainDivId).html(htmlContent);
+    };
+    this.updateMenu= function(htmlContent) {
+            $('#' + this.mainMenuDivId).html(htmlContent);
     };
 
     this.track = function(trackView, trackValue) {

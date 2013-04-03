@@ -4,11 +4,10 @@ import com.google.inject.servlet.ServletModule;
 import com.googlecode.objectify.ObjectifyService;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.Contribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.Vote;
 import net.mademocratie.gae.server.json.About;
-import net.mademocratie.gae.server.json.Contributions;
+import net.mademocratie.gae.server.json.Contribution;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -26,7 +25,7 @@ public class MaDemocratieGuiceModule extends ServletModule {
     public void configureServlets() {
         // Persistence registrations
         // Objectify register
-        ObjectifyService.register(Contribution.class);
+        ObjectifyService.register(net.mademocratie.gae.server.entities.Contribution.class);
         ObjectifyService.register(Citizen.class);
         ObjectifyService.register(Proposal.class);
         ObjectifyService.register(Vote.class);
@@ -43,7 +42,7 @@ public class MaDemocratieGuiceModule extends ServletModule {
 
         serve("/json/*").with(GuiceContainer.class, jerseyParams);
         bind(About.class);
-        bind(Contributions.class);
+        bind(Contribution.class);
 
     }
 }

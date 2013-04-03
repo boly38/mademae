@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row">
+        <div class="span12 well">
+            <div class="page-header">
+                <h3>Sign In</h3>
+            </div>
+            <p>
+                <i>Not already register ? please <a href="/register">Register</a></i>
+            </p>
+
+            <form id="signInForm">
+                <table>
+                    <tr>
+                        <td align="right">Username:</td>
+                        <td>
+                            <input id="username" type="text" value="foo@goo.moo" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Password:</td>
+                        <td>
+                            <input id="password" type="password" value="password" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Sign In"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div class="span12 well">
+            <div class="page-header">
+                <h3>Sign in using google account</h3>
+            </div>
+            <form id="signInFormUsingGoogleForm">
+                <table>
+                    <tr>
+                        <td align="right">Google account:</td>
+                        <td>
+                            {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
+                            <div id="googleOut">
+                                <a id="signIn-google" href="${googleSignInUrl}">sign in</a>.
+                            </div>
+                            {{else}}
+                            <div  id="googleIn">
+                                <i class="icon-user icon-white"></i> user <span  id="gguser">${googleUserPseudo}</span>
+                                &#160;&#160;
+                                <a id="signOut-google" href="${googleSignOutUrl}">signOut</a>.
+                            </div>
+                            {{/if}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" value="Sign in with google account"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div><!-- container -->

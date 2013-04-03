@@ -7,23 +7,25 @@
 <head>
 <%@include file="header/head.jsp" %>
 </head>
-<body><%@include file="header/menu.jsp" %><div id="mainPanel">
-<div id="mainContent">
-    <div class="container">
-        <div class="row">
-            <div class="span12 well">
-                Welcome on MaD&eacutemocratie ${mademocratie.version} - ${version}
+<body>
+<div id="mainMenu">&#160;</div>
+<div id="mainPanel">
+    <div id="mainContent">
+        <div class="container">
+            <div class="row">
+                <div class="span12 well">
+                    Welcome on MaD&eacutemocratie ${mademocratie.version} - ${version}
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <%@include file="footer/javascript.jsp" %>
 <script type="text/javascript">
     $(document).ready(function () {
         $('.dropdown-toggle').dropdown();
-        md.init("mainContent");
+        md.init("mainMenu", "mainContent");
     });
 </script>
 <%@include file="footer/analytics.jsp" %>

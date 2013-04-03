@@ -5,8 +5,8 @@ import java.util.ResourceBundle;
 
 @XmlRootElement
 public class AboutInformations {
-    String version = "${mademocratie.version}";
-    String buildDate = "${build.timestamp}";
+    String version;
+    String buildDate;
 
     public AboutInformations() {
         ResourceBundle messages = ResourceBundle.getBundle("messages");

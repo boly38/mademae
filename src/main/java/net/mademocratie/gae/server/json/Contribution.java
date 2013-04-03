@@ -3,7 +3,6 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.entities.Contribution;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -16,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Path("/contributions")
+@Path("/contribution")
 @Produces(MediaType.APPLICATION_JSON)
-public class Contributions {
-    Logger log = Logger.getLogger(Contributions.class.getName());
+public class Contribution {
+    Logger log = Logger.getLogger(Contribution.class.getName());
 
     @Inject
     IManageProposal manageProposals;
@@ -30,9 +29,9 @@ public class Contributions {
     @GET
     @Path("/last")
     public String getContributions() {
-        List<Contribution> lastContributions = manageContributions.getLastContributions(10);
+        List<net.mademocratie.gae.server.entities.Contribution> lastContributions = manageContributions.getLastContributions(10);
         String resultTitle = lastContributions.size() + " last contributions";
-        GetContributionsResult result = new GetContributionsResult(resultTitle, new ArrayList<Contribution>(lastContributions));
+        GetContributionsResult result = new GetContributionsResult(resultTitle, new ArrayList<net.mademocratie.gae.server.entities.Contribution>(lastContributions));
         return result.toJSON().toString();
     }
 

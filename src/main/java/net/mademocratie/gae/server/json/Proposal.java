@@ -1,28 +1,27 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageProposal;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.logging.Logger;
 
-@Path("/proposals")
+@Path("/proposal")
 @Produces(MediaType.APPLICATION_JSON)
-public class Proposals {
-    Logger log = Logger.getLogger(Proposals.class.getName());
+public class Proposal {
+    Logger log = Logger.getLogger(Proposal.class.getName());
 
     @Inject
     IManageProposal manageProposals;
 
     @POST
     @Path("/add")
-    public String addProposal(Proposal proposal) {
+    public String addProposal(net.mademocratie.gae.server.entities.Proposal proposal) {
         if (proposal == null) return null;
-        Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());
+        net.mademocratie.gae.server.entities.Proposal newProposal = new net.mademocratie.gae.server.entities.Proposal(proposal.getTitle(), proposal.getContent());
         log.info("addProposal POST received : " + proposal.toString());
-        Proposal addedProposal = manageProposals.addProposal(newProposal, null);
+        net.mademocratie.gae.server.entities.Proposal addedProposal = manageProposals.addProposal(newProposal, null);
         log.info("addProposal POST received ; result=" + addedProposal.toString());
         return addedProposal.getItemIt().toString();
     }
@@ -32,7 +31,7 @@ public class Proposals {
      */
     @GET
     @Path("/proposal/{id}")
-    public Proposal getProposal(@PathParam("id") String proposalId) {
+    public net.mademocratie.gae.server.entities.Proposal getProposal(@PathParam("id") String proposalId) {
         if (proposalId == null) return null;
         return manageProposals.getById(Long.valueOf(proposalId));
     }
