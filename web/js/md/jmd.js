@@ -59,11 +59,16 @@ function ProposalDetails() {
 // MaDemocratie object
 function MaDemocratie() {
     this.init= function(mainMenuDivId, mainDivId) {
+        var parentMD = this;
         this.mainMenuDivId = mainMenuDivId;
         this.mainDivId = mainDivId;
         this.menu(function(){
-              $('.dropdown-toggle').dropdown();
+            parentMD.afterInit();
         });
+    };
+
+    this.afterInit = function() {
+        $('.dropdown-toggle').dropdown();
         if ($.urlParameter('redirect') == "login") {
             this.login();
         } else {
