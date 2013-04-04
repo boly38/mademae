@@ -1,9 +1,10 @@
 <div class="container">
     <div class="row">
-        <div class="span12 well">
-            <div class="page-header">
-                <h3>Sign In</h3>
-            </div>
+      <div class="span12 well">
+        <div class="page-header">
+            <h3>Sign in</h3>
+        </div>
+        <div class="span6 well">
             <p>
                 <i>Not already register ? please <a href="/register">Register</a></i>
             </p>
@@ -11,7 +12,7 @@
             <form id="signInForm">
                 <table>
                     <tr>
-                        <td align="right">Username:</td>
+                        <td align="right"><i class="icon-user icon-white"></i> Username:</td>
                         <td>
                             <input id="username" type="text" value="foo@goo.moo" size="30"/>
                         </td>
@@ -31,24 +32,21 @@
                 </table>
             </form>
         </div>
-        <div class="span12 well">
-            <div class="page-header">
-                <h3>Sign in using google account</h3>
-            </div>
+        <div class="span4 well">
             <form id="signInFormUsingGoogleForm">
                 <table>
                     <tr>
-                        <td align="right">Google account:</td>
+                        <td align="right">Google <i class="icon-user icon-white"></i> user :</td>
                         <td>
                             {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
                             <div id="googleOut">
-                                <a id="signIn-google" href="${googleSignInUrl}">sign in</a>.
+                                <a id="signIn-google" href="${googleSignInUrl}">change</a>.
                             </div>
                             {{else}}
                             <div  id="googleIn">
-                                <i class="icon-user icon-white"></i> user <span  id="gguser">${googleUserPseudo}</span>
+                                 <span id="gguser">${googleUserPseudo}</span>
                                 &#160;&#160;
-                                <a id="signOut-google" href="${googleSignOutUrl}">signOut</a>.
+                                <a id="signOut-google" href="${googleSignInUrl}">change</a>.
                             </div>
                             {{/if}}
                         </td>
@@ -62,5 +60,6 @@
                 </table>
             </form>
         </div>
+      </div>
     </div>
 </div><!-- container -->

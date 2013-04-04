@@ -149,7 +149,7 @@ function MaDemocratie() {
     };
 
     this.contact= function() {
-        this.updateContent("<div class='container'><div class='row-fluid'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div></div>");
+        this.updateContent("<div class='container'><div class='row'><div class='span12 well'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div></div></div>");
         this.track("contact");
     };
 
