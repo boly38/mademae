@@ -60,6 +60,7 @@ function ProposalDetails() {
 function MaDemocratie() {
     this.init= function(mainMenuDivId, mainDivId) {
         var parentMD = this;
+        $.ajaxSetup({ cache:false });
         this.mainMenuDivId = mainMenuDivId;
         this.mainDivId = mainDivId;
         this.menu(function(){
