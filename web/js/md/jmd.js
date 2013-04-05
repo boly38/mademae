@@ -148,6 +148,15 @@ function MaDemocratie() {
         this.track("addProposal");
     };
 
+    this.signInGoogle=function() {
+        this.updateContent("<div class='container'><div class='row'><div class='span12 well'>not yet implemented</div></div></div>");
+        this.track("signInGoogle");
+    };
+    this.signIn=function(signInFormId) {
+        this.updateContent("<div class='container'><div class='row'><div class='span12 well'>not yet implemented</div></div></div>");
+        this.track("signIn");
+    };
+
     this.contact= function() {
         this.updateContent("<div class='container'><div class='row'><div class='span12 well'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div></div></div>");
         this.track("contact");
