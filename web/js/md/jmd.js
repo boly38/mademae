@@ -141,7 +141,7 @@ function MaDemocratie() {
            dataType: "json",
            contentType: 'application/json',
            success: function() {
-             md.updateContent("<div class='container'><div class='row-fluid'><h4>Proposal addition</h4><p>you just add a proposal (title:" + title + ")</p></div></div>");
+             md.updateContent("<div class='row'><h4>Proposal addition</h4><p>you just add a proposal (title:" + title + ")</p></div>");
              setTimeout(function() {md.home();}, 5000);
            }
          });
@@ -149,16 +149,16 @@ function MaDemocratie() {
     };
 
     this.signInGoogle=function() {
-        this.updateContent("<div class='container'><div class='row'><div class='span12 well'>not yet implemented</div></div></div>");
+        this.updateContent("<div class='row well'>not yet implemented</div>");
         this.track("signInGoogle");
     };
     this.signIn=function(signInFormId) {
-        this.updateContent("<div class='container'><div class='row'><div class='span12 well'>not yet implemented</div></div></div>");
+        this.updateContent("<div class='row well'>not yet implemented</div>");
         this.track("signIn");
     };
 
     this.contact= function() {
-        this.updateContent("<div class='container'><div class='row'><div class='span12 well'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div></div></div>");
+        this.updateContent("<div class='row well'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div>");
         this.track("contact");
     };
 
