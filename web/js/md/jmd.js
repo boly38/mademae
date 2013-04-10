@@ -58,11 +58,13 @@ function ProposalDetails() {
 
 // MaDemocratie object
 function MaDemocratie() {
-    this.init= function(mainMenuDivId, mainDivId) {
+    this.init= function(mainMenuDivId, mainDivId, feedbackDivId) {
         var parentMD = this;
         $.ajaxSetup({ cache:false });
         this.mainMenuDivId = mainMenuDivId;
         this.mainDivId = mainDivId;
+        this.feedbackDivId = feedbackDivId;
+        this.feedbackMessages = [];
         this.menu(function(){
             parentMD.afterInit();
         });
@@ -73,6 +75,7 @@ function MaDemocratie() {
         if ($.urlParameter('redirect') == "login") {
             this.login();
         } else {
+            this.welcome();
             this.home();
         }
     };
@@ -97,6 +100,10 @@ function MaDemocratie() {
             });
         });
         this.track("login");
+    };
+
+    this.welcome= function() {
+        this.warn("This website is an alpha version. See also <a href='javascript:md.about()'>about page</a> for more details (<a href='http://code.google.com/p/ma-dem-ae/wiki/MaDemAe'>MaDemAe project</a>)");
     }
 
     this.home= function() {
@@ -141,7 +148,7 @@ function MaDemocratie() {
            dataType: "json",
            contentType: 'application/json',
            success: function() {
-             md.updateContent("<div class='row'><h4>Proposal addition</h4><p>you just add a proposal (title:" + title + ")</p></div>");
+             md.info("you just add a proposal (title:" + title + ")");
              setTimeout(function() {md.home();}, 5000);
            }
          });
@@ -149,11 +156,11 @@ function MaDemocratie() {
     };
 
     this.signInGoogle=function() {
-        this.updateContent("<div class='row well'>not yet implemented</div>");
+        this.warn("not yet implemented!");
         this.track("signInGoogle");
     };
     this.signIn=function(signInFormId) {
-        this.updateContent("<div class='row well'>not yet implemented</div>");
+        this.warn("not yet implemented!");
         this.track("signIn");
     };
 
@@ -187,6 +194,35 @@ function MaDemocratie() {
     };
     this.updateMenu= function(htmlContent) {
             $('#' + this.mainMenuDivId).html(htmlContent);
+    };
+    this.info = function(infoMessage) {
+        var htmlContent = "<div class='alert alert-info'>"
+                    + "<strong><i class='icon-info-sign'></i> Info!</strong>&#160;&#160;"
+                    + infoMessage
+                    + "</div>";
+        this.feedback(htmlContent);
+    };
+
+    this.warn = function(warningMessage) {
+        var htmlContent = "<div class='alert fade in'>"
+                    + "<strong><i class='icon-warning-sign'></i> Warning!</strong>&#160;&#160;"
+                    + warningMessage
+                    + "</div>";
+        this.feedback(htmlContent);
+    };
+
+    this.clear = function() {
+        this.feedbackMessages = [];
+        $('#' + this.feedbackDivId).html("");
+    }
+
+    this.feedback = function(htmlFeedback) {
+        this.feedbackMessages.unshift(htmlFeedback);
+        this.feedbackMessages = this.feedbackMessages.slice(0, 2);
+        $('#' + this.feedbackDivId).html("<button type='button' class='close' data-dismiss='alert' onclick='javascript:md.clear();'>x</button>");
+        for (var i=0,len=this.feedbackMessages.length; i<len; i++) {
+            $('#' + this.feedbackDivId).append(this.feedbackMessages[i]);
+        }
     };
 
     this.track = function(trackView, trackValue) {
