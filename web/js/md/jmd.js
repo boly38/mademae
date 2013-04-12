@@ -144,7 +144,7 @@ function MaDemocratie() {
     this.addSampleProposal= function() {
         var parentMd = this;
         $.getJSON('json/contribution/addSample', function(addSampleJsonData) {
-            console.info(addSampleJsonData);
+            /* console.info(addSampleJsonData); */
             $.get('/js-templates/jsonServiceResponse.html', function(htmlTemplate) {
                 $.template("jsonServiceResponse", htmlTemplate);
                 var jsonServiceResponseHtmlResult = $.tmpl("jsonServiceResponse", addSampleJsonData);
@@ -188,7 +188,7 @@ function MaDemocratie() {
            dataType: "json",
            contentType: 'application/json',
            success: function(data, textStatus, jqXHR) {
-             console.info(data);
+             /* console.info(data); */
              if (data.status == "FAILED") {
                 md.warn(data.message);
                 md.login();
