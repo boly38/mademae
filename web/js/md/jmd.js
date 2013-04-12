@@ -58,9 +58,32 @@ function ProposalDetails() {
 
 // MaDemocratie object
 function MaDemocratie() {
+    this.setup= function() {
+        $.ajaxSetup({ cache:false });
+        $.ajaxSetup({
+                error: function(jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        md.warn('Not connect.\n Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        md.warn('Requested page not found. [404]');
+                    } else if (jqXHR.status == 500) {
+                        md.warn('Internal Server Error [500].');
+                    } else if (exception === 'parsererror') {
+                        md.warn('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        md.warn('Time out error.');
+                    } else if (exception === 'abort') {
+                        md.warn('Ajax request aborted.');
+                    } else {
+                        md.warn('Uncaught Error.\n' + jqXHR.responseText);
+                    }
+                }
+        });
+    };
+
     this.init= function(mainMenuDivId, mainDivId, feedbackDivId) {
         var parentMD = this;
-        $.ajaxSetup({ cache:false });
+        this.setup();
         this.mainMenuDivId = mainMenuDivId;
         this.mainDivId = mainDivId;
         this.feedbackDivId = feedbackDivId;
@@ -149,14 +172,32 @@ function MaDemocratie() {
            contentType: 'application/json',
            success: function() {
              md.info("you just add a proposal (title:" + title + ")");
-             setTimeout(function() {md.home();}, 5000);
+             md.home();
            }
          });
         this.track("addProposal");
     };
 
-    this.signInGoogle=function() {
-        this.warn("not yet implemented!");
+    this.signInGoogle=function(signInFormUsingGoogleFormId) {
+         var signInGoogleEndPoint = "json/citizen/signIn";
+         var signInData = $("#" + signInFormUsingGoogleFormId).serializeJSON();
+         $.ajax({
+           type: "POST",
+           url: signInGoogleEndPoint,
+           data: JSON.stringify(signInData),
+           dataType: "json",
+           contentType: 'application/json',
+           success: function(data, textStatus, jqXHR) {
+             console.info(data);
+             if (data.status == "FAILED") {
+                md.warn(data.message);
+                md.login();
+             } else {
+                md.info("welcome =)");
+                md.home();
+             }
+           }
+         });
         this.track("signInGoogle");
     };
     this.signIn=function(signInFormId) {
@@ -218,7 +259,7 @@ function MaDemocratie() {
 
     this.feedback = function(htmlFeedback) {
         this.feedbackMessages.unshift(htmlFeedback);
-        this.feedbackMessages = this.feedbackMessages.slice(0, 2);
+        this.feedbackMessages = this.feedbackMessages.slice(0, 4);
         $('#' + this.feedbackDivId).html("<button type='button' class='close' data-dismiss='alert' onclick='javascript:md.clear();'>x</button>");
         for (var i=0,len=this.feedbackMessages.length; i<len; i++) {
             $('#' + this.feedbackDivId).append(this.feedbackMessages[i]);
