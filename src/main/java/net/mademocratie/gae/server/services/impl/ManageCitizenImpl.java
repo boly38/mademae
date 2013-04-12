@@ -101,9 +101,6 @@ public class ManageCitizenImpl implements IManageCitizen {
         return null;
     }
 
-    public boolean signInCitizen(String email, String password) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public User getGoogleUser() {
         return userService.getCurrentUser();
@@ -261,6 +258,10 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public boolean signInGoogleCitizen() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public boolean signInCitizen(String email, String password) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
