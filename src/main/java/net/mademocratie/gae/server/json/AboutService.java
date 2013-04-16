@@ -8,7 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/about")
-public class About {
+public class AboutService {
     @GET
     @Path("/info")
     @Produces(MediaType.APPLICATION_JSON)

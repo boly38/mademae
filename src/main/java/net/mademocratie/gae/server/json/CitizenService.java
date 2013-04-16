@@ -6,6 +6,7 @@ import net.mademocratie.gae.server.domain.JsonServiceResponse;
 import net.mademocratie.gae.server.domain.LoginInformations;
 import net.mademocratie.gae.server.domain.SignInInformations;
 import net.mademocratie.gae.server.domain.SignInResponse;
+import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.services.IManageCitizen;
 
 import javax.ws.rs.GET;
@@ -24,8 +25,8 @@ import java.util.logging.Logger;
  * @version : $Revision$
  */
 @Path("/citizen")
-public class Citizen {
-    Logger log = Logger.getLogger(Citizen.class.getName());
+public class CitizenService {
+    Logger log = Logger.getLogger(CitizenService.class.getName());
 
     @Inject
     IManageCitizen manageCitizen;
@@ -50,9 +51,9 @@ public class Citizen {
     public SignInResponse singIn(SignInInformations signInInformations) {
         if (signInInformations== null) return null;
         log.info("singIn POST received : " + signInInformations.toLogString());
-        boolean signedIn = manageCitizen.signInGoogleCitizen();
-        if (signedIn) {
-            return new SignInResponse("authToken here");
+        Citizen citizen = manageCitizen.signInGoogleCitizen();
+        if (citizen != null) {
+            return new SignInResponse("welcome" + citizen.getPseudo());
         }
         return new SignInResponse("unable to authenticate you", JsonServiceResponse.ResponseStatus.FAILED);
     }

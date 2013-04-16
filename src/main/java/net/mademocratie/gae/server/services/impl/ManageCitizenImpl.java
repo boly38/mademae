@@ -80,6 +80,14 @@ public class ManageCitizenImpl implements IManageCitizen {
         return latestCitizen;
     }
 
+    public Citizen authenticateGoogleCitizen() {
+        User googleUser = getGoogleUser();
+        if (googleUser == null) {
+            return null;
+        }
+        return authenticateCitizen(googleUser.getEmail(), null);
+    }
+
     public Citizen authenticateCitizen(String email, String password) {
         Citizen citizen = findCitizenByEmail(email);
         if (citizen == null) {
@@ -257,13 +265,10 @@ public class ManageCitizenImpl implements IManageCitizen {
         ofy().save().entity(citizen).now();
     }
 
-    public boolean signInGoogleCitizen() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    public Citizen signInGoogleCitizen() {
+        return authenticateGoogleCitizen();
     }
 
-    public boolean signInCitizen(String email, String password) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     //~ getters && setters
     public void setUserService(UserService userService) {

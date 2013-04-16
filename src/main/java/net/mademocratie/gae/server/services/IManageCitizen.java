@@ -34,14 +34,6 @@ public interface IManageCitizen {
      */
     Citizen authenticateCitizen(String email, String password);
 
-    /**
-     * Sign in a citizen an store it into the given session or return false;
-     * @param email
-     * @param password
-     * @return
-     */
-    boolean signInCitizen(String email, String password);
-
     User getGoogleUser();
 
     String getGoogleLoginURL(String destination);
@@ -57,7 +49,7 @@ public interface IManageCitizen {
 
     void changeCitizenPassword(Long cId, String newPassword) throws ChangePasswordException;
 
-    boolean signInGoogleCitizen();
+    Citizen signInGoogleCitizen();
 
     Citizen addCitizen(Citizen myAuthorA) throws CitizenAlreadyExistsException;
 

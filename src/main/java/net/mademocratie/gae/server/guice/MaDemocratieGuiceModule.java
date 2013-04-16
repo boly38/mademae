@@ -6,8 +6,6 @@ import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.Vote;
-import net.mademocratie.gae.server.json.About;
-import net.mademocratie.gae.server.json.Contribution;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -41,8 +39,6 @@ public class MaDemocratieGuiceModule extends ServletModule {
                          "net.mademocratie.gae.server.json");
 
         serve("/json/*").with(GuiceContainer.class, jerseyParams);
-        bind(About.class);
-        bind(Contribution.class);
-
+        // bind(AboutService.class);
     }
 }

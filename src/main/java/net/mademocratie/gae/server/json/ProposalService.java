@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 
 @Path("/proposal")
 @Produces(MediaType.APPLICATION_JSON)
-public class Proposal {
-    Logger log = Logger.getLogger(Proposal.class.getName());
+public class ProposalService {
+    Logger log = Logger.getLogger(ProposalService.class.getName());
 
     @Inject
     IManageProposal manageProposals;

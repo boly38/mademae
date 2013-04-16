@@ -17,8 +17,8 @@ import java.util.logging.Logger;
 
 @Path("/contribution")
 @Produces(MediaType.APPLICATION_JSON)
-public class Contribution {
-    Logger log = Logger.getLogger(Contribution.class.getName());
+public class Contributionservice {
+    Logger log = Logger.getLogger(Contributionservice.class.getName());
 
     @Inject
     IManageProposal manageProposals;
