@@ -16,7 +16,23 @@
                 </ul>
                 <ul class="nav pull-right">
                     <!-- *** user menu -->
+                    {{if ((typeof(userPseudo) == "undefined") || (userPseudo == ""))}}
                     <li><a href="javascript:md.login()">Sign in!</a></li>
+                    {{else}}
+                    <li class="dropdown" id="user-dd-menumenu">
+                        <a href="#user-dd-menu" class="dropdown-toggle"  data-toggle="dropdown">
+                            <i class="icon-user icon-white"></i>&#160;${userPseudo}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:md.logout()" ><i class="icon-minus-sign"></i> Logout</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#" ><i class="icon-user"></i> Profile</a></li>
+                            <li><a href="/addproposal">add a proposal</a></li>
+                        </ul>
+                    </li>
+                    {{/if}}
+                    <!-- *** /user usermenu -->
                     <!-- *** help menu -->
                     <li class="dropdown pull-right" id="help-menu-dropdown">
                         <a href="#help-menu-dropdown" class="dropdown-toggle">

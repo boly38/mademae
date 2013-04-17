@@ -12,14 +12,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class SignInResponse extends JsonServiceResponse {
+    String userPseudo;
     String authToken;
 
     public SignInResponse() {
     }
 
-    public SignInResponse(String authToken) {
+    public SignInResponse(String authToken, String userPseudo) {
         this.setStatus(ResponseStatus.OK);
         this.authToken = authToken;
+        this.userPseudo = userPseudo;
     }
 
     public SignInResponse(String message, ResponseStatus status) {
@@ -33,5 +35,13 @@ public class SignInResponse extends JsonServiceResponse {
 
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+
+    public String getUserPseudo() {
+        return userPseudo;
+    }
+
+    public void setUserPseudo(String userPseudo) {
+        this.userPseudo = userPseudo;
     }
 }

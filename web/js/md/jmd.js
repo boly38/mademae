@@ -79,6 +79,17 @@ function MaDemocratie() {
                     }
                 }
         });
+        $.ajaxSetup({ beforeSend: md.ajaxBeforeSend });
+    };
+
+    this.hasToken = function() {
+        return (typeof md.token != 'undefined');
+    };
+
+    this.ajaxBeforeSend = function(xhr){
+        if (md.hasToken()) {
+            xhr.setRequestHeader('md-authentification', md.token);
+        }
     };
 
     this.init= function(mainMenuDivId, mainDivId, feedbackDivId) {
@@ -105,12 +116,23 @@ function MaDemocratie() {
 
     this.menu= function(callback) {
         var parentMD = this;
-        $.get('/js-templates/mainMenu.html', function(mainMenuTemplate) {
+        if (this.hasToken()) {
+            $.getJSON('json/citizen/menu', function(menuJsonData) {
+              $.get('/js-templates/mainMenu.html', function(mainMenuTemplate) {
+                $.template("mainMenuTemplate", mainMenuTemplate);
+                var mainMenuHtmlResult = $.tmpl("mainMenuTemplate", menuJsonData);
+                parentMD.updateMenu(mainMenuHtmlResult);
+                callback();
+                });
+            });
+        } else {
+          $.get('/js-templates/mainMenu.html', function(mainMenuTemplate) {
             $.template("mainMenuTemplate", mainMenuTemplate);
             var mainMenuHtmlResult = $.tmpl("mainMenuTemplate", "");
             parentMD.updateMenu(mainMenuHtmlResult);
             callback();
-        });
+            });
+        }
     };
 
     this.login= function() {
@@ -193,8 +215,13 @@ function MaDemocratie() {
                 md.warn(data.message);
                 md.login();
              } else {
-                md.info("welcome =)");
-                md.home();
+                var login = data.userPseudo;
+                md.token = data.authToken;
+                md.info("welcome =) " + login);
+                md.menu(function(){
+                    $('.dropdown-toggle').dropdown();
+                    md.home();
+                });
              }
            }
          });
@@ -203,6 +230,15 @@ function MaDemocratie() {
     this.signIn=function(signInFormId) {
         this.warn("not yet implemented!");
         this.track("signIn");
+    };
+
+    this.logout=function() {
+        delete md.token;
+        md.info("bye bye =) ");
+        md.menu(function(){
+            $('.dropdown-toggle').dropdown();
+            md.home();
+        });
     };
 
     this.contact= function() {
