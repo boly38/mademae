@@ -80,12 +80,18 @@ public class ManageCitizenImpl implements IManageCitizen {
         return latestCitizen;
     }
 
-    public Citizen authenticateGoogleCitizen() {
+    public Citizen authenticateGoogleCitizen() throws MaDemocratieException {
         User googleUser = getGoogleUser();
         if (googleUser == null) {
             return null;
         }
-        return authenticateCitizen(googleUser.getEmail(), null);
+        Citizen citizenAuthenticated = authenticateCitizen(googleUser.getEmail(), null);
+        if (citizenAuthenticated != null) {
+            return citizenAuthenticated;
+        }
+        Citizen registeredCitizen = register(googleUser.getNickname(), googleUser);
+        registerNotifyGoogleCitizen(registeredCitizen, "http://www.mademocratie.net");
+        return registeredCitizen;
     }
 
     public Citizen authenticateCitizen(String email, String password) {
@@ -138,6 +144,13 @@ public class ManageCitizenImpl implements IManageCitizen {
                 justRegisteredCitizen.getPseudo(),
                 "Welcome on MaDemocratie.net",
                 "To complete your registration, please follow this link : " + activateDestination);
+    }
+
+    public void registerNotifyGoogleCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException {
+        sendMail(justRegisteredCitizen.getEmail(),
+                justRegisteredCitizen.getPseudo(),
+                "Welcome on MaDemocratie.net",
+                "You just complete your registration, so hope you will be back soon : " + activateDestination);
     }
 
     private void sendMail(String toEmail, String toString, String title, String body) throws MaDemocratieException {
@@ -265,7 +278,7 @@ public class ManageCitizenImpl implements IManageCitizen {
         ofy().save().entity(citizen).now();
     }
 
-    public Citizen signInGoogleCitizen() {
+    public Citizen signInGoogleCitizen() throws MaDemocratieException {
         return authenticateGoogleCitizen();
     }
 

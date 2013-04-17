@@ -7,6 +7,7 @@ import net.mademocratie.gae.server.domain.LoginInformations;
 import net.mademocratie.gae.server.domain.SignInInformations;
 import net.mademocratie.gae.server.domain.SignInResponse;
 import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 
 import javax.ws.rs.GET;
@@ -51,7 +52,14 @@ public class CitizenService {
     public SignInResponse singIn(SignInInformations signInInformations) {
         if (signInInformations== null) return null;
         log.info("singIn POST received : " + signInInformations.toLogString());
-        Citizen citizen = manageCitizen.signInGoogleCitizen();
+        Citizen citizen = null;
+        try {
+            citizen = manageCitizen.signInGoogleCitizen();
+        } catch (MaDemocratieException e) {
+            log.warning("unable to register notify a google user, details:" + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
         if (citizen != null) {
             return new SignInResponse("welcome" + citizen.getPseudo());
         }

@@ -49,7 +49,7 @@ public interface IManageCitizen {
 
     void changeCitizenPassword(Long cId, String newPassword) throws ChangePasswordException;
 
-    Citizen signInGoogleCitizen();
+    Citizen signInGoogleCitizen() throws MaDemocratieException;
 
     Citizen addCitizen(Citizen myAuthorA) throws CitizenAlreadyExistsException;
 
