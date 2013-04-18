@@ -15,6 +15,10 @@ public class Citizen {
     @Id
     private Long id;
 
+
+    @Index
+    private String authToken;
+
     private User googleUser;
 
 
@@ -23,6 +27,7 @@ public class Citizen {
      */
     public static final String CITIZEN_DATE = "date";
 
+    @Index
     private Date date;
 
     private String pseudo;
@@ -47,6 +52,8 @@ public class Citizen {
     private String citizenStateData;
 
     private String location;
+
+    private boolean admin;
 
     public Citizen() {
     }
@@ -123,6 +130,18 @@ public class Citizen {
         this.date = date;
     }
 
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
+    }
+
     public CitizenState getCitizenState() {
         return citizenState;
     }
@@ -156,5 +175,13 @@ public class Citizen {
 
     public boolean isPasswordEqualsTo(String password) {
         return this.password != null && this.password.equals(password);
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

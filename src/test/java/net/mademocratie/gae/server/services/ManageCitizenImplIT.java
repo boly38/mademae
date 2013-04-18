@@ -92,7 +92,7 @@ public class ManageCitizenImplIT extends BaseIT {
 
     @Test
     public void testAuthenticateAndSignInGoogleCitizen() throws RegisterFailedException {
-        manageCitizen.register("boly38", TEST_USER_GOOGLE);
+        manageCitizen.register("boly38", TEST_USER_GOOGLE, false);
         this.helper.setEnvEmail(TEST_USER_MAIL);
         this.helper.setEnvIsAdmin(true);
         Citizen authCitizen = manageCitizen.authenticateCitizen(TEST_USER_MAIL, null);

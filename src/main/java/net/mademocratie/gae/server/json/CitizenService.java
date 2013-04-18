@@ -51,17 +51,20 @@ public class CitizenService {
     @Produces(MediaType.APPLICATION_JSON)
     public MenuInformations getMenuInfo(@Context HttpHeaders httpHeaders) {
         MultivaluedMap<String, String> headerParams = httpHeaders.getRequestHeaders();
-        if (headerParams.containsKey("md-authentification")) {
-            MenuInformations menuInformations = new MenuInformations();
-            menuInformations.setUserPseudo("userPseudo");
-            menuInformations.setUserAdmin(false);
-            return menuInformations;
-        } else {
-            MenuInformations menuInformations = new MenuInformations();
-            menuInformations.setUserPseudo(null);
-            menuInformations.setUserAdmin(false);
-            return menuInformations;
+        String authTokenKey = "md-authentification";
+        if (headerParams.containsKey(authTokenKey)) {
+            Citizen authenticatedUser = manageCitizen.getAuthenticatedUser(headerParams.getFirst(authTokenKey));
+            if (authenticatedUser != null) {
+                MenuInformations menuInformations = new MenuInformations();
+                menuInformations.setUserPseudo(authenticatedUser.getPseudo());
+                menuInformations.setUserAdmin(authenticatedUser.isAdmin());
+                return menuInformations;
+            }
         }
+        MenuInformations menuInformations = new MenuInformations();
+        menuInformations.setUserPseudo(null);
+        menuInformations.setUserAdmin(false);
+        return menuInformations;
     }
 
     @POST
@@ -78,7 +81,7 @@ public class CitizenService {
             return null;
         }
         if (citizen != null) {
-            return new SignInResponse("mySecretToken", citizen.getPseudo());
+            return new SignInResponse(citizen.getAuthToken(), citizen.getPseudo());
         }
         return new SignInResponse("unable to authenticate you", JsonServiceResponse.ResponseStatus.FAILED);
     }

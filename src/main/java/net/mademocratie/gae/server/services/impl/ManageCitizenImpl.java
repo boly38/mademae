@@ -73,6 +73,12 @@ public class ManageCitizenImpl implements IManageCitizen {
         ofy().delete().type(Citizen.class).id(testUser.getId()).now();
     }
 
+    public Citizen getAuthenticatedUser(String authToken) {
+        Citizen c= ofy().load().type(Citizen.class).filter("authToken", authToken).first().get();
+        LOGGER.info("getAuthenticatedUser for " + authToken + " result " + (c != null ? c.toString() : "(none)"));
+        return c;
+    }
+
     public List<Citizen> latest(int max) {
         List<Citizen> latestCitizen = ofy().load().type(Citizen.class).limit(max).list();
         // TODO : add ".order("-date")" : desc order seems not working !?
@@ -85,13 +91,23 @@ public class ManageCitizenImpl implements IManageCitizen {
         if (googleUser == null) {
             return null;
         }
-        Citizen citizenAuthenticated = authenticateCitizen(googleUser.getEmail(), null);
-        if (citizenAuthenticated != null) {
-            return citizenAuthenticated;
+        String googleUserEmail = googleUser.getEmail();
+        if (findCitizenByEmail(googleUserEmail) != null) {
+            return openSession(googleUserEmail);
         }
-        Citizen registeredCitizen = register(googleUser.getNickname(), googleUser);
+        Citizen registeredCitizen = register(googleUser.getNickname(), googleUser, isGoogleUserAdmin());
         registerNotifyGoogleCitizen(registeredCitizen, "http://www.mademocratie.net");
-        return registeredCitizen;
+
+        return openSession(googleUserEmail);
+    }
+
+    private Citizen openSession(String citizenEmail) {
+        Citizen signedInCitizen = findCitizenByEmail(citizenEmail);
+        String authToken = generateRandomString(10);
+        signedInCitizen.setAuthToken(authToken);
+        ofy().save().entity(signedInCitizen).now();
+        LOGGER.fine("openSession for" + signedInCitizen.toString());
+        return signedInCitizen;
     }
 
     public Citizen authenticateCitizen(String email, String password) {
@@ -118,6 +134,9 @@ public class ManageCitizenImpl implements IManageCitizen {
 
     public User getGoogleUser() {
         return userService.getCurrentUser();
+    }
+    public boolean isGoogleUserAdmin() {
+        return userService.isUserAdmin();
     }
 
     public String getGoogleLoginURL(String destination) {
@@ -184,8 +203,9 @@ public class ManageCitizenImpl implements IManageCitizen {
         throw new RegisterFailedException("Unable to register with this email, you should already been registered.");
     }
 
-    public Citizen register(String pseudo, User googleUser) throws RegisterFailedException {
+    public Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException {
         Citizen newCitizen = new Citizen(pseudo, googleUser);
+        newCitizen.setAdmin(isAdmin);
         try {
             addCitizen(newCitizen);
         } catch (CitizenAlreadyExistsException e) {

@@ -39,7 +39,7 @@ public interface IManageCitizen {
     String getGoogleLoginURL(String destination);
     String getGoogleLogoutURL(String destination);
 
-    Citizen register(String pseudo, User googleUser) throws RegisterFailedException;
+    Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException;
     Citizen register(String pseudo, String email) throws RegisterFailedException;
     void registerNotifyCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException;
 
@@ -56,4 +56,6 @@ public interface IManageCitizen {
     void removeAll();
 
     void delete(Citizen testUser);
+
+    Citizen getAuthenticatedUser(String authToken);
 }
