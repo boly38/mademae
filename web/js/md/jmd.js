@@ -12,7 +12,32 @@
 // MaDemocratie instance
 var md = new MaDemocratie();
 
-function addProposalForm() {
+function Home() {
+    this.init= function(mainDivId) {
+        this.track("home");
+        this.mainDivId = mainDivId;
+        this.showHome();
+    };
+
+    this.showHome= function() {
+        var parentHome = this;
+        $.getJSON('json/contribution/last', function(contributionsJsonData) {
+            $.get('/js-templates/contributions.html', function(contributionsTemplate) {
+                $.template("contributionsTemplate", contributionsTemplate);
+                var contributionsHtmlResult = $.tmpl("contributionsTemplate", contributionsJsonData);
+                parentHome.updateContent(contributionsHtmlResult);
+            });
+        });
+    };
+
+    this.updateContent= function(htmlContent) {
+        $('#' + this.mainDivId).html(htmlContent);
+    };
+}
+
+
+
+function AddProposalForm() {
     this.init= function(mainDivId) {
         this.mainDivId = mainDivId;
         this.showForm();
@@ -177,7 +202,7 @@ function MaDemocratie() {
     };
 
     this.addProposalAction= function() {
-        this.addProposalForm = new addProposalForm();
+        this.addProposalForm = new AddProposalForm();
         this.addProposalForm.init(this.mainDivId);
         this.track("addProposalAction");
     };
@@ -234,7 +259,8 @@ function MaDemocratie() {
 
     this.logout=function() {
         delete md.token;
-        md.info("bye bye =) ");
+        // md.info("bye bye =) ");
+        md.clear();
         md.menu(function(){
             $('.dropdown-toggle').dropdown();
             md.home();

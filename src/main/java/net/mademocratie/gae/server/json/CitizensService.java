@@ -26,8 +26,8 @@ import java.util.logging.Logger;
  * @version : $Revision$
  */
 @Path("/citizen")
-public class CitizenService {
-    Logger log = Logger.getLogger(CitizenService.class.getName());
+public class CitizensService {
+    Logger log = Logger.getLogger(CitizensService.class.getName());
 
     @Inject
     IManageCitizen manageCitizen;
