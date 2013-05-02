@@ -1,10 +1,16 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
+import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.entities.Proposal;
+import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import java.util.logging.Logger;
 
 @Path("/proposal")
@@ -15,11 +21,24 @@ public class ProposalService {
     @Inject
     IManageProposal manageProposals;
 
+    @Inject
+    IManageCitizen manageCitizen;
+
     @POST
     @Path("/add")
-    public String addProposal(net.mademocratie.gae.server.entities.Proposal proposal) {
+    public String addProposal(Proposal proposal, @Context HttpHeaders httpHeaders) {
+        MultivaluedMap<String, String> headerParams = httpHeaders.getRequestHeaders();
+        String authTokenKey = "md-authentification";
+        Citizen authenticatedUser = null;
+        if (headerParams.containsKey(authTokenKey)) {
+            authenticatedUser = manageCitizen.getAuthenticatedUser(headerParams.getFirst(authTokenKey));
+        }
         if (proposal == null) return null;
-        net.mademocratie.gae.server.entities.Proposal newProposal = new net.mademocratie.gae.server.entities.Proposal(proposal.getTitle(), proposal.getContent());
+        Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());
+        if (authenticatedUser != null) {
+            newProposal.setAuthorEmail(authenticatedUser.getEmail());
+            newProposal.setAuthorPseudo(authenticatedUser.getPseudo());
+        }
         log.info("addProposal POST received : " + proposal.toString());
         net.mademocratie.gae.server.entities.Proposal addedProposal = manageProposals.addProposal(newProposal, null);
         log.info("addProposal POST received ; result=" + addedProposal.toString());
