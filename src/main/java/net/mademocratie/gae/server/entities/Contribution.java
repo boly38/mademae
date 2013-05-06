@@ -3,10 +3,13 @@ package net.mademocratie.gae.server.entities;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
 public abstract class Contribution implements IContribution {
+    @Transient
+    public static final String SOMENONE = "someone";
     @Id
     protected Long itemIt;
 
@@ -29,7 +32,7 @@ public abstract class Contribution implements IContribution {
     public abstract String getContributionDetails();
 
     public String getAuthorPseudo() {
-        return "someone";
+        return SOMENONE;
     }
 
     public abstract String getContributionType();

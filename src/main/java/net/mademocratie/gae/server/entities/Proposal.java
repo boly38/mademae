@@ -11,7 +11,7 @@ import java.util.Date;
 @Entity
 public class Proposal extends Contribution implements IContribution {
     private String authorEmail;
-    private String authorPseudo;
+    private String authorPseudo = SOMENONE;
     private String title;
     private Text content;
 

@@ -40,7 +40,7 @@ public class ProposalService {
             newProposal.setAuthorPseudo(authenticatedUser.getPseudo());
         }
         log.info("addProposal POST received : " + proposal.toString());
-        net.mademocratie.gae.server.entities.Proposal addedProposal = manageProposals.addProposal(newProposal, null);
+        Proposal addedProposal = manageProposals.addProposal(newProposal, null);
         log.info("addProposal POST received ; result=" + addedProposal.toString());
         return addedProposal.getItemIt().toString();
     }
@@ -50,7 +50,7 @@ public class ProposalService {
      */
     @GET
     @Path("/proposal/{id}")
-    public net.mademocratie.gae.server.entities.Proposal getProposal(@PathParam("id") String proposalId) {
+    public Proposal getProposal(@PathParam("id") String proposalId) {
         if (proposalId == null) return null;
         return manageProposals.getById(Long.valueOf(proposalId));
     }
