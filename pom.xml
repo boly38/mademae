@@ -299,28 +299,6 @@
                             <goal>deploy</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>gae-start</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>start</goal>
-                        </goals>
-                        <configuration>
-                            <appDir>${webappDirectory}</appDir>
-                            <port>9000</port>
-                            <address>0.0.0.0</address>
-                            <sdkDir>${gae.home}</sdkDir>
-                            <wait>false</wait>
-                            <disableUpdateCheck>true</disableUpdateCheck>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>gae-stop</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
-                    </execution>
                 </executions>
                 <dependencies>
                     <dependency>
@@ -375,6 +353,68 @@
                 <mademocratie.application>ma-democratie</mademocratie.application>
                 <mademocratie.ga-code>UA-1988442-12</mademocratie.ga-code>
             </properties>
+        </profile>
+        <profile>
+            <id>acceptance tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>net.kindleit</groupId>
+                        <artifactId>maven-gae-plugin</artifactId>
+                        <version>${maven-gae-plugin.version}</version>
+                        <configuration>
+                            <unpackVersion>${gae.version}</unpackVersion>
+                            <serverId>appengine.google.com</serverId>
+                            <appDir>${webappDirectory}</appDir>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>unpack</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>deploy</id>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>gae-start</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <appDir>${webappDirectory}</appDir>
+                                    <port>9000</port>
+                                    <address>0.0.0.0</address>
+                                    <sdkDir>${gae.home}</sdkDir>
+                                    <wait>false</wait>
+                                    <disableUpdateCheck>true</disableUpdateCheck>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>gae-stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>net.kindleit</groupId>
+                                <artifactId>gae-runtime</artifactId>
+                                <version>${gae-runtime.version}</version>
+                                <type>pom</type>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

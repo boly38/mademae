@@ -2,12 +2,14 @@ package net.mademocratie.gae.acceptancetest;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static com.thoughtworks.selenium.SeleneseTestBase.assertEquals;
 
+@Ignore
 public class HomePageIT {
     private WebDriver driver;
 
