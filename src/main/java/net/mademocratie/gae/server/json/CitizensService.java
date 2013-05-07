@@ -14,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import java.util.logging.Logger;
 
 /**
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
  * @version : $Revision$
  */
 @Path("/citizen")
-public class CitizensService {
+public class CitizensService extends AbstractMaDemocratieJsonService {
     Logger log = Logger.getLogger(CitizensService.class.getName());
 
     @Inject
@@ -50,16 +49,12 @@ public class CitizensService {
     @Path("/menu")
     @Produces(MediaType.APPLICATION_JSON)
     public MenuInformations getMenuInfo(@Context HttpHeaders httpHeaders) {
-        MultivaluedMap<String, String> headerParams = httpHeaders.getRequestHeaders();
-        String authTokenKey = "md-authentification";
-        if (headerParams.containsKey(authTokenKey)) {
-            Citizen authenticatedUser = manageCitizen.getAuthenticatedUser(headerParams.getFirst(authTokenKey));
-            if (authenticatedUser != null) {
-                MenuInformations menuInformations = new MenuInformations();
-                menuInformations.setUserPseudo(authenticatedUser.getPseudo());
-                menuInformations.setUserAdmin(authenticatedUser.isAdmin());
-                return menuInformations;
-            }
+        Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
+        if (authenticatedUser != null) {
+            MenuInformations menuInformations = new MenuInformations();
+            menuInformations.setUserPseudo(authenticatedUser.getPseudo());
+            menuInformations.setUserAdmin(authenticatedUser.isAdmin());
+            return menuInformations;
         }
         MenuInformations menuInformations = new MenuInformations();
         menuInformations.setUserPseudo(null);
@@ -84,5 +79,9 @@ public class CitizensService {
             return new SignInResponse(citizen.getAuthToken(), citizen.getPseudo());
         }
         return new SignInResponse("unable to authenticate you", JsonServiceResponse.ResponseStatus.FAILED);
+    }
+
+    public IManageCitizen getManageCitizen() {
+        return manageCitizen;
     }
 }

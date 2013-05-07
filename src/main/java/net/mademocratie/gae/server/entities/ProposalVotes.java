@@ -1,23 +1,31 @@
 package net.mademocratie.gae.server.entities;
 
+import com.google.appengine.repackaged.com.google.common.base.Objects;
+import com.googlecode.objectify.annotation.Entity;
+
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * ProposalVotes
- * <p/>
- * Last update  : $LastChangedDate$
- * Last author  : $Author$
- *
- * @version : $Revision$
  */
+@XmlRootElement
+@Entity
 public class ProposalVotes {
 
+    @Transient
     private Collection<Vote> votes;
 
-    private int votesProCountCache = -1;
-    private int votesNeutralCountCache = -1;
-    private int votesConCountCache = -1;
+    private int votesCount = -1;
+    private int votesProCount = -1;
+    private int votesNeutralCount = -1;
+    private int votesConCount = -1;
+
+    public ProposalVotes() {
+        this.votes = new ArrayList<Vote>();
+    }
 
     public ProposalVotes(Collection<Vote> proposalVotes) {
         if (proposalVotes == null) {
@@ -25,50 +33,74 @@ public class ProposalVotes {
             return;
         }
         this.votes = proposalVotes;
-    }
-
-    public int voteCount() {
-        return this.votes.size();
-    }
-
-    public int voteProCount() {
-        if (votesProCountCache == -1) {
-            calculateVotesCounts();
-        }
-        return this.votesProCountCache;
-    }
-
-    public int voteNeutralCount() {
-        if (votesNeutralCountCache == -1) {
-            calculateVotesCounts();
-        }
-        return this.votesNeutralCountCache;
-    }
-
-    public int voteConCount() {
-        if (votesConCountCache == -1) {
-            calculateVotesCounts();
-        }
-        return this.votesConCountCache;
+        calculateVotesCounts();
     }
 
     private void calculateVotesCounts() {
-        this.votesProCountCache = 0;
-        this.votesNeutralCountCache = 0;
-        this.votesConCountCache = 0;
+        this.votesProCount = 0;
+        this.votesNeutralCount = 0;
+        this.votesConCount = 0;
+        this.votesCount = votes.size();
 
         for(Vote vote: votes) {
             switch (vote.getKind()) {
-                case NEUTRAL: this.votesNeutralCountCache++; break;
-                case PRO: this.votesProCountCache++; break;
+                case NEUTRAL: this.votesNeutralCount++; break;
+                case PRO: this.votesProCount++; break;
                 default:
-                case CON: this.votesConCountCache++; break;
+                case CON: this.votesConCount++; break;
 
             }
         }
     }
 
+    public int getVotesCount() {
+        return this.votes.size();
+    }
+
+    public int getVotesProCount() {
+        return this.votesProCount;
+    }
+
+    public int getVotesNeutralCount() {
+        return this.votesNeutralCount;
+    }
+
+    public int getVotesConCount() {
+        return this.votesConCount;
+    }
+
     public Collection<Vote> getVotes() {
         return votes;
+    }
+
+    public void setVotes(Collection<Vote> votes) {
+        this.votes = votes;
+        calculateVotesCounts();
+    }
+
+    public void setVotesConCount(int votesConCount) {
+        this.votesConCount = votesConCount;
+    }
+
+    public void setVotesCount(int votesCount) {
+        this.votesCount = votesCount;
+    }
+
+    public void setVotesNeutralCount(int votesNeutralCount) {
+        this.votesNeutralCount = votesNeutralCount;
+    }
+
+    public void setVotesProCount(int votesProCount) {
+        this.votesProCount = votesProCount;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("votesCount", votesCount)
+                .add("votesProCount", votesProCount)
+                .add("votesNeutralCount", votesNeutralCount)
+                .add("votesConCount", votesConCount)
+                .toString();
     }
 }

@@ -113,7 +113,7 @@ function MaDemocratie() {
 
     this.ajaxBeforeSend = function(xhr){
         if (md.hasToken()) {
-            xhr.setRequestHeader('md-authentification', md.token);
+            xhr.setRequestHeader('md-authentication', md.token);
         }
     };
 
@@ -286,10 +286,38 @@ function MaDemocratie() {
 
     this.contribution = function(contributionId, contributionType) {
         if (contributionType == 'PROPOSAL') {
-            this.proposalDetails = new ProposalDetails();
-            this.proposalDetails.init(this.mainDivId, contributionId);
-            this.track("proposalDetails", contributionId);
+            this.showProposal(contributionId);
         }
+    };
+
+    this.showProposal = function(proposalId) {
+        this.proposalDetails = new ProposalDetails();
+        this.proposalDetails.init(this.mainDivId, proposalId);
+        this.track("proposalDetails", proposalId);
+    };
+
+    this.voteProposalPro = function(proposalId) {
+        var parentMd = this;
+        $.getJSON('json/proposal/proposal/vote/pro/'+proposalId, function(voteJsonData) {
+             parentMd.showProposal(proposalId);
+        });
+        this.track("voteProposalPro");
+    };
+
+    this.voteProposalNeutral = function(proposalId) {
+        var parentMd = this;
+        $.getJSON('json/proposal/proposal/vote/neutral/'+proposalId, function(voteJsonData) {
+             parentMd.showProposal(proposalId);
+        });
+        this.track("voteProposalNeutral");
+    };
+
+    this.voteProposalCon = function(proposalId) {
+        var parentMd = this;
+        $.getJSON('json/proposal/proposal/vote/con/'+proposalId, function(voteJsonData) {
+             parentMd.showProposal(proposalId);
+        });
+        this.track("voteProposalCon");
     };
 
     this.updateContent= function(htmlContent) {

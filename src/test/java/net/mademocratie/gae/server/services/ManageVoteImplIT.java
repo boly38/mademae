@@ -131,8 +131,8 @@ public class ManageVoteImplIT extends BaseIT {
         assertThat(retrievedVotes.getVotes())
                 .as("unable to retrieve a proposal's vote")
                 .isNotNull();
-        assertThat(retrievedVotes.voteCount())
-                .as("proposal's vote count is incorrect : " + retrievedVotes.voteCount())
+        assertThat(retrievedVotes.getVotesCount())
+                .as("proposal's vote count is incorrect : " + retrievedVotes.getVotesCount())
                 .isEqualTo(2);
         assertThat(retrievedVotes.getVotes())
                 .as("unable to retrieve given proposal's vote")
