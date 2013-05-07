@@ -11,7 +11,7 @@ import java.util.List;
 @ImplementedBy(ManageVoteImpl.class)
 public interface IManageVote {
 
-    Vote getProposalVoteOfACitizen(String citizenMail, Long proposalId);
+    List<Vote> getProposalVotesOfACitizen(String citizenEmail, Long proposalId);
 
     Vote vote(String citizenEmail, Long proposalId, VoteKind kind);
 

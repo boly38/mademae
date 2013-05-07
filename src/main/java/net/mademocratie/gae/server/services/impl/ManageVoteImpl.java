@@ -24,31 +24,23 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class ManageVoteImpl implements IManageVote {
     private final static Logger LOGGER = Logger.getLogger(ManageVoteImpl.class.getName());
 
-    public Vote getProposalVoteOfACitizen(String citizenEmail, Long proposalId) {
-        return findProposalVoteByUserEmail(citizenEmail, proposalId);
+    public List<Vote> getProposalVotesOfACitizen(String citizenEmail, Long proposalId) {
+        return findProposalVotesByUserEmail(citizenEmail, proposalId);
     }
 
-    private Vote findProposalVoteByUserEmail(String citizenEmail, Long proposalId) {
+    private List<Vote> findProposalVotesByUserEmail(String citizenEmail, Long proposalId) {
         Email citizenEmailVal = new Email(citizenEmail);
-        List<Vote> votes= ofy().load().type(Vote.class)
+        List<Vote> votes = ofy().load().type(Vote.class)
                 .filter("citizenEmail", citizenEmailVal)
                 .list();
-
-        Vote vote = null;
-        for(Vote v:votes) {
-            if (proposalId.equals(v.getProposal())) {
-                vote = v;
-                break;
-            }
-        }
-        LOGGER.info("findProposalVoteByUserEmail result " + (vote != null ? vote.toString() : "(none)"));
-        return vote;
+        LOGGER.info("findProposalVotesByUserEmail result " + (votes != null ? votes.size() : "(none)"));
+        return votes;
     }
 
     public Vote vote(String citizenEmail, Long proposalId, VoteKind kind) {
-        Vote existingVote = findProposalVoteByUserEmail(citizenEmail, proposalId);
-        if (existingVote != null) {
-            removeVoteById(existingVote.getItemIt());
+        List<Vote> existingVotes = findProposalVotesByUserEmail(citizenEmail, proposalId);
+        if (existingVotes.size() > 0) {
+            removeVotes(existingVotes);
         }
         Vote vote = new Vote(citizenEmail, proposalId, kind);
         addVote(vote);
@@ -56,21 +48,22 @@ public class ManageVoteImpl implements IManageVote {
         return vote;
     }
 
+    private void removeVotes(List<Vote> existingVotes) {
+        if (existingVotes == null) return;
+        ofy().delete().entities(existingVotes).now();
+        LOGGER.info("vote removed :" + existingVotes.size());
+
+    }
+
     private Vote addVote(Vote vote) {
-        Vote existingVote = findVoteById(vote.getItemIt());
-        if (existingVote != null) return existingVote;
         ofy().save().entity(vote).now();
         LOGGER.fine("addVote result " + vote.toString());
         return vote;
     }
 
-    private Vote findVoteById(Long id) {
-        if (id == null) { return null;}
-        return ofy().load().type(Vote.class).id(id).get();
-    }
-
-    private void removeVoteById(Long voteId) {
-        ofy().delete().type(Vote.class).id(voteId).now();
+    private void removeVote(Vote voteToDelete) {
+        ofy().delete().entity(voteToDelete).now();
+        LOGGER.info("vote removed :" + voteToDelete.toString());
     }
 
     public ProposalVotes getProposalVotes(Long proposalId) {
