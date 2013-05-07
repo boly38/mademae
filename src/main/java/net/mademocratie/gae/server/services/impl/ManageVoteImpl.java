@@ -70,7 +70,7 @@ public class ManageVoteImpl implements IManageVote {
     }
 
     private void removeVoteById(Long voteId) {
-        ofy().delete().type(Vote.class).id(voteId);
+        ofy().delete().type(Vote.class).id(voteId).now();
     }
 
     public ProposalVotes getProposalVotes(Long proposalId) {

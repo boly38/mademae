@@ -3,6 +3,7 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
@@ -58,34 +59,33 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         return proposalInformations;
     }
 
-    private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) {
+    private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
-        String voteAuthorEmail = null;
-        if (authenticatedUser != null) {
-            voteAuthorEmail = authenticatedUser.getEmail();
+        if (authenticatedUser == null) {
+            // throw new AnonymousCantVoteException();
+            log.info("vote "+ voteKind.toString()+" on proposal id " + proposalId + " *ignored* : anonymous can't vote");
+            return null;
         }
+        String voteAuthorEmail = authenticatedUser.getEmail();
         return manageVote.vote(voteAuthorEmail, Long.valueOf(proposalId), voteKind);
     }
 
     @GET
     @Path("/proposal/vote/pro/{id}")
-    public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) {
-        VoteKind voteKind = VoteKind.PRO;
-        return voteProposal(proposalId, httpHeaders, voteKind);
+    public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+        return voteProposal(proposalId, httpHeaders, VoteKind.PRO);
     }
 
     @GET
     @Path("/proposal/vote/con/{id}")
-    public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) {
-        VoteKind voteKind = VoteKind.CON;
-        return voteProposal(proposalId, httpHeaders, voteKind);
+    public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+        return voteProposal(proposalId, httpHeaders, VoteKind.CON);
     }
 
     @GET
     @Path("/proposal/vote/neutral/{id}")
-    public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) {
-        VoteKind voteKind = VoteKind.NEUTRAL;
-        return voteProposal(proposalId, httpHeaders, voteKind);
+    public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+        return voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
     }
 
     public IManageCitizen getManageCitizen() {

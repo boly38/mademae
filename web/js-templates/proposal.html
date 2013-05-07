@@ -14,7 +14,7 @@
                     by <span style="font-weight: bold">${proposal.authorPseudo}</span><br/>
                     {{if ((typeof(proposalVotes) == "undefined") || (proposalVotes == ""))}}
                     {{else}}
-                    <span style="font-weight: bold">${proposalVotes.getVotesCount}</span> vote(s)
+                    <span style="font-weight: bold">${proposalVotes.votesCount}</span> vote(s)
                     {{/if}}
                 </p></div>
             </div>
@@ -42,7 +42,7 @@
                     <a id="proposalVoteNeutralButton" class="btn btn-info"
                        href="javascript:md.voteProposalNeutral(${proposal.itemIt})">neutral</a>
                     <a id="proposalVoteConButton" class="btn btn-info"
-                       href="javascript:md.voteProposalCon(${proposal.itemIt}}" >con</a>
+                       href="javascript:md.voteProposalCon(${proposal.itemIt})" >con</a>
                 </div>
                 <div class="span7" id="vote-summary"><p>
                     {{if ((typeof(proposalVotes) == "undefined") || (proposalVotes == ""))}}

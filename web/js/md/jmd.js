@@ -92,7 +92,7 @@ function MaDemocratie() {
                     } else if (jqXHR.status == 404) {
                         md.warn('Requested page not found. [404]');
                     } else if (jqXHR.status == 500) {
-                        md.warn('Internal Server Error [500].');
+                        md.warn('Internal Server Error [500] : ' + jqXHR.responseText);
                     } else if (exception === 'parsererror') {
                         md.warn('Requested JSON parse failed.');
                     } else if (exception === 'timeout') {
@@ -285,7 +285,8 @@ function MaDemocratie() {
     };
 
     this.contribution = function(contributionId, contributionType) {
-        if (contributionType == 'PROPOSAL') {
+        if (contributionType == 'PROPOSAL'
+          ||contributionType == 'VOTE') {
             this.showProposal(contributionId);
         }
     };

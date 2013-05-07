@@ -5,8 +5,10 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
+@XmlRootElement
 @Entity
 public class Vote extends Contribution implements IContribution {
     @Index
@@ -24,11 +26,6 @@ public class Vote extends Contribution implements IContribution {
         this.kind = kind;
         this.proposal = Key.create(Proposal.class, proposalId);
         this.date = new Date();
-    }
-
-    @Override
-    public String getContributionType() {
-        return ContributionType.VOTE.toString();
     }
 
     public String getCitizenEmail() {
@@ -77,6 +74,17 @@ public class Vote extends Contribution implements IContribution {
                 .append(" on proposal#").append(getProposal())
                 .append("]");
         return sb.toString();
+    }
+
+    @Override                    // json need id
+    public Long getItemIt() {
+        return proposal.getId();
+    }
+
+
+    @Override
+    public String getContributionType() {
+        return ContributionType.VOTE.toString();
     }
 
     @Override

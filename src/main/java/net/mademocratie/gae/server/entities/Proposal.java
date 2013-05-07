@@ -19,11 +19,6 @@ public class Proposal extends Contribution implements IContribution {
         this.content = new Text("");
     }
 
-    @Override
-    public String getContributionType() {
-        return ContributionType.PROPOSAL.toString();
-    }
-
     public Proposal(String title, String content) {
         this.title = title;
         this.content = new Text(content != null ? content : "");
@@ -37,6 +32,11 @@ public class Proposal extends Contribution implements IContribution {
     @Override                    // json need id
     public Long getItemIt() {
         return super.getItemIt();
+    }
+
+    @Override
+    public String getContributionType() {
+        return ContributionType.PROPOSAL.toString();
     }
 
     @Override
