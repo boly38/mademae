@@ -2,6 +2,7 @@ package net.mademocratie.gae.server.entities;
 
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Index;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Proposal extends Contribution implements IContribution {
+    @Index
     private String authorEmail;
     private String authorPseudo = SOMENONE;
     private String title;

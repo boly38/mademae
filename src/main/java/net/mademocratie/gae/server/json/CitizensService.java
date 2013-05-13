@@ -4,8 +4,10 @@ import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.*;
 import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
+import net.mademocratie.gae.server.services.IManageProposal;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +33,8 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
 
     @Inject
     IManageCitizen manageCitizen;
+    @Inject
+    IManageProposal manageProposal;
 
     @GET
     @Path("/login")
@@ -80,6 +85,20 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
         }
         return new SignInResponse("unable to authenticate you", JsonServiceResponse.ResponseStatus.FAILED);
     }
+
+    @GET
+    @Path("/profile")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProfileInformations geProfile(@Context HttpHeaders httpHeaders) {
+        Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
+        ProfileInformations profileInfos = new ProfileInformations(authenticatedUser);
+        List<Proposal> proposals = manageProposal.findByCitizenEmail(authenticatedUser.getEmail());
+        profileInfos.setPseudo(authenticatedUser.getPseudo());
+        profileInfos.setProposals(proposals);
+        profileInfos.setRegistrationDate(authenticatedUser.getDate());
+        return profileInfos;
+    }
+
 
     public IManageCitizen getManageCitizen() {
         return manageCitizen;

@@ -30,4 +30,6 @@ public interface IManageProposal {
     void removeAll();
 
     Proposal getById(Long proposalId);
+
+    List<Proposal> findByCitizenEmail(String email);
 }

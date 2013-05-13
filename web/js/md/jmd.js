@@ -201,6 +201,17 @@ function MaDemocratie() {
         this.track("addSampleProposal");
     };
 
+    this.profileAction= function() {
+        var parentMD = this;
+        $.getJSON('json/citizen/profile', function(profileJsonData) {
+            $.get('/js-templates/profile.html', function(profileTemplate) {
+                $.template("profileTemplate", profileTemplate);
+                var profileHtmlResult = $.tmpl("profileTemplate", profileJsonData);
+                parentMD.updateContent(profileHtmlResult);
+            });
+        });
+    };
+
     this.addProposalAction= function() {
         this.addProposalForm = new AddProposalForm();
         this.addProposalForm.init(this.mainDivId);

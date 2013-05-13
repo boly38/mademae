@@ -1,5 +1,6 @@
 package net.mademocratie.gae.server.services.impl;
 
+import com.google.appengine.api.datastore.Email;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -40,4 +41,16 @@ public class ManageProposalImpl implements IManageProposal {
     public Proposal getById(Long proposalId) {
         return ofy().load().type(Proposal.class).id(proposalId).get();
     }
+
+
+    public List<Proposal> findByCitizenEmail(String email) {
+        int max = 10;
+        List<Proposal> proposals = ofy().load().type(Proposal.class).filter("authorEmail", email)
+                .order("-date")
+                .limit(max)
+                .list();
+        LOGGER.info("* findByCitizenEmail asked " + max + " result " + proposals.size());
+        return proposals;
+    }
+
 }
