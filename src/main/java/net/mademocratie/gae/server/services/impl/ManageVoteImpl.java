@@ -9,6 +9,7 @@ import net.mademocratie.gae.server.entities.Vote;
 import net.mademocratie.gae.server.entities.VoteKind;
 import net.mademocratie.gae.server.services.IManageVote;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -34,8 +35,14 @@ public class ManageVoteImpl implements IManageVote {
         List<Vote> votes = ofy().load().type(Vote.class)
                 .filter("citizenEmail", citizenEmailVal)
                 .list();
-        LOGGER.info("findProposalVotesByUserEmail result " + (votes != null ? votes.size() : "(none)"));
-        return votes;
+        List<Vote> proposalVotes = new ArrayList<Vote>();
+        for(Vote vote : votes) {
+            if (proposalId.equals(vote.getProposal())) {
+                proposalVotes.add(vote);
+            }
+        }
+        LOGGER.info("findProposalVotesByUserEmail result " + (proposalVotes != null ? proposalVotes.size() : "(none)"));
+        return proposalVotes;
     }
 
     public Vote vote(String citizenEmail, Long proposalId, VoteKind kind) {
