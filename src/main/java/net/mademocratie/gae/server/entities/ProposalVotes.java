@@ -2,6 +2,7 @@ package net.mademocratie.gae.server.entities;
 
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
 
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,6 +15,8 @@ import java.util.Collection;
 @XmlRootElement
 @Entity
 public class ProposalVotes {
+    @Id
+    protected Long itemIt;
 
     @Transient
     private Collection<Vote> votes;

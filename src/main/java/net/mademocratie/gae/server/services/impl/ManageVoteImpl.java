@@ -2,6 +2,7 @@ package net.mademocratie.gae.server.services.impl;
 
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.Result;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.entities.ProposalVotes;
 import net.mademocratie.gae.server.entities.Vote;
@@ -49,8 +50,10 @@ public class ManageVoteImpl implements IManageVote {
     }
 
     private void removeVotes(List<Vote> existingVotes) {
-        if (existingVotes == null) return;
-        ofy().delete().entities(existingVotes).now();
+        if (existingVotes == null
+         || existingVotes.size() == 0) return;
+        Result<Void> entitiesToDelete = ofy().delete().entities(existingVotes);
+        entitiesToDelete.now();
         LOGGER.info("vote removed :" + existingVotes.size());
 
     }
