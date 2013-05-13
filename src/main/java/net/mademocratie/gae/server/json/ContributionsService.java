@@ -33,7 +33,7 @@ public class ContributionsService {
         List<Contribution> lastContributions = manageContributions.getLastContributions(10);
         String contributionsTitle = lastContributions.size() + " last contributions";
         List<Proposal> lastProposals = manageProposals.latest(10);
-        String proposalsTitle = lastContributions.size() + " last proposals";
+        String proposalsTitle = lastProposals.size() + " last proposals";
         GetContributionsResult result = new GetContributionsResult(
                 new ArrayList<Contribution>(lastContributions),
                 contributionsTitle,

@@ -88,8 +88,10 @@ public class ManageVoteImpl implements IManageVote {
     }
 
     public List<Vote> latest(int max) {
-        List<Vote> latestVotes = ofy().load().type(Vote.class).limit(max).list();
-        // TODO : add ".order("-date")" : desc order seems not working !?
+        List<Vote> latestVotes = ofy().load().type(Vote.class)
+                .order("-date")
+                .limit(max)
+                .list();
         LOGGER.info("* latest votes asked " + max + " result " + latestVotes.size());
         return latestVotes;
     }

@@ -25,8 +25,10 @@ public class ManageProposalImpl implements IManageProposal {
     }
 
     public List<Proposal> latest(int max) {
-        List<Proposal> latestProposals = ofy().load().type(Proposal.class).limit(max).list();
-        // TODO : add ".order("-date")" : desc order seems not working !?
+        List<Proposal> latestProposals = ofy().load().type(Proposal.class)
+                .order("-date")
+                .limit(max)
+                .list();
         LOGGER.info("* latest proposals asked " + max + " result " + latestProposals.size());
         return latestProposals;
     }
