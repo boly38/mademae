@@ -3,14 +3,12 @@ package net.mademocratie.gae.server.services.impl;
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
-import net.mademocratie.gae.server.entities.Proposal;
-import net.mademocratie.gae.server.entities.ProposalVotes;
-import net.mademocratie.gae.server.entities.Vote;
-import net.mademocratie.gae.server.entities.VoteKind;
+import net.mademocratie.gae.server.entities.*;
 import net.mademocratie.gae.server.services.IManageVote;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -94,5 +92,21 @@ public class ManageVoteImpl implements IManageVote {
                 .list();
         LOGGER.info("* latest votes asked " + max + " result " + latestVotes.size());
         return latestVotes;
+    }
+
+    public List<VoteOnProposal> fetchProposalsVotes(List<Vote> votes) {
+        int votesCount = votes.size();
+        List<Long> proposalIds = new ArrayList<Long>(votesCount);
+        for (Vote v : votes) {
+            proposalIds.add(v.getProposal());
+        }
+        Map<Long, Proposal> proposalMap = ofy().load().type(Proposal.class).ids(proposalIds);
+        List<VoteOnProposal> votesOnProposals = new ArrayList<VoteOnProposal>(votesCount);
+        for(Vote v: votes){
+            Proposal voteProposalContent = proposalMap.get(v.getProposal());
+            VoteOnProposal voteOnProposal = new VoteOnProposal(v, voteProposalContent);
+            votesOnProposals.add(voteOnProposal);
+        }
+        return votesOnProposals;
     }
 }

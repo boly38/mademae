@@ -12,12 +12,12 @@ import java.util.Date;
 @Entity
 public class Vote extends Contribution implements IContribution {
     @Index
-    private Email citizenEmail;
+    protected Email citizenEmail;
 
     @Index
-    private Key<Proposal> proposal;
+    protected Key<Proposal> proposal;
 
-    private VoteKind kind;
+    protected VoteKind kind;
 
     public Vote() {}
 
@@ -26,6 +26,13 @@ public class Vote extends Contribution implements IContribution {
         this.kind = kind;
         this.proposal = Key.create(Proposal.class, proposalId);
         this.date = new Date();
+    }
+
+    public Vote(Vote v) {
+        super(v);
+        this.setCitizenEmail(v.getCitizenEmail());
+        this.setKind(v.getKind());
+        this.setProposal(v.getProposal());
     }
 
     public String getCitizenEmail() {
@@ -55,6 +62,9 @@ public class Vote extends Contribution implements IContribution {
 
     public Long getProposal() {
         return proposal.getId();
+    }
+    public Key<Proposal> getProposalKey() {
+        return proposal;
     }
 
     public void setProposal(Long proposal) {

@@ -18,6 +18,11 @@ public abstract class Contribution implements IContribution {
 
     public Contribution() {};
 
+    public Contribution(Contribution c) {
+        setItemIt(c.getItemIt());
+        setDate(c.getDate());
+    }
+
     public Long getItemIt() {
         return itemIt;
     }

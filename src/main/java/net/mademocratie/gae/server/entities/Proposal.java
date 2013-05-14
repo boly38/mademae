@@ -43,7 +43,7 @@ public class Proposal extends Contribution implements IContribution {
 
     @Override
     public String getContributionDetails() {
-        return "create proposition " + getTitle();
+        return "create proposition '" + getTitle() + "'";
     }
 
     public String getAuthorEmail() {

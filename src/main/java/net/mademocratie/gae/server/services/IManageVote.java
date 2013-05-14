@@ -4,6 +4,7 @@ import com.google.inject.ImplementedBy;
 import net.mademocratie.gae.server.entities.ProposalVotes;
 import net.mademocratie.gae.server.entities.Vote;
 import net.mademocratie.gae.server.entities.VoteKind;
+import net.mademocratie.gae.server.entities.VoteOnProposal;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface IManageVote {
     List<Vote> latest(int maxVotes);
 
     void removeProposalVotes(Long proposalId);
+
+    List<VoteOnProposal> fetchProposalsVotes(List<Vote> latestVotes);
 }
