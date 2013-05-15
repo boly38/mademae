@@ -15,7 +15,11 @@
     </div>
     <div class="span6">
         <div class="well compo">
+            {{if proposals.length == 10}}
+              <div class="page-header"><h3><a href="javascript:md.showProposals();">${proposalsDescription}</a></h3></div>
+            {{else}}
             <div class="page-header"><h3>${proposalsDescription}</h3></div>
+            {{/if}}
             {{each proposals}}
             <div>
                 <p>${date} <span style="font-weight: bold" >${authorPseudo}</span> wrote:</p>
