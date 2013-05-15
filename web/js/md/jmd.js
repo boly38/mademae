@@ -188,6 +188,19 @@ function MaDemocratie() {
         this.track("home");
     };
 
+    this.showProposals= function() {
+        var parentMd = this;
+        $.getJSON('json/proposal/last', function(proposalsJsonData) {
+            $.get('/js-templates/proposals.html', function(proposalsTemplate) {
+                $.template("proposalsTemplate", proposalsTemplate);
+                var proposalsHtmlResult = $.tmpl("proposalsTemplate", proposalsJsonData);
+                parentMd.updateContent(proposalsHtmlResult );
+            });
+        });
+        this.track("showProposals");
+    };
+
+
     this.addSampleProposal= function() {
         var parentMd = this;
         $.getJSON('json/contribution/addSample', function(addSampleJsonData) {

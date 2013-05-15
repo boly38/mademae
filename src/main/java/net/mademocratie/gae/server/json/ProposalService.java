@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
+import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
@@ -12,6 +13,8 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Path("/proposal")
@@ -27,6 +30,20 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
 
     @Inject
     IManageVote manageVote;
+
+
+    @GET
+    @Path("/last")
+    public String getProposals() {
+        List<Proposal> lastProposals = manageProposals.latest(100);
+        String proposalsTitle = lastProposals.size() + " last proposals";
+        GetContributionsResult result = new GetContributionsResult(
+                new ArrayList<Proposal>(lastProposals),
+                proposalsTitle
+        );
+        return result.toJSON().toString();
+    }
+
 
     @POST
     @Path("/add")

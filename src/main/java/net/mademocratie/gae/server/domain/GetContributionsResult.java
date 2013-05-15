@@ -24,6 +24,13 @@ public class GetContributionsResult {
         this.proposalsDescription = proposalsDescription;
     }
 
+    public GetContributionsResult(ArrayList<Proposal> proposals, String proposalsTitle) {
+        this.contributions = null;
+        this.contributionsDescription = null;
+        this.proposals = proposals;
+        this.proposalsDescription = proposalsTitle;
+    }
+
     public String getContributionsDescription() {
         return contributionsDescription;
     }
