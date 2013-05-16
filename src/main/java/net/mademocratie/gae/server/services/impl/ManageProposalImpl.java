@@ -16,7 +16,7 @@ public class ManageProposalImpl implements IManageProposal {
 
     public Proposal addProposal(Proposal inputProposal, Citizen author) {
         if (author != null) {
-            inputProposal.setAuthorEmail(author.getEmail());
+            inputProposal.setAuthorEmailString(author.getEmail());
             inputProposal.setAuthorPseudo(author.getPseudo());
         }
         inputProposal.setDate(new Date());

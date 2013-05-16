@@ -52,7 +52,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());
         if (authenticatedUser != null) {
-            newProposal.setAuthorEmail(authenticatedUser.getEmail());
+            newProposal.setAuthorEmailString(authenticatedUser.getEmail());
             newProposal.setAuthorPseudo(authenticatedUser.getPseudo());
         }
         log.info("addProposal POST received : " + proposal.toString());

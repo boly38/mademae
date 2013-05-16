@@ -100,9 +100,9 @@ public class ManageProposalImplIT extends BaseIT {
         assertEquals("last created proposal title has been updated", PROPOSAL_TITLE, testProposalA2.getTitle());
         assertEquals("last created proposal content has been updated", PROPOSAL_CONTENT, testProposalA2.getContent());
         assertNull(manageProposal.getById(testProposalAnon.getItemIt()).getAuthorEmail());
-        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA.getItemIt()).getAuthorEmail());
-        assertEquals(myAuthorB.getEmail(), manageProposal.getById(testProposalB.getItemIt()).getAuthorEmail());
-        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA2.getItemIt()).getAuthorEmail());
+        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA.getItemIt()).getAuthorEmailString());
+        assertEquals(myAuthorB.getEmail(), manageProposal.getById(testProposalB.getItemIt()).getAuthorEmailString());
+        assertEquals(myAuthorA.getEmail(), manageProposal.getById(testProposalA2.getItemIt()).getAuthorEmailString());
     }
 
     /**

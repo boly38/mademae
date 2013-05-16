@@ -31,7 +31,7 @@ public class ManageVoteImpl implements IManageVote {
     private List<Vote> findProposalVotesByUserEmail(String citizenEmail, Long proposalId) {
         Email citizenEmailVal = new Email(citizenEmail);
         List<Vote> votes = ofy().load().type(Vote.class)
-                .filter("citizenEmail", citizenEmailVal)
+                .filter("authorEmail", citizenEmailVal)
                 .list();
         List<Vote> proposalVotes = new ArrayList<Vote>();
         for(Vote vote : votes) {

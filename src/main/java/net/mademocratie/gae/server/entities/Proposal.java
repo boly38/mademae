@@ -1,5 +1,6 @@
 package net.mademocratie.gae.server.entities;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
@@ -11,9 +12,6 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Proposal extends Contribution implements IContribution {
-    @Index
-    private String authorEmail;
-    private String authorPseudo = SOMENONE;
     private String title;
     private Text content;
 
@@ -37,6 +35,16 @@ public class Proposal extends Contribution implements IContribution {
     }
 
     @Override
+    public Email getAuthorEmail() {
+        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getAuthorPseudo() {
+        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
     public String getContributionType() {
         return ContributionType.PROPOSAL.toString();
     }
@@ -44,25 +52,6 @@ public class Proposal extends Contribution implements IContribution {
     @Override
     public String getContributionDetails() {
         return "create proposition '" + getTitle() + "'";
-    }
-
-    public String getAuthorEmail() {
-        return authorEmail;
-    }
-
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
-    }
-
-    public String getAuthorPseudo() {
-        if (authorPseudo != null) {
-            return authorPseudo;
-        }
-        return super.getAuthorPseudo();
-    }
-
-    public void setAuthorPseudo(String authorPseudo) {
-        this.authorPseudo = authorPseudo;
     }
 
     public String getContent() {

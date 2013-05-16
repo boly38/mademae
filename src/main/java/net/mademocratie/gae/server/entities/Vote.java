@@ -12,35 +12,22 @@ import java.util.Date;
 @Entity
 public class Vote extends Contribution implements IContribution {
     @Index
-    protected Email citizenEmail;
-
-    @Index
     protected Key<Proposal> proposal;
 
     protected VoteKind kind;
 
     public Vote() {}
 
-    public Vote(String citizenEmail, Long proposalId, VoteKind kind) {
-        this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
+    public Vote(String authorEmail, Long proposalId, VoteKind kind) {
+        super(authorEmail);
         this.kind = kind;
         this.proposal = Key.create(Proposal.class, proposalId);
-        this.date = new Date();
     }
 
     public Vote(Vote v) {
         super(v);
-        this.setCitizenEmail(v.getCitizenEmail());
         this.setKind(v.getKind());
         this.setProposal(v.getProposal());
-    }
-
-    public String getCitizenEmail() {
-        return (citizenEmail != null ? citizenEmail.getEmail() : null);
-    }
-
-    public void setCitizenEmail(String citizenEmail) {
-        this.citizenEmail = (citizenEmail != null ? new Email(citizenEmail) : null);
     }
 
     @Override
@@ -63,9 +50,6 @@ public class Vote extends Contribution implements IContribution {
     public Long getProposal() {
         return proposal.getId();
     }
-    public Key<Proposal> getProposalKey() {
-        return proposal;
-    }
 
     public void setProposal(Long proposal) {
         this.proposal =  Key.create(Proposal.class, proposal);
@@ -80,7 +64,7 @@ public class Vote extends Contribution implements IContribution {
         }
         sb.append(":").append(getDate());
         sb.append("|").append(getKind())
-                .append(" by ").append(getCitizenEmail())
+                .append(" by ").append(getAuthorEmail())
                 .append(" on proposal#").append(getProposal())
                 .append("]");
         return sb.toString();
@@ -100,5 +84,15 @@ public class Vote extends Contribution implements IContribution {
     @Override
     public String getContributionDetails() {
         return "vote on proposal '" + getProposal() + "'";
+    }
+
+    @Override
+    public Email getAuthorEmail() {
+        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public String getAuthorPseudo() {
+        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }
