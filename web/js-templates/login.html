@@ -2,40 +2,40 @@
     <div class="page-header">
         <h3>Sign in</h3>
     </div>
-    <div class="span6 well">
-        <!--
-        <p>
-            <i>Not already register ? please <a href="/register">Register</a></i>
-        </p>
-        <form id="signInForm">
-            <table>
-                <tr>
-                    <td align="right"><i class="icon-user icon-white"></i> Username:</td>
-                    <td>
-                        <input id="username" type="text" value="foo@goo.moo" size="30"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">Password:</td>
-                    <td>
-                        <input id="password" type="password" value="password" size="30"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <div class="control-group">
-                            <div class="controls docs-input-sizes">
-                                <a name="signInSubmit" class="btn" href="javascript:md.signIn('signInForm')"><span>Sign in</span></a>
-                            </div>
+    <!--
+<div class="span6 well">
+    <p>
+        <i>Not already register ? please <a href="/register">Register</a></i>
+    </p>
+    <form id="signInForm">
+        <table>
+            <tr>
+                <td align="right"><i class="icon-user icon-white"></i> Username:</td>
+                <td>
+                    <input id="username" type="text" value="foo@goo.moo" size="30"/>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">Password:</td>
+                <td>
+                    <input id="password" type="password" value="password" size="30"/>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div class="control-group">
+                        <div class="controls docs-input-sizes">
+                            <a name="signInSubmit" class="btn" href="javascript:md.signIn('signInForm')"><span>Sign in</span></a>
                         </div>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        -->
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
     </div>
-    <div class="span4 well">
+    -->
+    <div class="span7 well">
         <form id="signInFormUsingGoogleForm">
             <table>
                 <tr>
@@ -59,7 +59,15 @@
                     <td>
                         <div class="control-group">
                             <div class="controls docs-input-sizes">
-                                <a name="signInGoogleSubmit" class="btn" href="javascript:md.signInGoogle('signInFormUsingGoogleForm')"><span>Sign in with google account</span></a>
+                                {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
+                                <a href="${googleSignInUrl}"
+                                   name="signInGoogleSubmit"
+                                   class="btn btn-info btn-large disabled">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
+                                {{else}}
+                                <a href="javascript:md.signInGoogle('signInFormUsingGoogleForm')"
+                                   name="signInGoogleSubmit"
+                                   class="btn btn-info btn-large">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
+                                {{/if}}
                             </div>
                         </div>
                     </td>
