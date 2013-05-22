@@ -1,5 +1,7 @@
 package net.mademocratie.gae.server.entities;
 
+import net.mademocratie.gae.server.services.helper.DateHelper;
+
 import java.util.Date;
 
 /**
@@ -26,9 +28,20 @@ public class VoteOnProposal extends Vote implements IContribution {
         this.proposalContent = proposalContent;
     }
 
+
     @Override
     public Date getDate() {
         return date;
+    }
+
+    @Override
+    public String getDateFormat() {
+        return DateHelper.getDateFormat(getDate());
+    }
+
+    @Override
+    public String getAge() {
+        return super.getAge();
     }
 
     @Override                    // json need id

@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -33,6 +34,16 @@ public class Vote extends Contribution implements IContribution {
     @Override
     public Date getDate() {
         return date;
+    }
+
+    @Override
+    public String getDateFormat() {
+        return DateHelper.getDateFormat(getDate());
+    }
+
+    @Override
+    public String getAge() {
+        return super.getAge();
     }
 
     public void setDate(Date date) {

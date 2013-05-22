@@ -15,7 +15,6 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Proposal extends Contribution implements IContribution {
-    private String age = null;
     private String title;
     private Text content;
 
@@ -38,23 +37,9 @@ public class Proposal extends Contribution implements IContribution {
         return DateHelper.getDateFormat(getDate());
     }
 
-    @JsonProperty("age")
+    @Override
     public String getAge() {
-        // return Minutes.minutesBetween(new DateTime(getDate()), new DateTime()).toString();
-        Duration duration = new Duration(getDate().getTime(), new Date().getTime());
-        if (duration.getStandardDays() > 1) {
-            return duration.getStandardDays() + " days ago";
-        }
-        if (duration.getStandardDays() == 1) {
-            return "1 day ago";
-        }
-        if (duration.getStandardHours() >= 1) {
-            return duration.getStandardHours()+ " hours ago";
-        }
-        if (duration.getStandardMinutes() >= 1) {
-            return duration.getStandardMinutes()+ " minutes ago";
-        }
-        return "a moment ago";
+        return super.getAge();
     }
 
     @Override                    // json need id

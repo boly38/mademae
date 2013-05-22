@@ -1,10 +1,12 @@
 package net.mademocratie.gae.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.joda.time.Duration;
 
 import javax.persistence.Transient;
 import java.util.Date;
@@ -19,6 +21,9 @@ public abstract class Contribution implements IContribution {
 
     @Index
     protected Date date;
+
+    @Transient
+    String age = null;
 
     @Index
     protected Email authorEmail;
@@ -55,6 +60,25 @@ public abstract class Contribution implements IContribution {
 
     public String getDateFormat() {
         return DateHelper.getDateFormat(getDate());
+    }
+
+    @JsonProperty("age")
+    public String getAge() {
+        // return Minutes.minutesBetween(new DateTime(getDate()), new DateTime()).toString();
+        Duration duration = new Duration(getDate().getTime(), new Date().getTime());
+        if (duration.getStandardDays() > 1) {
+            return duration.getStandardDays() + " days ago";
+        }
+        if (duration.getStandardDays() == 1) {
+            return "1 day ago";
+        }
+        if (duration.getStandardHours() >= 1) {
+            return duration.getStandardHours()+ " hours ago";
+        }
+        if (duration.getStandardMinutes() >= 1) {
+            return duration.getStandardMinutes()+ " minutes ago";
+        }
+        return "a moment ago";
     }
 
     public Email getAuthorEmail() {

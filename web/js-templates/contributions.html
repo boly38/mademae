@@ -5,7 +5,7 @@
             <div>
                 {{each contributions}}
                 <div>
-                    <p>${dateFormat} <span style="font-weight: bold">${authorPseudo}</span>
+                    <p>${dateFormat} (${age}) <span style="font-weight: bold">${authorPseudo}</span>
                         <a href="javascript:md.contribution('${itemIt}', '${contributionType}');">${contributionDetails}</a>
                     </p>
                 </div>

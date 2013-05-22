@@ -4,21 +4,26 @@
         <div class="span11">
 
             <div class="page-header">
-                <h3>Proposal description</h3>
+                <h3><div class="btn-group">
+                    <a id="proposalVoteProButton" class="btn btn-info"
+                       href="javascript:md.voteProposalPro(${proposal.itemIt})"><i class="icon-thumbs-up"></i> pro</a>
+                    <a id="proposalVoteNeutralButton" class="btn btn-info"
+                       href="javascript:md.voteProposalNeutral(${proposal.itemIt})"><i class="icon-volume-off"></i> neutral</a>
+                    <a id="proposalVoteConButton" class="btn btn-info"
+                       href="javascript:md.voteProposalCon(${proposal.itemIt})"><i class="icon-thumbs-down"></i> con</a>
+                </div>&#160;${proposal.title}</h3>
             </div>
 
             <div class="row-fluid">
                 <div class="span3">Infos</div>
-                <div class="span7"><p>
-                    <span style="font-weight: bold">${proposal.dateFormat}
-                    {{if ((typeof(proposal.age) == "undefined") || (proposal.age == ""))}}{{else}} (${proposal.age}) {{/if}}
-                    </span>
-                    by <span style="font-weight: bold">${proposal.authorPseudo}</span><br/>
-                </p></div>
-            </div>
-            <div class="row-fluid">
-                <div class="span3">Title</div>
-                <div class="span7"><blockquote>${proposal.title}</blockquote></div>
+                <div class="span7">
+                    <p>
+                        <span style="font-weight: bold">${proposal.dateFormat}
+                        {{if ((typeof(proposal.age) == "undefined") || (proposal.age == ""))}}{{else}} (${proposal.age}) {{/if}}
+                        </span>
+                        by <span style="font-weight: bold">${proposal.authorPseudo}</span><br/>
+                    </p>
+                </div>
             </div>
             <div class="row-fluid">
                 <div class="span3">Description</div>
@@ -30,26 +35,18 @@
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tabVot" data-toggle="tab">Votes (${proposalVotes.votesCount})</a></li>
-            <li><a href="#tabPro" data-toggle="tab">Pro arguments (0)</a></li>
-            <li><a href="#tabCon" data-toggle="tab">Con arguments (0)</a></li>
-            <li><a href="#tabCom" data-toggle="tab">Comments (0)</a></li>
+            <li><a href="#tabPro" data-toggle="tab"><i class="icon-thumbs-up"></i> Pro arguments (0)</a></li>
+            <li><a href="#tabCon" data-toggle="tab"><i class="icon-thumbs-down"></i> Con arguments (0)</a></li>
+            <li><a href="#tabCom" data-toggle="tab"><i class="icon-tag"></i> Comments (0)</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tabVot">
-                <div class="btn-group">
-                    <a id="proposalVoteProButton" class="btn btn-info"
-                       href="javascript:md.voteProposalPro(${proposal.itemIt})">pro</a>
-                    <a id="proposalVoteNeutralButton" class="btn btn-info"
-                       href="javascript:md.voteProposalNeutral(${proposal.itemIt})">neutral</a>
-                    <a id="proposalVoteConButton" class="btn btn-info"
-                       href="javascript:md.voteProposalCon(${proposal.itemIt})" >con</a>
-                </div>
                 <div class="span7" id="vote-summary"><p>
                     {{if ((typeof(proposalVotes) == "undefined") || (proposalVotes == ""))}}
                     {{else}}
-                    <span style="font-weight: bold" id="proposalPro">${proposalVotes.votesProCount}</span> FOR<br/>
-                    <span style="font-weight: bold" id="proposalNeutral">${proposalVotes.votesNeutralCount}</span> NEUTRAL<br/>
-                    <span style="font-weight: bold" id="proposalCon">${proposalVotes.votesConCount}</span> CON
+                    <i class="icon-thumbs-up"></i>&#160;<span style="font-weight: bold" id="proposalPro">${proposalVotes.votesProCount}</span> FOR<br/>
+                    <i class="icon-volume-off"></i>&#160;<span style="font-weight: bold" id="proposalNeutral">${proposalVotes.votesNeutralCount}</span> NEUTRAL<br/>
+                    <i class="icon-thumbs-down"></i>&#160;<span style="font-weight: bold" id="proposalCon">${proposalVotes.votesConCount}</span> CON
                     {{/if}}
                 </p></div>
             </div>
@@ -66,7 +63,7 @@
             <div class="tab-pane" id="tabCom">
                 <p>&lt;no comments&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalComment(${proposal.itemIt})" >add a comment</a>
+                   href="javascript:md.addProposalComment(${proposal.itemIt})" ><i class="icon-tag"></i> add a comment</a>
             </div>
         </div>
     </div>
