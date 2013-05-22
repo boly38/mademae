@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import javax.persistence.Transient;
 import java.util.Date;
@@ -50,6 +51,10 @@ public abstract class Contribution implements IContribution {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getDateFormat() {
+        return DateHelper.getDateFormat(getDate());
     }
 
     public Email getAuthorEmail() {

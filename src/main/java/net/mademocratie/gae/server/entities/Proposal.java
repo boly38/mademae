@@ -1,9 +1,12 @@
 package net.mademocratie.gae.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Index;
+import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.joda.time.Duration;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -12,6 +15,7 @@ import java.util.Date;
 @XmlRootElement
 @Entity
 public class Proposal extends Contribution implements IContribution {
+    private String age = null;
     private String title;
     private Text content;
 
@@ -27,6 +31,30 @@ public class Proposal extends Contribution implements IContribution {
     @Override                   // json need id
     public Date getDate() {
         return super.getDate();
+    }
+
+    @Override
+    public String getDateFormat() {
+        return DateHelper.getDateFormat(getDate());
+    }
+
+    @JsonProperty("age")
+    public String getAge() {
+        // return Minutes.minutesBetween(new DateTime(getDate()), new DateTime()).toString();
+        Duration duration = new Duration(getDate().getTime(), new Date().getTime());
+        if (duration.getStandardDays() > 1) {
+            return duration.getStandardDays() + " days ago";
+        }
+        if (duration.getStandardDays() == 1) {
+            return "1 day ago";
+        }
+        if (duration.getStandardHours() >= 1) {
+            return duration.getStandardHours()+ " hours ago";
+        }
+        if (duration.getStandardMinutes() >= 1) {
+            return duration.getStandardMinutes()+ " minutes ago";
+        }
+        return "a moment ago";
     }
 
     @Override                    // json need id
@@ -73,10 +101,20 @@ public class Proposal extends Contribution implements IContribution {
         return title;
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("dateFormat", getDateFormat())
+                .add("age", age)
+                .add("title", title)
+                .add("content", content)
+                .toString();
+    }
+
+/*
     public String toString() {
             return toLogString();
     }
-    /*
     return new JSONObject()
             .put("contributionId", getContributionId())
             .put("contributionType", getContributionType())
@@ -93,6 +131,8 @@ public class Proposal extends Contribution implements IContribution {
         StringBuilder sb = new StringBuilder();
         sb.append("proposal[");
         sb.append("id:").append(getItemIt());
+        sb.append(",date:").append(getDateFormat());
+        sb.append(",age:").append(getAge());
         sb.append(", title:").append(getTitle());
         if (getAuthorPseudo() != null)
             sb.append(", authorPseudo:").append(getAuthorPseudo());

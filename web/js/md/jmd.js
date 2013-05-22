@@ -345,6 +345,22 @@ function MaDemocratie() {
         this.track("voteProposalCon");
     };
 
+    this.addProposalComment = function(proposalId) {
+        this.info('not yet implemented');
+        this.track("addProposalComment");
+    };
+
+    this.addProposalPro = function(proposalId) {
+        this.info('not yet implemented');
+        this.track("addProposalPro");
+    };
+
+    this.addProposalCon = function(proposalId) {
+        this.info('not yet implemented');
+        this.track("addProposalCon");
+    };
+
+
     this.updateContent= function(htmlContent) {
         $('#' + this.mainDivId).html(htmlContent);
     };

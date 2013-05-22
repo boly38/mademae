@@ -8,6 +8,7 @@ import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
+import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -66,14 +67,15 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
      */
     @GET
     @Path("/proposal/{id}")
-    public ProposalInformations getProposal(@PathParam("id") String proposalId) {
+    public String getProposal(@PathParam("id") String proposalId) {
         if (proposalId == null) return null;
         Long propId = Long.valueOf(proposalId);
         Proposal proposalRetrieved = manageProposals.getById(propId);
         ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
         ProposalInformations proposalInformations = new ProposalInformations(proposalRetrieved, proposalVotes);
         log.info("getProposal " + propId + " : " + proposalInformations.toString());
-        return proposalInformations;
+        JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
+        return jsonProposalInformations.toString();
     }
 
     private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException {
