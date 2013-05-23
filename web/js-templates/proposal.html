@@ -4,14 +4,7 @@
         <div class="span11">
 
             <div class="page-header">
-                <h3><div class="btn-group">
-                    <a id="proposalVoteProButton" class="btn btn-info"
-                       href="javascript:md.voteProposalPro(${proposal.itemIt})"><i class="icon-thumbs-up"></i> pro</a>
-                    <a id="proposalVoteNeutralButton" class="btn btn-info"
-                       href="javascript:md.voteProposalNeutral(${proposal.itemIt})"><i class="icon-volume-off"></i> neutral</a>
-                    <a id="proposalVoteConButton" class="btn btn-info"
-                       href="javascript:md.voteProposalCon(${proposal.itemIt})"><i class="icon-thumbs-down"></i> con</a>
-                </div>&#160;${proposal.title}</h3>
+                <h3>&#160;${proposal.title}</h3>
             </div>
 
             <div class="row-fluid">
@@ -20,14 +13,27 @@
                     <p>
                         <span style="font-weight: bold">${proposal.dateFormat}
                         {{if ((typeof(proposal.age) == "undefined") || (proposal.age == ""))}}{{else}} (${proposal.age}) {{/if}}
-                        </span>
+                        </span><br/>
                         by <span style="font-weight: bold">${proposal.authorPseudo}</span><br/>
                     </p>
                 </div>
             </div>
             <div class="row-fluid">
                 <div class="span3">Description</div>
-                <div class="span7"><blockquote>${proposal.content}</blockquote></div>
+                <div class="span7"><blockquote>${proposal.content}</blockquote><br/></div>
+            </div>
+            <div class="row-fluid">
+                <div class="span3">&#160;</div>
+                <div class="span7">
+                    <div class="btn-group">
+                        <a id="proposalVoteProButton" class="btn btn-info"
+                           href="javascript:md.voteProposalPro(${proposal.itemIt})"><i class="icon-thumbs-up"></i> pro</a>
+                        <a id="proposalVoteNeutralButton" class="btn btn-info"
+                           href="javascript:md.voteProposalNeutral(${proposal.itemIt})"><i class="icon-volume-off"></i> neutral</a>
+                        <a id="proposalVoteConButton" class="btn btn-info"
+                           href="javascript:md.voteProposalCon(${proposal.itemIt})"><i class="icon-thumbs-down"></i> con</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -53,18 +59,29 @@
             <div class="tab-pane" id="tabPro">
                 <p>&lt;no pro args&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalPro(${proposal.itemIt})" >add pro</a>
+                   href="javascript:md.addProposalPro(${proposal.itemIt});" >add pro</a>
             </div>
             <div class="tab-pane" id="tabCon">
                 <p>&lt;no con args&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalCon(${proposal.itemIt})" >add con</a>
+                   href="javascript:md.addProposalCon(${proposal.itemIt});" >add con</a>
             </div>
             <div class="tab-pane" id="tabCom">
-                <p>&lt;no comments&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalComment(${proposal.itemIt})" ><i class="icon-tag"></i> add a comment</a>
+                   href="javascript:md.addProposalCommentAction(${proposal.itemIt}, 'addcommenttarget');" ><i class="icon-tag"></i> add a comment</a>
+                {{if ((typeof(proposalComments) == "undefined") || (proposalComments == ""))}}
+                    <p>&lt;no comment&gt;</p>
+                {{else}}
+                {{each proposalComments}}
+                <div>
+                    <p>${dateFormat} <span style="font-weight: bold">${authorPseudo}</span>
+                        <blockquote>${content}</blockquote>
+                    </p>
+                </div>
+                {{/each}}
+                {{/if}}
             </div>
         </div>
     </div>
+    <div id="addcommenttarget"></div>
 </div>

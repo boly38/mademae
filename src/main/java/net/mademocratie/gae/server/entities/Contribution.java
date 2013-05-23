@@ -22,9 +22,6 @@ public abstract class Contribution implements IContribution {
     @Index
     protected Date date;
 
-    @Transient
-    String age = null;
-
     @Index
     protected Email authorEmail;
 
@@ -64,8 +61,12 @@ public abstract class Contribution implements IContribution {
 
     @JsonProperty("age")
     public String getAge() {
+        Date contribDate = getDate();
+        if (contribDate == null) {
+            return null;
+        }
         // return Minutes.minutesBetween(new DateTime(getDate()), new DateTime()).toString();
-        Duration duration = new Duration(getDate().getTime(), new Date().getTime());
+        Duration duration = new Duration(contribDate.getTime(), new Date().getTime());
         if (duration.getStandardDays() > 1) {
             return duration.getStandardDays() + " days ago";
         }

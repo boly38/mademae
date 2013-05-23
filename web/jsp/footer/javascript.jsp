@@ -9,5 +9,8 @@ Placed at the end of the document so the pages load faster
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-button.js"></script>
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-dropdown.js"></script>
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-typeahead.js"></script>
+<!-- MaDemAe Js -->
 <script type="text/javascript" src="/js/md/jtools.js"></script>
+<script type="text/javascript" src="/js/md/AddProposalCommentForm.js"></script>
+<script type="text/javascript" src="/js/md/AddProposalForm.js"></script>
 <script type="text/javascript" src="/js/md/jmd.js"></script>

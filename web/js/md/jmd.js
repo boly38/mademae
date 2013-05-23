@@ -36,28 +36,6 @@ function Home() {
 }
 
 
-
-function AddProposalForm() {
-    this.init= function(mainDivId) {
-        this.mainDivId = mainDivId;
-        this.showForm();
-    };
-
-    this.showForm= function() {
-        var parentAP = this;
-        $.get('/js-templates/addProposal.html', function(addProposalTemplate) {
-            $.template("addProposalTemplate", addProposalTemplate);
-            var addProposalHtmlResult = $.tmpl("addProposalTemplate", "");
-            parentAP.updateContent(addProposalHtmlResult);
-        });
-    };
-
-    this.updateContent= function(htmlContent) {
-        $('#' + this.mainDivId).html(htmlContent);
-    };
-}
-
-
 function ProposalDetails() {
     this.init= function(mainDivId, proposalId) {
         this.mainDivId = mainDivId;
@@ -345,8 +323,31 @@ function MaDemocratie() {
         this.track("voteProposalCon");
     };
 
-    this.addProposalComment = function(proposalId) {
-        this.info('not yet implemented');
+    this.addProposalCommentAction = function(proposalId, commenttargetid) {
+        this.addProposalCommentForm = new AddProposalCommentForm();
+        this.addProposalCommentForm.init(commenttargetid, proposalId);
+        this.track("addProposalCommentAction");
+    };
+
+    this.addProposalCommentActionCancel = function() {
+        this.addProposalCommentForm.cancel();
+        this.track("addProposalCommentActionCancel");
+    };
+
+    this.addProposalComment = function(addProposalCommentFormId) {
+         var addProposalCommentEndPoint = "json/proposal/addcomment";
+         var proposalCommentData = $("#" + addProposalCommentFormId).serializeJSON();
+         $.ajax({
+           type: "POST",
+           url: addProposalCommentEndPoint,
+           data: JSON.stringify(proposalCommentData),
+           dataType: "json",
+           contentType: 'application/json',
+           success: function() {
+             md.info("comment added");
+             md.home();
+           }
+         });
         this.track("addProposalComment");
     };
 

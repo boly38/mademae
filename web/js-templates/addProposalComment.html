@@ -1,0 +1,23 @@
+<div class="row-fluid">
+    <div class="span11">
+    <h3>Add proposal comment</h3>
+    <form name="propForm" class="well form-horizontal" action="" id="addProposalCommentForm">
+        <input type="hidden" name="parentContribution" value="${itemIt}"/>
+        <input type="hidden" name="parentContributionType" value="${contributionType}"/>
+        <fieldset>
+            <div class="control-group">
+                <label class="control-label" for="proposalContent">Comment</label>
+                <div class="controls">
+                    <textarea class="input-xlarge" cols="60" rows="3" placeholder="proposal content" id="proposalContent" name="content"></textarea>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls docs-input-sizes">
+                    <a name="propCreateSubmit" class="btn" href="javascript:md.addProposalCommentActionCancel()"><span>Cancel</span></a>
+                    <a name="propCreateSubmit" class="btn" href="javascript:md.addProposalComment('addProposalCommentForm')"><span>Create</span></a>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+    </div>
+</div>

@@ -23,6 +23,6 @@ public interface IContribution extends Serializable {
     public abstract String getContributionType();
 
     enum ContributionType {
-        VOTE, PROPOSAL
+        VOTE, PROPOSAL, COMMENT
     }
 }

@@ -19,6 +19,10 @@ public class ManageProposalImpl implements IManageProposal {
             inputProposal.setAuthorEmailString(author.getEmail());
             inputProposal.setAuthorPseudo(author.getPseudo());
         }
+        return addProposal(inputProposal);
+    }
+
+    public Proposal addProposal(Proposal inputProposal) {
         inputProposal.setDate(new Date());
         ofy().save().entity(inputProposal).now();
         LOGGER.info("* Proposal ADDED : " + inputProposal);

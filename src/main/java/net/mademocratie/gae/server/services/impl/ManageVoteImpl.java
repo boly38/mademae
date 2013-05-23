@@ -13,15 +13,8 @@ import java.util.logging.Logger;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
-/**
- * ManageVoteImpl
- * <p/>
- * Last update  : $LastChangedDate$
- * Last author  : $Author$
- *
- * @version : $Revision$
- */
 public class ManageVoteImpl implements IManageVote {
+
     private final static Logger LOGGER = Logger.getLogger(ManageVoteImpl.class.getName());
 
     public List<Vote> getProposalVotesOfACitizen(String citizenEmail, Long proposalId) {

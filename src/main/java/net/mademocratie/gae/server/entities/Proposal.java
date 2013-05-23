@@ -90,7 +90,7 @@ public class Proposal extends Contribution implements IContribution {
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("dateFormat", getDateFormat())
-                .add("age", age)
+                .add("age", getAge())
                 .add("title", title)
                 .add("content", content)
                 .toString();

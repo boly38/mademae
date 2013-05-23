@@ -6,6 +6,7 @@ import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.services.IManageCitizen;
+import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
 import org.json.JSONObject;
@@ -32,6 +33,9 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     @Inject
     IManageVote manageVote;
 
+    @Inject
+    IManageComment manageComment;
+
 
     @GET
     @Path("/last")
@@ -57,10 +61,26 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
             newProposal.setAuthorPseudo(authenticatedUser.getPseudo());
         }
         log.info("addProposal POST received : " + proposal.toString());
-        Proposal addedProposal = manageProposals.addProposal(newProposal, null);
+        Proposal addedProposal = manageProposals.addProposal(newProposal);
         log.info("addProposal POST received ; result=" + addedProposal.toString());
         return addedProposal.getItemIt().toString();
     }
+
+
+    @POST
+    @Path("/addcomment")
+    public String addProposalComment(CommentContribution inComment, @Context HttpHeaders httpHeaders) {
+        if (inComment == null) return null;
+        if (inComment.getParentContribution() == null) return null;
+        if (inComment.getParentContribution() == null) return null;
+        if (inComment.getContent() == null) return null;
+        Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
+        log.info("addComment POST received : " + inComment.toString());
+        CommentContribution addedComment = manageComment.comment(authenticatedUser, inComment);
+        log.info("addComment POST received ; result=" + addedComment.toString());
+        return addedComment.getItemIt().toString();
+    }
+
 
     /*
      src: http://stackoverflow.com/questions/7430270/post-put-delete-http-json-with-additional-parameters-in-jersey-general-design
@@ -72,7 +92,8 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Long propId = Long.valueOf(proposalId);
         Proposal proposalRetrieved = manageProposals.getById(propId);
         ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
-        ProposalInformations proposalInformations = new ProposalInformations(proposalRetrieved, proposalVotes);
+        List<CommentContribution> proposalComments = manageComment.getProposalComments(propId);
+        ProposalInformations proposalInformations = new ProposalInformations(proposalRetrieved, proposalVotes, proposalComments);
         log.info("getProposal " + propId + " : " + proposalInformations.toString());
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         return jsonProposalInformations.toString();

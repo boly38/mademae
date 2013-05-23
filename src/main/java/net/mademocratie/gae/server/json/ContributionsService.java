@@ -58,7 +58,7 @@ public class ContributionsService {
     private Proposal addSampleProposition() {
         Proposal testProposal = new Proposal("Test My App", "This is a generated proposal used to test the product");
         log.info("addProposal input " + testProposal.toString());
-        Proposal addedProposal = manageProposals.addProposal(testProposal, null);
+        Proposal addedProposal = manageProposals.addProposal(testProposal);
         return addedProposal;
     }
 
