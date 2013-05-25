@@ -24,8 +24,17 @@ public class CommentContribution extends Contribution implements IContribution {
     public CommentContribution() {
     }
 
+
+    public CommentContribution(CommentContribution inComment) {
+        super(inComment);
+        this.setContent(inComment.getContent());
+        parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
+        parentContributionType = inComment.getParentContributionType();
+    }
+
+
     public CommentContribution(Citizen citizen, CommentContribution inComment) {
-        setDate(new Date());
+        super(inComment);
         if (citizen != null && citizen.getEmail() != null) {
             this.setAuthorEmailString(citizen.getEmail());
         }
@@ -70,12 +79,12 @@ public class CommentContribution extends Contribution implements IContribution {
 
     @Override
     public Email getAuthorEmail() {
-        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getAuthorEmail();
     }
 
     @Override
     public String getAuthorPseudo() {
-        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getAuthorPseudo();
     }
 
     public String getContent() {

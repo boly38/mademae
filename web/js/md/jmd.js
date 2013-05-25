@@ -269,11 +269,6 @@ function MaDemocratie() {
         });
     };
 
-    this.contact= function() {
-        this.updateContent("<div class='row well'><h4>Contact</h4><p>info - at - mademocratie (dot) net</i> should be able to answer ! ;)</p></div>");
-        this.track("contact");
-    };
-
     this.about= function() {
         var parentMd = this;
         $.getJSON('json/about/info', function(aboutJsonData) {
@@ -288,7 +283,8 @@ function MaDemocratie() {
 
     this.contribution = function(contributionId, contributionType) {
         if (contributionType == 'PROPOSAL'
-          ||contributionType == 'VOTE') {
+            ||contributionType == 'VOTE'
+            ||contributionType == 'COMMENT') {
             this.showProposal(contributionId);
         }
     };

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="span6">
         <div class="well compo">
-        <div class="page-header"><h3>${contributionsDescription}</h3></div>
+        <div><h3>${contributionsDescription}</h3></div>
             <div>
                 {{each contributions}}
                 <div>
@@ -16,9 +16,9 @@
     <div class="span6">
         <div class="well compo">
             {{if proposals.length == 10}}
-              <div class="page-header"><h3><a href="javascript:md.showProposals();">${proposalsDescription}</a></h3></div>
+              <div><h3><a href="javascript:md.showProposals();">${proposalsDescription}</a></h3></div>
             {{else}}
-            <div class="page-header"><h3>${proposalsDescription}</h3></div>
+            <div><h3>${proposalsDescription}</h3></div>
             {{/if}}
             {{each proposals}}
             <div>

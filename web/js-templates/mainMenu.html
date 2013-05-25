@@ -10,39 +10,20 @@
             <a class="brand" href="javascript:md.home()">Ma d&eacute;mocratie</a>
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                    <li class=""><a href="javascript:md.addProposalAction()"><i class="icon-home icon-plus-sign"></i>&#160;add a proposal</a></li>
+                    <li class=""><a href="javascript:md.addProposalAction()"><i class="icon-plus-sign icon-white"></i>&#160;add a proposal</a></li>
                     <!-- <li class=""><a href="javascript:md.addSampleProposal()"><i class="icon-home icon-plus-sign"></i>&#160;add a sample</a></li>
                       -->
                 </ul>
                 <ul class="nav pull-right">
-                    <!-- *** user menu -->
+                    <!-- *** user -->
                     {{if ((typeof(userPseudo) == "undefined") || (userPseudo == ""))}}
                     <li><a href="javascript:md.login()">Sign in!</a></li>
                     {{else}}
-                    <li class="dropdown" id="user-dd-menumenu">
-                        <a href="#user-dd-menu" class="dropdown-toggle"  data-toggle="dropdown">
-                            <i class="icon-user icon-white"></i>&#160;${userPseudo}
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:md.logout()" ><i class="icon-minus-sign"></i> Logout</a></li>
-                            <li class="divider"></li>
-                            <li><a href="javascript:md.profileAction()" ><i class="icon-user"></i> Profile</a></li>
-                            <li><a href="javascript:md.addProposalAction()">add a proposal</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="javascript:md.profileAction()" ><i class="icon-user icon-white"></i> ${userPseudo}</a></li>
+                    <li><a href="javascript:md.logout()" ><i class="icon-minus-sign icon-white"></i> Logout</a></li>
                     {{/if}}
-                    <!-- *** /user usermenu -->
-                    <!-- *** help menu -->
-                    <li class="dropdown pull-right" id="help-menu-dropdown">
-                        <a href="#help-menu-dropdown" class="dropdown-toggle">
-                            <i class="icon-question-sign icon-white"></i> Help <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:md.about()">About</a></li>
-                            <li><a href="javascript:md.contact()"><i class="icon-envelope"></i> Contact</a></li>
-                        </ul>
-                    </li><!-- *** /help menu -->
+                    <!-- *** about menu -->
+                    <li><a href="javascript:md.about()"><i class="icon-question-sign icon-white"></i> About</a></li>
                 </ul>
             </div>
         </div>

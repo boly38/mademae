@@ -1,10 +1,8 @@
 package net.mademocratie.gae.server.services.impl;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.entities.Contribution;
-import net.mademocratie.gae.server.entities.Proposal;
-import net.mademocratie.gae.server.entities.Vote;
-import net.mademocratie.gae.server.entities.VoteOnProposal;
+import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
@@ -33,14 +31,20 @@ public class ManageContributionsImpl implements IManageContributions {
     @Inject
     private IManageProposal manageProposal;
 
+    @Inject
+    private IManageComment manageComment;
+
 
     public List<Contribution> getLastContributions(int maxContributions) {
         List<Proposal> latestProposals = manageProposal.latest(maxContributions);
         List<Vote> latestVotes = manageVote.latest(maxContributions);
+        List<CommentContribution> latestComments = manageComment.latest(maxContributions);
         List<VoteOnProposal> latestVotesOnProposal = manageVote.fetchProposalsVotes(latestVotes);
+        List<CommentOnProposal> latestCommentsOnProposal = manageComment.fetchProposalsComments(latestComments);
         List<Contribution> latestContributions = new ArrayList<Contribution>();
         latestContributions.addAll(latestProposals);
         latestContributions.addAll(latestVotesOnProposal);
+        latestContributions.addAll(latestCommentsOnProposal);
         if (latestContributions.size() == 0) {
             return latestContributions;
         }

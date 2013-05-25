@@ -39,6 +39,9 @@ public abstract class Contribution implements IContribution {
     public Contribution(Contribution c) {
         setItemIt(c.getItemIt());
         setDate(c.getDate());
+        if (getDate() == null) {
+            setDate(new Date());
+        }
         this.setAuthorEmail(c.getAuthorEmail());
         this.setAuthorPseudo(c.getAuthorPseudo());
     }
