@@ -172,6 +172,14 @@ public class ManageCitizenImpl implements IManageCitizen {
                 "You just complete your registration, so hope you will be back soon : " + activateDestination);
     }
 
+    public void notifyAdminReport() throws MaDemocratieException {
+        User googleUser = getGoogleUser();
+        sendMail(googleUser.getEmail(),
+                googleUser.getNickname(),
+                "[MaDemocratie.net] Report",
+                "that is.");
+    }
+
     private void sendMail(String toEmail, String toString, String title, String body) throws MaDemocratieException {
         Properties props = new Properties();
         // props.put("mail.smtp.host", "smtp");

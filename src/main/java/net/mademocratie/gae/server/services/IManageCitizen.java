@@ -35,6 +35,8 @@ public interface IManageCitizen {
     Citizen authenticateCitizen(String email, String password);
 
     User getGoogleUser();
+    boolean isGoogleUserAdmin();
+
 
     String getGoogleLoginURL(String destination);
     String getGoogleLogoutURL(String destination);
@@ -42,6 +44,7 @@ public interface IManageCitizen {
     Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException;
     Citizen register(String pseudo, String email) throws RegisterFailedException;
     void registerNotifyCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException;
+    void notifyAdminReport() throws MaDemocratieException;
 
     Citizen getById(Long cId);
 
