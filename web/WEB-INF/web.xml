@@ -15,6 +15,15 @@
         <filter-name>guiceFilter</filter-name>
         <url-pattern>/json/*</url-pattern>
     </filter-mapping>
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>ops cron entry points</web-resource-name>
+            <url-pattern>/json/ops/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
     <servlet>
         <servlet-name>resource</servlet-name>
         <servlet-class>org.springframework.js.resource.ResourceServlet</servlet-class>
