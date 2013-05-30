@@ -136,7 +136,12 @@ public class ManageCitizenImpl implements IManageCitizen {
         return userService.getCurrentUser();
     }
     public boolean isGoogleUserAdmin() {
-        return userService.isUserAdmin();
+        try {
+            return userService.isUserLoggedIn() && userService.isUserAdmin();
+        } catch (Throwable e) {
+            LOGGER.severe("unable to check if google user admin :" + e.getMessage());
+            return false;
+        }
     }
 
     public String getGoogleLoginURL(String destination) {
