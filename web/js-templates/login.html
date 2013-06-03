@@ -1,7 +1,4 @@
-<div class="row well">
-    <div class="page-header">
-        <h3>Sign in</h3>
-    </div>
+<div class="row well"><h3>Sign in</h3>
     <!--
 <div class="span6 well">
     <p>
@@ -35,44 +32,37 @@
     </form>
     </div>
     -->
-    <div class="span7 well">
-        <form id="signInFormUsingGoogleForm">
-            <table>
-                <tr>
-                    <td align="right">Google <i class="icon-user icon-white"></i> user :</td>
-                    <td>
-                        {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
-                        <div id="googleOut">
-                            <a id="signIn-google" href="${googleSignInUrl}">change</a>.
-                        </div>
-                        {{else}}
-                        <div  id="googleIn">
-                             <span id="gguser">${googleUserPseudo}</span>
-                            &#160;&#160;
-                            <a id="signOut-google" href="${googleSignInUrl}">change</a>.
-                        </div>
-                        {{/if}}
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <div class="control-group">
-                            <div class="controls docs-input-sizes">
-                                {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
-                                <a href="${googleSignInUrl}"
-                                   name="signInGoogleSubmit"
-                                   class="btn btn-info btn-large disabled">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
-                                {{else}}
-                                <a href="javascript:md.signInGoogle('signInFormUsingGoogleForm')"
-                                   name="signInGoogleSubmit"
-                                   class="btn btn-info btn-large">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
-                                {{/if}}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+    <div class="well">
+        <form class="form-horizontal" id="signInFormUsingGoogleForm">
+            <div class="control-group">
+                <label class="control-label" for="googleUser">Google <i class="icon-user icon-white"></i> user</label>
+                <div class="controls">
+                    {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
+                    <div id="googleOut">
+                        <a id="googleUser" href="${googleSignInUrl}">change</a>.
+                    </div>
+                    {{else}}
+                    <div  id="googleIn">
+                        <span id="googleUser">${googleUserPseudo}</span>
+                        &#160;&#160;
+                        <a id="signOut-google" href="${googleSignInUrl}">change</a>.
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls docs-input-sizes">
+                    {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
+                    <a href="${googleSignInUrl}"
+                       name="signInGoogleSubmit"
+                       class="btn btn-info btn-large disabled">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
+                    {{else}}
+                    <a href="javascript:md.signInGoogle('signInFormUsingGoogleForm')"
+                       name="signInGoogleSubmit"
+                       class="btn btn-info btn-large">Sign in with google account <i class="icon-white icon-hand-left"></i></a>
+                    {{/if}}
+                </div>
+            </div>
         </form>
     </div>
 </div>

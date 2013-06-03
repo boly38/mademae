@@ -15,15 +15,18 @@
                       -->
                 </ul>
                 <ul class="nav pull-right">
+                    {{if ((typeof(userAdmin) != "undefined") && (userAdmin == "true"))}}
+                    <li><a href="javascript:md.admin()"><i class="icon-wrench icon-white"></i>Admin</a></li>
+                    {{/if}}
                     <!-- *** user -->
                     {{if ((typeof(userPseudo) == "undefined") || (userPseudo == ""))}}
-                    <li><a href="javascript:md.login()">Sign in!</a></li>
+                    <li><a href="javascript:md.login()"><i class="icon-arrow-up icon-white"></i> Sign in!</a></li>
                     {{else}}
                     <li><a href="javascript:md.profileAction()" ><i class="icon-user icon-white"></i> ${userPseudo}</a></li>
                     <li><a href="javascript:md.logout()" ><i class="icon-minus-sign icon-white"></i> Logout</a></li>
                     {{/if}}
                     <!-- *** about menu -->
-                    <li><a href="javascript:md.about()"><i class="icon-question-sign icon-white"></i> About</a></li>
+                    <li><a href="javascript:md.about()" title"About"><i class="icon-question-sign icon-white"></i></a></li>
                 </ul>
             </div>
         </div>

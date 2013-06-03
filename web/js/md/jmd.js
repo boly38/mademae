@@ -150,6 +150,17 @@ function MaDemocratie() {
         this.track("login");
     };
 
+
+    this.admin= function() {
+        var parentMd = this;
+        $.get('/js-templates/admin.html', function(adminTemplate) {
+            $.template("adminTemplate", adminTemplate);
+            var adminHtmlResult = $.tmpl("adminTemplate", "");
+            parentMd.updateContent(adminHtmlResult);
+        });
+        this.track("admin");
+    };
+
     this.welcome= function() {
         this.warn("This website is an alpha version. See also <a href='javascript:md.about()'>about page</a> for more details (<a href='http://code.google.com/p/ma-dem-ae/wiki/MaDemAe'>MaDemAe project</a>)");
     }
