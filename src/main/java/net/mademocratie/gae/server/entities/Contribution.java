@@ -64,25 +64,7 @@ public abstract class Contribution implements IContribution {
 
     @JsonProperty("age")
     public String getAge() {
-        Date contribDate = getDate();
-        if (contribDate == null) {
-            return null;
-        }
-        // return Minutes.minutesBetween(new DateTime(getDate()), new DateTime()).toString();
-        Duration duration = new Duration(contribDate.getTime(), new Date().getTime());
-        if (duration.getStandardDays() > 1) {
-            return duration.getStandardDays() + " days ago";
-        }
-        if (duration.getStandardDays() == 1) {
-            return "1 day ago";
-        }
-        if (duration.getStandardHours() >= 1) {
-            return duration.getStandardHours()+ " hours ago";
-        }
-        if (duration.getStandardMinutes() >= 1) {
-            return duration.getStandardMinutes()+ " minutes ago";
-        }
-        return "a moment ago";
+        return DateHelper.getDateDuration(getDate());
     }
 
     public Email getAuthorEmail() {

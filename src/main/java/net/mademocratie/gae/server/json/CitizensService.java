@@ -8,6 +8,7 @@ import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
+import org.json.JSONObject;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -89,14 +90,15 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
     @GET
     @Path("/profile")
     @Produces(MediaType.APPLICATION_JSON)
-    public ProfileInformations geProfile(@Context HttpHeaders httpHeaders) {
+    public String geProfile(@Context HttpHeaders httpHeaders) {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         ProfileInformations profileInfos = new ProfileInformations(authenticatedUser);
         List<Proposal> proposals = manageProposal.findByCitizenEmail(authenticatedUser.getEmail());
         profileInfos.setPseudo(authenticatedUser.getPseudo());
         profileInfos.setProposals(proposals);
         profileInfos.setRegistrationDate(authenticatedUser.getDate());
-        return profileInfos;
+        JSONObject jsonProfileInformations = new JSONObject(profileInfos);
+        return jsonProfileInformations.toString();
     }
 
 
