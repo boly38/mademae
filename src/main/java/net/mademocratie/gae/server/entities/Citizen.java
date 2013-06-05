@@ -1,5 +1,9 @@
 package net.mademocratie.gae.server.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
@@ -130,10 +134,12 @@ public class Citizen {
         this.date = date;
     }
 
+    @JsonIgnore
     public String getAuthToken() {
         return authToken;
     }
 
+    @JsonProperty
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
     }

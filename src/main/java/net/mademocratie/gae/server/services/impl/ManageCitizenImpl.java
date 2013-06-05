@@ -75,7 +75,9 @@ public class ManageCitizenImpl implements IManageCitizen {
 
     public Citizen getAuthenticatedUser(String authToken) {
         Citizen c= ofy().load().type(Citizen.class).filter("authToken", authToken).first().get();
-        c.setAdmin(isGoogleUserAdmin());
+        if (c != null) {
+            c.setAdmin(isGoogleUserAdmin());
+        }
         LOGGER.info("getAuthenticatedUser for " + authToken + " result " + (c != null ? c.toString() : "(none)"));
         return c;
     }
