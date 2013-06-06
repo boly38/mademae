@@ -35,10 +35,10 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>resource</servlet-name>
-        <url-pattern>/images/*.jpg</url-pattern>
-        <url-pattern>/js/*.js</url-pattern>
-        <url-pattern>/js-templates/*.html</url-pattern>
-        <url-pattern>/css/*.css</url-pattern>
+        <url-pattern>/images/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/js-templates/*</url-pattern>
+        <url-pattern>/css/*</url-pattern>
         <url-pattern>/${bootstrap.version}/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
