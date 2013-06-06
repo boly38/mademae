@@ -25,11 +25,4 @@ public class SignInInformations {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String toLogString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SignInInformations[");
-        sb.append("username:").append(getUsername());
-        sb.append(", password: ***hiden***").append("]");
-        return sb.toString();
-    }
 }

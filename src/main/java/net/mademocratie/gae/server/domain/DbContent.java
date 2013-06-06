@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 @XmlRootElement
-public class DbExportResult {
+public class DbContent {
     private ArrayList<Citizen> citizens;
     private ArrayList<Proposal> proposals;
     private ArrayList<Vote> votes;
     private ArrayList<CommentContribution> comments;
 
-    public DbExportResult() {
+    public DbContent() {
     }
 
-    public DbExportResult(ArrayList<Citizen> citizens, ArrayList<Proposal> proposals, ArrayList<Vote> votes, ArrayList<CommentContribution> commentContributions) {
+    public DbContent(ArrayList<Citizen> citizens, ArrayList<Proposal> proposals, ArrayList<Vote> votes, ArrayList<CommentContribution> commentContributions) {
         this.citizens = citizens;
         this.proposals = proposals;
         this.votes= votes;

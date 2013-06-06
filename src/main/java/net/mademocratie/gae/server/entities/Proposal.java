@@ -50,12 +50,12 @@ public class Proposal extends Contribution implements IContribution {
 
     @Override
     public Email getAuthorEmail() {
-        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getAuthorEmail();
     }
 
     @Override
     public String getAuthorPseudo() {
-        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.getAuthorPseudo();
     }
 
     @Override
@@ -95,37 +95,5 @@ public class Proposal extends Contribution implements IContribution {
                 .add("title", title)
                 .add("content", content)
                 .toString();
-    }
-
-/*
-    public String toString() {
-            return toLogString();
-    }
-    return new JSONObject()
-            .put("contributionId", getContributionId())
-            .put("contributionType", getContributionType())
-            .put("contributionDetails", getContributionDetails())
-            .put("proposalId", getProposalId())
-            .put("title", getTitle())
-            .put("date", getDate())
-            .put("authorPseudo", getAuthorPseudo())
-            .put("content", (content!= null ?content.getValue() : ""))
-            .toString();
-            */
-
-    public String toLogString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("proposal[");
-        sb.append("id:").append(getItemIt());
-        sb.append(",date:").append(getDateFormat());
-        sb.append(",age:").append(getAge());
-        sb.append(", title:").append(getTitle());
-        if (getAuthorPseudo() != null)
-            sb.append(", authorPseudo:").append(getAuthorPseudo());
-        if (getAuthorEmail() != null)
-            sb.append(", authorEmail:").append(getAuthorEmail());
-        sb.append(", content:").append(getContent());
-        sb.append("]");
-        return sb.toString();
     }
 }

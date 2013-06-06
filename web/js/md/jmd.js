@@ -265,9 +265,27 @@ function MaDemocratie() {
          });
         this.track("signInGoogle");
     };
+
     this.signIn=function(signInFormId) {
         this.warn("not yet implemented!");
         this.track("signIn");
+    };
+
+    this.dbImport=function(dbImportFormId) {
+         var dbImportEndPoint = "json/ops/dbimport";
+         var importData = $("#" + dbImportFormId).serializeJSON();
+         $.ajax({
+           type: "POST",
+           url: dbImportEndPoint,
+           data: JSON.stringify(importData),
+           dataType: "json",
+           contentType: 'application/json',
+           success: function() {
+             md.warn("import not yet implemented");
+             md.home();
+           }
+         });
+        this.track("dbimport");
     };
 
     this.logout=function() {

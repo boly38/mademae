@@ -1,9 +1,10 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.domain.DbExportResult;
-import net.mademocratie.gae.server.domain.GetContributionsResult;
+import net.mademocratie.gae.server.domain.DbContent;
+import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
+import net.mademocratie.gae.server.domain.SignInInformations;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.CommentContribution;
 import net.mademocratie.gae.server.entities.Proposal;
@@ -15,11 +16,8 @@ import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
 import org.json.JSONObject;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,7 +52,7 @@ public class OpsService {
         List<Proposal> proposals = manageProposals.latest();
         List<Vote> votes = manageVote.latest();
         List<CommentContribution> comments = manageComment.latest();
-        DbExportResult exportResult = new DbExportResult(
+        DbContent exportResult = new DbContent(
                 new ArrayList<Citizen>(citizens),
                 new ArrayList<Proposal>(proposals),
                 new ArrayList<Vote>(votes),
@@ -64,6 +62,15 @@ public class OpsService {
         return javax.ws.rs.core.Response.ok(exportResult).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 
+
+    @POST
+    @Path("/dbimport")
+    public javax.ws.rs.core.Response dbImport(DbImport dbImport) {
+        if (dbImport== null) return null;
+        JSONObject jsonDbImport = new JSONObject(dbImport);
+        log.info("dbImport POST received : " + jsonDbImport.toString());
+        return javax.ws.rs.core.Response.ok().build();
+    }
 
     @GET
     @Path("/report")

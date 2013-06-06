@@ -72,7 +72,8 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
     @Path("/signIn")
     public SignInResponse singIn(SignInInformations signInInformations) {
         if (signInInformations== null) return null;
-        log.info("singIn POST received : " + signInInformations.toLogString());
+        JSONObject jsonSignInformations = new JSONObject(signInInformations);
+        log.info("singIn POST received : " + jsonSignInformations.toString());
         Citizen citizen;
         try {
             citizen = manageCitizen.signInGoogleCitizen();
