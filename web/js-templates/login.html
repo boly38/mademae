@@ -39,13 +39,13 @@
                 <div class="controls">
                     {{if ((typeof(googleUserPseudo) == "undefined") || (googleUserPseudo == ""))}}
                     <div id="googleOut">
-                        <a id="googleUser" href="${googleSignOutUrl}">change</a>.
+                        <a id="googleUser" href="${googleSignInUrl}">change</a>.
                     </div>
                     {{else}}
                     <div  id="googleIn">
                         <span id="googleUser">${googleUserPseudo}</span>
                         &#160;&#160;
-                        <a id="signOut-google" href="${googleSignInUrl}">change</a>.
+                        <a id="signOut-google" href="${googleSignOutUrl}">change</a>.
                     </div>
                     {{/if}}
                 </div>
