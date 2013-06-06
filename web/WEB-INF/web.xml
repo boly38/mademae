@@ -39,7 +39,7 @@
         <url-pattern>/js/*.js</url-pattern>
         <url-pattern>/js-templates/*.html</url-pattern>
         <url-pattern>/css/*.css</url-pattern>
-        <url-pattern>/${bootstrap-version}/*</url-pattern>
+        <url-pattern>/${bootstrap.version}/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>mademae-portal</servlet-name>
