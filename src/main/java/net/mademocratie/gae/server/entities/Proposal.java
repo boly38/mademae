@@ -23,6 +23,7 @@ public class Proposal extends Contribution implements IContribution {
     }
 
     public Proposal(String title, String content) {
+        super();
         this.title = title;
         this.content = new Text(content != null ? content : "");
     }

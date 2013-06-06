@@ -29,12 +29,14 @@ public abstract class Contribution implements IContribution {
     private String authorPseudo = SOMENONE;
 
 
+    public Contribution() {
+        this.date = new Date();
+    };
+
     protected Contribution(String authorEmail) {
         this.date = new Date();
         setAuthorEmailString(authorEmail);
     }
-
-    public Contribution() {};
 
     public Contribution(Contribution c) {
         setItemIt(c.getItemIt());
