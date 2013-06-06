@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.services.impl;
 
 import com.googlecode.objectify.Key;
+import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.*;
 import net.mademocratie.gae.server.services.IManageComment;
 
@@ -46,12 +47,17 @@ public class ManageCommentImpl implements IManageComment {
         return commentContribution;
     }
 
+    public List<CommentContribution> latest() {
+        return latest(0);
+    }
     public List<CommentContribution> latest(int max) {
-        List<CommentContribution> latestComments = ofy().load().type(CommentContribution.class)
-                .order("-date")
-                .limit(max)
-                .list();
-        LOGGER.info("* latest comments asked " + max + " result " + latestComments.size());
+        Query<CommentContribution> orderedComments = ofy().load().type(CommentContribution.class).order("-date");
+        if (max > 0) {
+            orderedComments = orderedComments.limit(max);
+        }
+        List<CommentContribution> latestComments = orderedComments.list();
+        int resultCount = latestComments != null ? latestComments.size() : 0;
+        LOGGER.info("* latest comments asked " + (max > 0 ? max : "unlimited") + " result " +resultCount);
         return latestComments;
     }
 

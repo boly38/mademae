@@ -24,6 +24,8 @@ public interface IManageProposal {
      */
     List<Proposal> latest(int max);
 
+    List<Proposal> latest();
+
     /**
      * remove all proposals from the repository (test usage only)
      */

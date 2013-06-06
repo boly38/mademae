@@ -4,6 +4,8 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.googlecode.objectify.cmd.LoadType;
+import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.CitizenState;
 import net.mademocratie.gae.server.exception.*;
@@ -83,10 +85,17 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public List<Citizen> latest(int max) {
-        List<Citizen> latestCitizen = ofy().load().type(Citizen.class).limit(max).list();
-        // TODO : add ".order("-date")" : desc order seems not working !?
-        LOGGER.info("* latest citizens asked " + max + " result " + latestCitizen.size());
+        Query<Citizen> orderedCitizens = ofy().load().type(Citizen.class).order("-date");
+        if (max > 0) {
+            orderedCitizens = orderedCitizens.limit(max);
+        }
+        List<Citizen> latestCitizen = orderedCitizens.list();
+        int resultCount = latestCitizen != null ? latestCitizen.size() : 0;
+        LOGGER.info("* latest citizens asked " + (max > 0 ? max : "unlimited") + " result " + resultCount);
         return latestCitizen;
+    }
+    public List<Citizen> latest() {
+        return latest(0);
     }
 
     public Citizen authenticateGoogleCitizen() throws MaDemocratieException {
@@ -181,9 +190,8 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public void notifyAdminReport() throws MaDemocratieException {
-        User googleUser = getGoogleUser();
-        sendMail(googleUser.getEmail(),
-                googleUser.getNickname(),
+        sendMail("info@mademocratie.net",
+                "mademocratie.net",
                 "[MaDemocratie.net] Report",
                 "that is.");
     }

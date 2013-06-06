@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.services.impl;
 
 import com.google.appengine.api.datastore.Email;
+import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.Citizen;
 import net.mademocratie.gae.server.entities.Proposal;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -30,12 +31,18 @@ public class ManageProposalImpl implements IManageProposal {
     }
 
     public List<Proposal> latest(int max) {
-        List<Proposal> latestProposals = ofy().load().type(Proposal.class)
-                .order("-date")
-                .limit(max)
-                .list();
-        LOGGER.info("* latest proposals asked " + max + " result " + latestProposals.size());
+        Query<Proposal> orderedProposals = ofy().load().type(Proposal.class)
+                .order("-date");
+        if (max > 0) {
+            orderedProposals = orderedProposals.limit(max);
+        }
+        List<Proposal> latestProposals = orderedProposals.list();
+        int resultCount = latestProposals != null ? latestProposals.size() : 0;
+        LOGGER.info("* latest proposals asked " + (max > 0 ? max : "unlimited") + " result " +resultCount);
         return latestProposals;
+    }
+    public List<Proposal> latest() {
+        return latest(0);
     }
 
     public void removeAll() {

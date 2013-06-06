@@ -3,6 +3,7 @@ package net.mademocratie.gae.server.services.impl;
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
+import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.*;
 import net.mademocratie.gae.server.services.IManageVote;
 
@@ -78,12 +79,17 @@ public class ManageVoteImpl implements IManageVote {
         // votesQueries.removeProposalVotes(proposalId);
     }
 
+    public List<Vote> latest() {
+        return latest(0);
+    }
     public List<Vote> latest(int max) {
-        List<Vote> latestVotes = ofy().load().type(Vote.class)
-                .order("-date")
-                .limit(max)
-                .list();
-        LOGGER.info("* latest votes asked " + max + " result " + latestVotes.size());
+        Query<Vote> orderedVotes = ofy().load().type(Vote.class).order("-date");
+        if (max > 0) {
+            orderedVotes = orderedVotes.limit(max);
+        }
+        List<Vote> latestVotes = orderedVotes.list();
+        int resultCount = latestVotes != null ? latestVotes.size() : 0;
+        LOGGER.info("* latest votes asked " + (max > 0 ? max : "unlimited") + " result " +resultCount);
         return latestVotes;
     }
 

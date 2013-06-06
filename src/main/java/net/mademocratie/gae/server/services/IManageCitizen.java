@@ -24,6 +24,8 @@ public interface IManageCitizen {
      */
     List<Citizen> latest(int max);
 
+    List<Citizen> latest();
+
     public Citizen findCitizenByEmail(String email);
 
     /**
@@ -33,17 +35,17 @@ public interface IManageCitizen {
      * @return
      */
     Citizen authenticateCitizen(String email, String password);
-
     User getGoogleUser();
+
+
     boolean isGoogleUserAdmin();
-
-
     String getGoogleLoginURL(String destination);
-    String getGoogleLogoutURL(String destination);
 
+    String getGoogleLogoutURL(String destination);
     Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException;
     Citizen register(String pseudo, String email) throws RegisterFailedException;
     void registerNotifyCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException;
+
     void notifyAdminReport() throws MaDemocratieException;
 
     Citizen getById(Long cId);

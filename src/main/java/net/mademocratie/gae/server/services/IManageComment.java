@@ -17,5 +17,7 @@ public interface IManageComment {
 
     List<CommentContribution> latest(int max);
 
+    List<CommentContribution> latest();
+
     List<CommentOnProposal> fetchProposalsComments(List<CommentContribution> latestComments);
 }

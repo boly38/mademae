@@ -20,6 +20,8 @@ public interface IManageVote {
 
     List<Vote> latest(int maxVotes);
 
+    List<Vote> latest();
+
     void removeProposalVotes(Long proposalId);
 
     List<VoteOnProposal> fetchProposalsVotes(List<Vote> latestVotes);

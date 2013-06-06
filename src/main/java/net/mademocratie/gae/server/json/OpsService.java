@@ -19,6 +19,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.xml.ws.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -44,21 +45,23 @@ public class OpsService {
     @GET
     @Path("/dbexport")
     @Produces(MediaType.APPLICATION_JSON)
-    public String dbExport() throws MaDemocratieException {
+    public javax.ws.rs.core.Response dbExport() throws MaDemocratieException {
         if (!manageCitizen.isGoogleUserAdmin()) {
-            return "unable to send dbExport : not allowed";
+            log.warning("unable to send dbExport : not allowed");
+            return javax.ws.rs.core.Response.status(javax.ws.rs.core.Response.Status.FORBIDDEN).build();
         }
-        List<Citizen> citizens = manageCitizen.latest(100000);
-        List<Proposal> proposals = manageProposals.latest(100000);
-        List<Vote> votes = manageVote.latest(100000);
-        List<CommentContribution> comments = manageComment.latest(100000);
+        List<Citizen> citizens = manageCitizen.latest();
+        List<Proposal> proposals = manageProposals.latest();
+        List<Vote> votes = manageVote.latest();
+        List<CommentContribution> comments = manageComment.latest();
         DbExportResult exportResult = new DbExportResult(
                 new ArrayList<Citizen>(citizens),
                 new ArrayList<Proposal>(proposals),
                 new ArrayList<Vote>(votes),
                 new ArrayList<CommentContribution>(comments)
         );
-        return exportResult.toJSON().toString();
+        //return exportResult.toJSON().toString();
+        return javax.ws.rs.core.Response.ok(exportResult).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 
 
