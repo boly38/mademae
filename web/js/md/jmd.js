@@ -96,6 +96,7 @@ function MaDemocratie() {
     };
 
     this.init= function(mainMenuDivId, mainDivId, feedbackDivId) {
+        consoleInfo('init');
         var parentMD = this;
         this.setup();
         this.mainMenuDivId = mainMenuDivId;
@@ -108,13 +109,19 @@ function MaDemocratie() {
     };
 
     this.afterInit = function() {
+        consoleInfo('afterInit');
         $('.dropdown-toggle').dropdown();
-        if ($.urlParameter('redirect') == "login") {
+        var paramRedirect = $.urlParameter('redirect');
+        if (paramRedirect == "login") {
             this.login();
-        } else {
-            this.welcome();
-            this.home();
+            return;
         }
+        if (paramRedirect == "autologin") {
+            this.signInGoogle();
+            return;
+        }
+        this.welcome();
+        this.home();
     };
 
     this.menu= function(callback) {
@@ -139,6 +146,7 @@ function MaDemocratie() {
     };
 
     this.login= function() {
+        consoleInfo('login');
         var parentMd = this;
         $.getJSON('json/citizen/login', function(loginJsonData) {
             $.get('/js-templates/login.html', function(loginTemplate) {
@@ -238,9 +246,10 @@ function MaDemocratie() {
         this.track("addProposal");
     };
 
-    this.signInGoogle=function(signInFormUsingGoogleFormId) {
+    this.signInGoogle=function() {
+         consoleInfo('signInGoogle');
          var signInGoogleEndPoint = "json/citizen/signIn";
-         var signInData = $("#" + signInFormUsingGoogleFormId).serializeJSON();
+         var signInData = ""; // $("#" + signInFormUsingGoogleFormId).serializeJSON();
          $.ajax({
            type: "POST",
            url: signInGoogleEndPoint,
@@ -264,11 +273,6 @@ function MaDemocratie() {
            }
          });
         this.track("signInGoogle");
-    };
-
-    this.signIn=function(signInFormId) {
-        this.warn("not yet implemented!");
-        this.track("signIn");
     };
 
     this.dbImport=function(dbImportFormId) {

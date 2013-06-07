@@ -47,7 +47,7 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
             loginInformations.setGoogleUserPseudo(googleUser.getNickname());
         }
         loginInformations.setGoogleSignOutUrl(manageCitizen.getGoogleLogoutURL("/?redirect=login"));
-        loginInformations.setGoogleSignInUrl(manageCitizen.getGoogleLoginURL("/?redirect=login"));
+        loginInformations.setGoogleSignInUrl(manageCitizen.getGoogleLoginURL("/?redirect=autologin"));
         return loginInformations;
     }
 
@@ -68,12 +68,11 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
         return menuInformations;
     }
 
+
     @POST
     @Path("/signIn")
-    public SignInResponse singIn(SignInInformations signInInformations) {
-        if (signInInformations== null) return null;
-        JSONObject jsonSignInformations = new JSONObject(signInInformations);
-        log.info("singIn POST received : " + jsonSignInformations.toString());
+    public SignInResponse singIn() {
+        log.info("singIn POST received");
         Citizen citizen;
         try {
             citizen = manageCitizen.signInGoogleCitizen();

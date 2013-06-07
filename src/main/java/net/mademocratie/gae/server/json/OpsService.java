@@ -18,13 +18,14 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Path("/ops")
 @Produces(MediaType.APPLICATION_JSON)
-public class OpsService {
+public class OpsService extends AbstractMaDemocratieJsonService {
     Logger log = Logger.getLogger(OpsService.class.getName());
 
     @Inject
@@ -46,7 +47,7 @@ public class OpsService {
     public javax.ws.rs.core.Response dbExport() throws MaDemocratieException {
         if (!manageCitizen.isGoogleUserAdmin()) {
             log.warning("unable to send dbExport : not allowed");
-            return javax.ws.rs.core.Response.status(javax.ws.rs.core.Response.Status.FORBIDDEN).build();
+            return returnForbidden();
         }
         List<Citizen> citizens = manageCitizen.latest();
         List<Proposal> proposals = manageProposals.latest();
@@ -61,6 +62,7 @@ public class OpsService {
         //return exportResult.toJSON().toString();
         return javax.ws.rs.core.Response.ok(exportResult).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
+
 
 
     @POST
@@ -87,5 +89,10 @@ public class OpsService {
             e.printStackTrace();
             return new JsonServiceResponse("unable to send report", JsonServiceResponse.ResponseStatus.FAILED);
         }
+    }
+
+    @Override
+    IManageCitizen getManageCitizen() {
+        return manageCitizen;
     }
 }
