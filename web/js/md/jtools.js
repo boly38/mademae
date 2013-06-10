@@ -9,7 +9,7 @@ function async_get(addr,func) {
   http://www.jquery4u.com/snippets/url-parameters-jquery/
  */
 $.urlParam = function(name){
-  var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+  var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
   if (results == null) {
     return 0;
   }

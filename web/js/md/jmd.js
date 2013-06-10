@@ -109,9 +109,9 @@ function MaDemocratie() {
     };
 
     this.afterInit = function() {
-        consoleInfo('afterInit');
         $('.dropdown-toggle').dropdown();
         var paramRedirect = $.urlParameter('redirect');
+        consoleInfo('afterInit paramRedirect='+paramRedirect);
         if (paramRedirect == "login") {
             this.login();
             return;
