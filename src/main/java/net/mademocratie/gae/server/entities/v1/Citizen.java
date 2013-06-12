@@ -1,9 +1,7 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
@@ -23,14 +21,10 @@ public class Citizen {
     @Index
     private String authToken;
 
-    private User googleUser;
-
-
     /*
      * citizen creation date
      */
     public static final String CITIZEN_DATE = "date";
-
     @Index
     private Date date;
 
@@ -59,22 +53,22 @@ public class Citizen {
 
     private boolean admin;
 
+    private CitizenAuthProvider authProvider = CitizenAuthProvider.NONE;
+
     public Citizen() {
     }
 
-    public Citizen(String pseudo, User googleUser) {
+    public Citizen(String pseudo, String ggEmail) {
         this.pseudo = pseudo;
-        this.googleUser = googleUser;
-        String ggEmail = googleUser.getEmail();
-        this.email = (ggEmail != null ? new Email(ggEmail) : null);
-        date = new Date();
-        citizenState = CitizenState.ACTIVE;
-        citizenStateData = (new Date()).toString();
+        this.email = new Email(ggEmail);
+        this.date = new Date();
+        this.citizenState = CitizenState.ACTIVE;
+        this.citizenStateData = (new Date()).toString();
+        this.authProvider = CitizenAuthProvider.GOOGLE;
     }
 
     public Citizen(String pseudo, String password, String email, String accessKey) {
         this.pseudo = pseudo;
-        this.googleUser = null;
         this.password = password;
         this.email = (email != null ? new Email(email) : null);
         date = new Date();
@@ -88,14 +82,6 @@ public class Citizen {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getGoogleUser() {
-        return googleUser;
-    }
-
-    public void setGoogleUser(User googleUser) {
-        this.googleUser = googleUser;
     }
 
     public String getPseudo() {

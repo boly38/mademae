@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.annotation.Entity;

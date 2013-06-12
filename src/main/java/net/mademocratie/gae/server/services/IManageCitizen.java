@@ -2,7 +2,7 @@ package net.mademocratie.gae.server.services;
 
 import com.google.appengine.api.users.User;
 import com.google.inject.ImplementedBy;
-import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.exception.*;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 
@@ -42,7 +42,7 @@ public interface IManageCitizen {
     String getGoogleLoginURL(String destination);
 
     String getGoogleLogoutURL(String destination);
-    Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException;
+    Citizen registerGoogleUser(String pseudo, String googleEmail, boolean isAdmin) throws RegisterFailedException;
     Citizen register(String pseudo, String email) throws RegisterFailedException;
     void registerNotifyCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException;
 

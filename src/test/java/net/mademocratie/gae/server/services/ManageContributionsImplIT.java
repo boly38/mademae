@@ -1,8 +1,9 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.junit.After;
@@ -51,21 +52,17 @@ public class ManageContributionsImplIT extends BaseIT {
     private Contribution contribution_bForAPro;
     private Proposal testProposalAnonB;
 
+    private void cleanData() {
+        cleanVotes();
+        cleanProposalsAndCitizens();
+    }
+
     @Before
-    public void init() throws CitizenAlreadyExistsException {
+    public void init() throws MaDemocratieException {
         super.setUp();
-        manageProposal.removeAll();
-        manageCitizen.removeAll();
-        try {
-            myAuthorA = manageCitizen.addCitizen(new Citizen("jo la frite", "frite365", "friteA@jo-la.fr", "abc123"));
-        } catch (CitizenAlreadyExistsException e) {
-            myAuthorA = manageCitizen.findCitizenByEmail("friteA@jo-la.fr");
-        }
-        try {
-            myAuthorB = manageCitizen.addCitizen(new Citizen("ji la frote", "frite421", "froteB@jo-la.fr", "abc123"));
-        } catch (CitizenAlreadyExistsException e) {
-            myAuthorB = manageCitizen.findCitizenByEmail("froteB@jo-la.fr");
-        }
+        cleanData();
+        myAuthorA = assertTestCitizenPresence("friteA@jo-la.fr", "jo la frite");
+        myAuthorB = assertTestCitizenPresence("froteB@jo-la.fr", "ji la frote");
 
         testProposalAnon = new Proposal(PROPOSAL_TITLE + "Anon", PROPOSAL_CONTENT);
         testProposalAnonB = new Proposal(PROPOSAL_TITLE + "AnonB", PROPOSAL_CONTENT);
@@ -77,17 +74,21 @@ public class ManageContributionsImplIT extends BaseIT {
         manageProposal.addProposal(testProposalAnonB, null);
         manageProposal.addProposal(testProposalA, myAuthorA);
 
-        bForANeutral = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
-        bForAPro = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
+        bForANeutral = manageVote.vote(myAuthorB, testProposalA.getContributionId(), VoteKind.NEUTRAL);
+        bForAPro = manageVote.vote(myAuthorB, testProposalA.getContributionId(), VoteKind.PRO);
 
         manageProposal.addProposal(testProposalB, myAuthorB);
         manageProposal.addProposal(testProposalA2, myAuthorA);
 
-        contributionsCount = 7;
+        contributionsCount = 6;
+    }
+
+    @After
+    public void after() {
+        cleanData();
     }
 
     @Test
-    @Ignore("DEV IN Progress")
     public void testGetLastContributions() {
         // GIVEN
         int askedMaxContributions = 50; // 5; because of order
@@ -114,10 +115,5 @@ public class ManageContributionsImplIT extends BaseIT {
                 .contains(testProposalAnonB);
 
 
-    }
-
-    @After
-    public void tearDown() {
-        super.tearDown();
     }
 }

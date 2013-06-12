@@ -1,10 +1,13 @@
 package net.mademocratie.gae.server.services.impl;
 
 import com.google.appengine.api.datastore.Email;
+import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
 import com.googlecode.objectify.cmd.Query;
-import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.entities.v1.*;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.services.IManageProposal;
 import net.mademocratie.gae.server.services.IManageVote;
 
 import java.util.ArrayList;
@@ -18,14 +21,16 @@ public class ManageVoteImpl implements IManageVote {
 
     private final static Logger LOGGER = Logger.getLogger(ManageVoteImpl.class.getName());
 
-    public List<Vote> getProposalVotesOfACitizen(String citizenEmail, Long proposalId) {
-        return findProposalVotesByUserEmail(citizenEmail, proposalId);
+    @Inject
+    private IManageProposal manageProposal;
+
+    public List<Vote> getProposalVotesOfACitizen(Citizen citizen, Long proposalId) {
+        return findProposalVotesByAuthor(citizen, proposalId);
     }
 
-    private List<Vote> findProposalVotesByUserEmail(String citizenEmail, Long proposalId) {
-        Email citizenEmailVal = new Email(citizenEmail);
+    private List<Vote> findProposalVotesByAuthor(Citizen author, Long proposalId) {
         List<Vote> votes = ofy().load().type(Vote.class)
-                .filter("authorEmail", citizenEmailVal)
+                .filter("author", author)
                 .list();
         List<Vote> proposalVotes = new ArrayList<Vote>();
         for(Vote vote : votes) {
@@ -33,16 +38,24 @@ public class ManageVoteImpl implements IManageVote {
                 proposalVotes.add(vote);
             }
         }
-        LOGGER.info("findProposalVotesByUserEmail result " + (proposalVotes != null ? proposalVotes.size() : "(none)"));
+        LOGGER.info("findProposalVotesByAuthor result " + (proposalVotes != null ? proposalVotes.size() : "(none)"));
         return proposalVotes;
     }
 
-    public Vote vote(String citizenEmail, Long proposalId, VoteKind kind) {
-        List<Vote> existingVotes = findProposalVotesByUserEmail(citizenEmail, proposalId);
+    public Vote vote(Citizen author, Long proposalId, VoteKind kind) throws MaDemocratieException {
+        Proposal proposal = manageProposal.getById(proposalId);
+        if (proposal == null) {
+            throw new MaDemocratieException("unable to vote : proposal no more exits");
+        }
+        return vote(author, proposal, kind);
+    }
+
+    public Vote vote(Citizen author, Proposal proposal, VoteKind kind) throws MaDemocratieException {
+        List<Vote> existingVotes = findProposalVotesByAuthor(author, proposal.getContributionId());
         if (existingVotes.size() > 0) {
             removeVotes(existingVotes);
         }
-        Vote vote = new Vote(citizenEmail, proposalId, kind);
+        Vote vote = new Vote(author, proposal, kind);
         addVote(vote);
         LOGGER.info("* Vote ADDED : " + vote);
         return vote;
@@ -107,5 +120,15 @@ public class ManageVoteImpl implements IManageVote {
             votesOnProposals.add(voteOnProposal);
         }
         return votesOnProposals;
+    }
+
+    public void removeAll() {
+        int limit = 100;
+        List<Vote> votes = ofy().load().type(Vote.class).limit(limit).list();
+        ofy().delete().entities(votes).now();
+        LOGGER.info(votes.size() + " vote(s) removed");
+        if (votes.size() == limit) {
+            removeAll();
+        }
     }
 }

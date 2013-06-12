@@ -27,11 +27,11 @@
                 <div class="span7">
                     <div class="btn-group">
                         <a id="proposalVoteProButton" class="btn btn-info"
-                           href="javascript:md.voteProposalPro(${proposal.itemIt})"><i class="icon-thumbs-up"></i> pro</a>
+                           href="javascript:md.voteProposalPro(${proposal.contributionId})"><i class="icon-thumbs-up"></i> pro</a>
                         <a id="proposalVoteNeutralButton" class="btn btn-info"
-                           href="javascript:md.voteProposalNeutral(${proposal.itemIt})"><i class="icon-volume-off"></i> neutral</a>
+                           href="javascript:md.voteProposalNeutral(${proposal.contributionId})"><i class="icon-volume-off"></i> neutral</a>
                         <a id="proposalVoteConButton" class="btn btn-info"
-                           href="javascript:md.voteProposalCon(${proposal.itemIt})"><i class="icon-thumbs-down"></i> con</a>
+                           href="javascript:md.voteProposalCon(${proposal.contributionId})"><i class="icon-thumbs-down"></i> con</a>
                     </div>
                 </div>
             </div>
@@ -59,16 +59,16 @@
             <div class="tab-pane" id="tabPro">
                 <p>&lt;no pro args&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalPro(${proposal.itemIt});" >add pro</a>
+                   href="javascript:md.addProposalPro(${proposal.contributionId});" >add pro</a>
             </div>
             <div class="tab-pane" id="tabCon">
                 <p>&lt;no con args&gt;</p>
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalCon(${proposal.itemIt});" >add con</a>
+                   href="javascript:md.addProposalCon(${proposal.contributionId});" >add con</a>
             </div>
             <div class="tab-pane" id="tabCom">
                 <a id="proposalCommButton" class="btn btn-info"
-                   href="javascript:md.addProposalCommentAction(${proposal.itemIt}, 'addcommenttarget');" ><i class="icon-tag"></i> add a comment</a>
+                   href="javascript:md.addProposalCommentAction(${proposal.contributionId}, 'addcommenttarget');" ><i class="icon-tag"></i> add a comment</a>
                 {{if ((typeof(proposalComments) == "undefined") || (proposalComments == ""))}}
                     <p>&lt;no comment&gt;</p>
                 {{else}}

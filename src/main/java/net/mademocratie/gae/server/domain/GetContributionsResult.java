@@ -1,7 +1,7 @@
 package net.mademocratie.gae.server.domain;
 
-import net.mademocratie.gae.server.entities.Contribution;
-import net.mademocratie.gae.server.entities.Proposal;
+import net.mademocratie.gae.server.entities.v1.Contribution;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;

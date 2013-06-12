@@ -1,6 +1,6 @@
 package net.mademocratie.gae.server.services.impl;
 
-import net.mademocratie.gae.server.entities.IContribution;
+import net.mademocratie.gae.server.entities.v1.IContribution;
 
 import java.util.Comparator;
 import java.util.Date;

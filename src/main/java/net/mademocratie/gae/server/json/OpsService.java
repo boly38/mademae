@@ -4,11 +4,10 @@ import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.DbContent;
 import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.domain.SignInInformations;
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.CommentContribution;
-import net.mademocratie.gae.server.entities.Proposal;
-import net.mademocratie.gae.server.entities.Vote;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Comment;
+import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.entities.v1.Vote;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageComment;
@@ -18,7 +17,6 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -52,12 +50,12 @@ public class OpsService extends AbstractMaDemocratieJsonService {
         List<Citizen> citizens = manageCitizen.latest();
         List<Proposal> proposals = manageProposals.latest();
         List<Vote> votes = manageVote.latest();
-        List<CommentContribution> comments = manageComment.latest();
+        List<Comment> comments = manageComment.latest();
         DbContent exportResult = new DbContent(
                 new ArrayList<Citizen>(citizens),
                 new ArrayList<Proposal>(proposals),
                 new ArrayList<Vote>(votes),
-                new ArrayList<CommentContribution>(comments)
+                new ArrayList<Comment>(comments)
         );
         //return exportResult.toJSON().toString();
         return javax.ws.rs.core.Response.ok(exportResult).type(MediaType.APPLICATION_JSON_TYPE).build();

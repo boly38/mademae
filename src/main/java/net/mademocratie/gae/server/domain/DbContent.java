@@ -1,9 +1,9 @@
 package net.mademocratie.gae.server.domain;
 
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.CommentContribution;
-import net.mademocratie.gae.server.entities.Proposal;
-import net.mademocratie.gae.server.entities.Vote;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Comment;
+import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.entities.v1.Vote;
 import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,16 +14,16 @@ public class DbContent {
     private ArrayList<Citizen> citizens;
     private ArrayList<Proposal> proposals;
     private ArrayList<Vote> votes;
-    private ArrayList<CommentContribution> comments;
+    private ArrayList<Comment> comments;
 
     public DbContent() {
     }
 
-    public DbContent(ArrayList<Citizen> citizens, ArrayList<Proposal> proposals, ArrayList<Vote> votes, ArrayList<CommentContribution> commentContributions) {
+    public DbContent(ArrayList<Citizen> citizens, ArrayList<Proposal> proposals, ArrayList<Vote> votes, ArrayList<Comment> comments) {
         this.citizens = citizens;
         this.proposals = proposals;
         this.votes= votes;
-        this.comments = commentContributions;
+        this.comments = comments;
     }
 
     public ArrayList<Proposal> getProposals() {
@@ -50,11 +50,11 @@ public class DbContent {
         this.votes = votes;
     }
 
-    public ArrayList<CommentContribution> getComments() {
+    public ArrayList<Comment> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<CommentContribution> comments) {
+    public void setComments(ArrayList<Comment> comments) {
         this.comments = comments;
     }
 

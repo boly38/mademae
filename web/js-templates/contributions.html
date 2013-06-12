@@ -6,7 +6,7 @@
                 {{each contributions}}
                 <div>
                     <p>${age} <span style="font-weight: bold">${authorPseudo}</span>
-                        <a href="javascript:md.contribution('${itemIt}', '${contributionType}');">${contributionDetails}</a>
+                        <a href="javascript:md.contribution('${contributionId}', '${contributionType}');">${contributionDetails}</a>
                     </p>
                 </div>
                 {{/each}}
@@ -23,7 +23,7 @@
             {{each proposals}}
             <div>
                 <p>${dateFormat} (${age}) <span style="font-weight: bold" >${authorPseudo}</span> wrote:</p>
-                    <blockquote><a href="javascript:md.contribution('${itemIt}', '${contributionType}');">${title}</a></blockquote>
+                    <blockquote><a href="javascript:md.contribution('${contributionId}', '${contributionType}');">${title}</a></blockquote>
             </div>
             {{/each}}
         </div>

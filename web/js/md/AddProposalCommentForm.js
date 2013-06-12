@@ -12,7 +12,7 @@ function AddProposalCommentForm() {
     this.showForm= function() {
         var parentAP = this;
         var addCommentData = {};
-        addCommentData.itemIt = this.proposalId;
+        addCommentData.contributionId = this.proposalId;
         addCommentData.contributionType = 'PROPOSAL';
         $.get('/js-templates/addProposalComment.html', function(addProposalCommentTemplate) {
             $.template("addProposalCommentTemplate", addProposalCommentTemplate);

@@ -1,13 +1,14 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,13 +23,6 @@ import static org.fest.assertions.Assertions.*;
 public class ManageVoteImplIT extends BaseIT {
     private static final Logger logger = Logger.getLogger(ManageVoteImplIT.class.getName());
 
-    @Inject
-    private ManageCitizenImpl manageCitizen;
-    @Inject
-    private ManageProposalImpl manageProposal;
-    @Inject
-    private ManageVoteImpl manageVote;
-
 
     private static final String PROPOSAL_TITLE = "test_proposal_vote";
     private static final String PROPOSAL_CONTENT = "test_proposal_vote";
@@ -40,10 +34,12 @@ public class ManageVoteImplIT extends BaseIT {
     private Proposal testProposalA2;
 
     @Before
-    public void init() {
+    public void init() throws CitizenAlreadyExistsException {
         super.setUp();
+        cleanTestData();
         myAuthorA = assertTestCitizenPresence("friteA@jo-la.fr", "jo la frite");
         myAuthorB = assertTestCitizenPresence("froteB@jo-la.fr", "ji la frote");
+
         testProposalAnon = new Proposal(PROPOSAL_TITLE, PROPOSAL_CONTENT);
         testProposalA = new Proposal(PROPOSAL_TITLE, PROPOSAL_CONTENT);
         testProposalB = new Proposal(PROPOSAL_TITLE, PROPOSAL_CONTENT);
@@ -54,14 +50,14 @@ public class ManageVoteImplIT extends BaseIT {
         manageProposal.addProposal(testProposalA2, myAuthorA);
     }
 
-    private Citizen assertTestCitizenPresence(String email, String pseudo) {
-        Citizen cit  = new Citizen(pseudo, "frite365", email, "abc123");
-        try {
-            manageCitizen.addCitizen(cit);
-        } catch (CitizenAlreadyExistsException e) {
-            // nothing to do
-        }
-        return cit;
+    @After
+    public void after() {
+        cleanTestData();
+    }
+
+    private void cleanTestData() {
+        manageProposal.removeAll();
+        manageCitizen.removeAll();
     }
 
     private Proposal createAnonymousProposal() {
@@ -76,10 +72,10 @@ public class ManageVoteImplIT extends BaseIT {
         // GIVEN
         Proposal testProposalAnonymous = createAnonymousProposal();
         // WHEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnonymous.getItemIt(), VoteKind.CON);
+        Vote testVote = manageVote.vote(myAuthorA, testProposalAnonymous, VoteKind.CON);
         // THEN
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getItemIt()).isNotNull();
+        assertThat(testVote.getContributionId()).isNotNull();
     }
 
     /**
@@ -90,10 +86,10 @@ public class ManageVoteImplIT extends BaseIT {
         // GIVEN
         Proposal testProposalAnonymous = createAnonymousProposal();
         // WHEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalAnonymous.getItemIt(), VoteKind.PRO);
+        Vote testVote = manageVote.vote(myAuthorA, testProposalAnonymous, VoteKind.PRO);
         // THEN
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getItemIt()).isNotNull();
+        assertThat(testVote.getContributionId()).isNotNull();
     }
 
     /**
@@ -101,25 +97,25 @@ public class ManageVoteImplIT extends BaseIT {
      **/
     @Test
     public void should_vote_neutral_on_authored_proposal() throws Exception {
-        Vote testVote = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
+        Vote testVote = manageVote.vote(myAuthorB, testProposalA, VoteKind.NEUTRAL);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getItemIt()).isNotNull();
+        assertThat(testVote.getContributionId()).isNotNull();
     }
 
     @Test
     public void should_add_two_distinct_votes_on_authored_proposal() throws Exception {
-        manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
-        Vote testVoteBis = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
+        manageVote.vote(myAuthorB, testProposalA.getContributionId(), VoteKind.NEUTRAL);
+        Vote testVoteBis = manageVote.vote(myAuthorB, testProposalA, VoteKind.PRO);
         assertThat(testVoteBis).isNotNull();
-        assertThat(testVoteBis.getItemIt()).isNotNull();
+        assertThat(testVoteBis.getContributionId()).isNotNull();
     }
 
     @Test
     public void voting_again_should_not_append_a_now_vote_but_replace_the_existing_one() throws Exception {
         logger.info("voting_again_should_not_append_a_now_vote_but_replace_the_existing_one");
-        Long proposalId = testProposalA.getItemIt();
-        manageVote.vote(myAuthorB.getEmail(), proposalId, VoteKind.NEUTRAL);
-        manageVote.vote(myAuthorB.getEmail(), proposalId, VoteKind.PRO);
+        Long proposalId = testProposalA.getContributionId();
+        manageVote.vote(myAuthorB, proposalId, VoteKind.NEUTRAL);
+        manageVote.vote(myAuthorB, proposalId, VoteKind.PRO);
 
         ProposalVotes proposalVotes = manageVote.getProposalVotes(proposalId);
         assertThat(proposalVotes).isNotNull();
@@ -129,11 +125,11 @@ public class ManageVoteImplIT extends BaseIT {
     @Test
     public void should_get_proposal_vote_of_a_citizen() throws Exception {
         // GIVEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
+        Vote testVote = manageVote.vote(myAuthorA, testProposalA, VoteKind.PRO);
         assertThat(testVote).isNotNull();
-        assertThat(testVote.getItemIt()).isNotNull();
+        assertThat(testVote.getContributionId()).isNotNull();
         // WHEN
-        List<Vote> retrievedVotes = manageVote.getProposalVotesOfACitizen(myAuthorA.getEmail(), testProposalA.getItemIt());
+        List<Vote> retrievedVotes = manageVote.getProposalVotesOfACitizen(myAuthorA, testProposalA.getContributionId());
         // THEN
         assertThat(retrievedVotes)
                 .as("unable to retrieve a vote of a citizen")
@@ -149,11 +145,11 @@ public class ManageVoteImplIT extends BaseIT {
     @Test
     public void testGetProposalVotes() throws Exception {
         // GIVEN
-        Vote testVote = manageVote.vote(myAuthorA.getEmail(), testProposalA.getItemIt(), VoteKind.PRO);
-        Vote testVoteB = manageVote.vote(myAuthorB.getEmail(), testProposalA.getItemIt(), VoteKind.NEUTRAL);
-        assertThat(testVote.getItemIt()).isNotNull();
+        Vote testVote = manageVote.vote(myAuthorA, testProposalA, VoteKind.PRO);
+        Vote testVoteB = manageVote.vote(myAuthorB, testProposalA, VoteKind.NEUTRAL);
+        assertThat(testVote.getContributionId()).isNotNull();
         // WHEN
-        ProposalVotes retrievedVotes = manageVote.getProposalVotes(testProposalA.getItemIt());
+        ProposalVotes retrievedVotes = manageVote.getProposalVotes(testProposalA.getContributionId());
         //THEN
         assertThat(retrievedVotes)
                 .as("unable to retrieve a proposal's vote")

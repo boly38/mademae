@@ -1,6 +1,5 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
-import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.Key;
@@ -13,7 +12,7 @@ import java.util.Date;
 
 @XmlRootElement
 @Entity
-public class CommentContribution extends Contribution implements IContribution {
+public class Comment extends Contribution implements IContribution {
     @Index
     protected Key<Contribution> parentContribution;
 
@@ -21,11 +20,11 @@ public class CommentContribution extends Contribution implements IContribution {
 
     private Text content;
 
-    public CommentContribution() {
+    public Comment() {
     }
 
 
-    public CommentContribution(CommentContribution inComment) {
+    public Comment(Comment inComment) {
         super(inComment);
         this.setContent(inComment.getContent());
         parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
@@ -33,14 +32,9 @@ public class CommentContribution extends Contribution implements IContribution {
     }
 
 
-    public CommentContribution(Citizen citizen, CommentContribution inComment) {
+    public Comment(Citizen citizen, Comment inComment) {
         super(inComment);
-        if (citizen != null && citizen.getEmail() != null) {
-            this.setAuthorEmailString(citizen.getEmail());
-        }
-        if (citizen != null) {
-            this.setAuthorPseudo(citizen.getPseudo());
-        }
+        this.setAuthor(Key.create(Citizen.class, citizen.getId()));
         this.setContent(inComment.getContent());
         parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
         parentContributionType = inComment.getParentContributionType();
@@ -48,7 +42,7 @@ public class CommentContribution extends Contribution implements IContribution {
 
     @Override
     public Date getDate() {
-        return date;
+        return super.getDate();
     }
 
     @Override
@@ -62,8 +56,8 @@ public class CommentContribution extends Contribution implements IContribution {
     }
 
     @Override                    // json need id
-    public Long getItemIt() {
-        return super.getItemIt();
+    public Long getContributionId() {
+        return super.getContributionId();
     }
 
 
@@ -75,16 +69,6 @@ public class CommentContribution extends Contribution implements IContribution {
     @Override
     public String getContributionDetails() {
         return "comment on '" + parentContributionType + "'";
-    }
-
-    @Override
-    public Email getAuthorEmail() {
-        return super.getAuthorEmail();
-    }
-
-    @Override
-    public String getAuthorPseudo() {
-        return super.getAuthorPseudo();
     }
 
     public String getContent() {

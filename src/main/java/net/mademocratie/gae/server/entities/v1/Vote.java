@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.Key;
@@ -19,10 +19,10 @@ public class Vote extends Contribution implements IContribution {
 
     public Vote() {}
 
-    public Vote(String authorEmail, Long proposalId, VoteKind kind) {
-        super(authorEmail);
+    public Vote(Citizen author, Proposal proposal, VoteKind kind) {
+        super(author);
         this.kind = kind;
-        this.proposal = Key.create(Proposal.class, proposalId);
+        this.proposal = Key.create(Proposal.class, proposal.getContributionId());
     }
 
     public Vote(Vote v) {
@@ -33,7 +33,7 @@ public class Vote extends Contribution implements IContribution {
 
     @Override
     public Date getDate() {
-        return date;
+        return super.getDate();
     }
 
     @Override
@@ -70,19 +70,19 @@ public class Vote extends Contribution implements IContribution {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[Vote");
-        if (getItemIt() != null) {
-            sb.append("#").append(getItemIt());
+        if (getContributionId() != null) {
+            sb.append("#").append(getContributionId());
         }
         sb.append(":").append(getDate());
         sb.append("|").append(getKind())
-                .append(" by ").append(getAuthorEmail())
+                .append(" by citizen#").append(getAuthor())
                 .append(" on proposal#").append(getProposal())
                 .append("]");
         return sb.toString();
     }
 
     @Override                    // json need id
-    public Long getItemIt() {
+    public Long getContributionId() {
         return proposal.getId();
     }
 
@@ -97,13 +97,7 @@ public class Vote extends Contribution implements IContribution {
         return "vote on proposal '" + getProposal() + "'";
     }
 
-    @Override
-    public Email getAuthorEmail() {
-        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getAuthorPseudo() {
-        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
+    public void setProposal(Key<Proposal> proposal) {
+        this.proposal = proposal;
     }
 }

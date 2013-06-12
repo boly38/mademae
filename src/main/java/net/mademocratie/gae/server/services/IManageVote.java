@@ -1,10 +1,8 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
-import net.mademocratie.gae.server.entities.ProposalVotes;
-import net.mademocratie.gae.server.entities.Vote;
-import net.mademocratie.gae.server.entities.VoteKind;
-import net.mademocratie.gae.server.entities.VoteOnProposal;
+import net.mademocratie.gae.server.entities.v1.*;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 
 import java.util.List;
@@ -12,9 +10,10 @@ import java.util.List;
 @ImplementedBy(ManageVoteImpl.class)
 public interface IManageVote {
 
-    List<Vote> getProposalVotesOfACitizen(String citizenEmail, Long proposalId);
+    List<Vote> getProposalVotesOfACitizen(Citizen citizen, Long proposalId);
 
-    Vote vote(String citizenEmail, Long proposalId, VoteKind kind);
+    Vote vote(Citizen author, Long proposalId, VoteKind kind) throws MaDemocratieException;
+    Vote vote(Citizen author, Proposal proposal, VoteKind kind) throws MaDemocratieException;
 
     ProposalVotes getProposalVotes(Long proposalId);
 
@@ -25,4 +24,6 @@ public interface IManageVote {
     void removeProposalVotes(Long proposalId);
 
     List<VoteOnProposal> fetchProposalsVotes(List<Vote> latestVotes);
+
+    void removeAll();
 }

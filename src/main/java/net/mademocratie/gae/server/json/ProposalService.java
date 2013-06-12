@@ -3,8 +3,9 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProposalInformations;
-import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -57,28 +58,27 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());
         if (authenticatedUser != null) {
-            newProposal.setAuthorEmailString(authenticatedUser.getEmail());
-            newProposal.setAuthorPseudo(authenticatedUser.getPseudo());
+            newProposal.setAuthor(authenticatedUser);
         }
         log.info("addProposal POST received : " + proposal.toString());
         Proposal addedProposal = manageProposals.addProposal(newProposal);
         log.info("addProposal POST received ; result=" + addedProposal.toString());
-        return addedProposal.getItemIt().toString();
+        return addedProposal.getContributionId().toString();
     }
 
 
     @POST
     @Path("/addcomment")
-    public String addProposalComment(CommentContribution inComment, @Context HttpHeaders httpHeaders) {
+    public String addProposalComment(Comment inComment, @Context HttpHeaders httpHeaders) {
         if (inComment == null) return null;
         if (inComment.getParentContribution() == null) return null;
         if (inComment.getParentContribution() == null) return null;
         if (inComment.getContent() == null) return null;
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         log.info("addComment POST received : " + inComment.toString());
-        CommentContribution addedComment = manageComment.comment(authenticatedUser, inComment);
+        Comment addedComment = manageComment.comment(authenticatedUser, inComment);
         log.info("addComment POST received ; result=" + addedComment.toString());
-        return addedComment.getItemIt().toString();
+        return addedComment.getContributionId().toString();
     }
 
 
@@ -92,39 +92,38 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Long propId = Long.valueOf(proposalId);
         Proposal proposalRetrieved = manageProposals.getById(propId);
         ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
-        List<CommentContribution> proposalComments = manageComment.getProposalComments(propId);
+        List<Comment> proposalComments = manageComment.getProposalComments(propId);
         ProposalInformations proposalInformations = new ProposalInformations(proposalRetrieved, proposalVotes, proposalComments);
         log.info("getProposal " + propId + " : " + proposalInformations.toString());
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         return jsonProposalInformations.toString();
     }
 
-    private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException {
+    private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException, MaDemocratieException {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         if (authenticatedUser == null) {
             // throw new AnonymousCantVoteException();
             log.info("vote "+ voteKind.toString()+" on proposal id " + proposalId + " *ignored* : anonymous can't vote");
             return null;
         }
-        String voteAuthorEmail = authenticatedUser.getEmail();
-        return manageVote.vote(voteAuthorEmail, Long.valueOf(proposalId), voteKind);
+        return manageVote.vote(authenticatedUser, Long.valueOf(proposalId), voteKind);
     }
 
     @GET
     @Path("/proposal/vote/pro/{id}")
-    public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+    public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.PRO);
     }
 
     @GET
     @Path("/proposal/vote/con/{id}")
-    public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+    public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.CON);
     }
 
     @GET
     @Path("/proposal/vote/neutral/{id}")
-    public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException {
+    public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
     }
 

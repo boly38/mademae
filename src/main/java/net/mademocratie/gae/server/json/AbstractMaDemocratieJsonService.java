@@ -1,6 +1,6 @@
 package net.mademocratie.gae.server.json;
 
-import net.mademocratie.gae.server.entities.Citizen;
+import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.services.IManageCitizen;
 
 import javax.ws.rs.core.HttpHeaders;

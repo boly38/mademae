@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 public enum CitizenState {
     CREATED,

@@ -2,7 +2,7 @@ package net.mademocratie.gae.server.services.impl;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
-import net.mademocratie.gae.server.entities.*;
+import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.services.IManageComment;
 
 import java.util.ArrayList;
@@ -16,22 +16,25 @@ public class ManageCommentImpl implements IManageComment {
     private final static Logger LOGGER = Logger.getLogger(ManageCommentImpl.class.getName());
 
 
-    public CommentContribution comment(Citizen citizen, CommentContribution inComment) {
-        CommentContribution commentContribution = new CommentContribution(citizen, inComment);
-        addComment(commentContribution);
-        LOGGER.info("* Comment ADDED : " + commentContribution);
-        return commentContribution;
+    public Comment comment(Citizen citizen, Comment inComment) {
+        Comment comment = inComment;
+        if (citizen != null) {
+            comment = new Comment(citizen, inComment);
+        }
+        addComment(comment);
+        LOGGER.info("* Comment ADDED : " + comment);
+        return comment;
     }
 
-    public List<CommentContribution> getProposalComments(Long proposalId) {
-        List<CommentContribution> comments= ofy().load().type(CommentContribution.class)
+    public List<Comment> getProposalComments(Long proposalId) {
+        List<Comment> comments= ofy().load().type(Comment.class)
                 .filter("parentContribution", Key.create(Contribution.class, proposalId))
                 .order("-date")
                 .list();
 
         LOGGER.info("getProposalComments (partial) result " + (comments != null ? comments.size() : "(none)"));
-        List<CommentContribution> proposalComments = new ArrayList<CommentContribution>();
-        for(CommentContribution comm : comments) {
+        List<Comment> proposalComments = new ArrayList<Comment>();
+        for(Comment comm : comments) {
             if (IContribution.ContributionType.PROPOSAL.toString().equals(comm.getParentContributionType())) {
                 proposalComments.add(comm);
             }
@@ -41,40 +44,34 @@ public class ManageCommentImpl implements IManageComment {
 
     }
 
-    private CommentContribution addComment(CommentContribution commentContribution) {
-        ofy().save().entity(commentContribution).now();
-        LOGGER.fine("addComment result " + commentContribution.toString());
-        return commentContribution;
+    private Comment addComment(Comment comment) {
+        ofy().save().entity(comment).now();
+        LOGGER.fine("addComment result " + comment.toString());
+        return comment;
     }
 
-    public List<CommentContribution> latest() {
+    public List<Comment> latest() {
         return latest(0);
     }
-    public List<CommentContribution> latest(int max) {
-        Query<CommentContribution> orderedComments = ofy().load().type(CommentContribution.class).order("-date");
+    public List<Comment> latest(int max) {
+        Query<Comment> orderedComments = ofy().load().type(Comment.class).order("-date");
         if (max > 0) {
             orderedComments = orderedComments.limit(max);
         }
-        List<CommentContribution> latestComments = orderedComments.list();
+        List<Comment> latestComments = orderedComments.list();
         int resultCount = latestComments != null ? latestComments.size() : 0;
         LOGGER.info("* latest comments asked " + (max > 0 ? max : "unlimited") + " result " +resultCount);
         return latestComments;
     }
 
-    public List<CommentOnProposal> fetchProposalsComments(List<CommentContribution> comms) {
+    public Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms) {
         int commsCount = comms.size();
         List<Long> proposalIds = new ArrayList<Long>(commsCount);
-        for (CommentContribution c : comms) {
+        for (Comment c : comms) {
             proposalIds.add(c.getParentContribution());
         }
         Map<Long, Proposal> proposalMap = ofy().load().type(Proposal.class).ids(proposalIds);
-        List<CommentOnProposal> commsOnProposals = new ArrayList<CommentOnProposal>(commsCount);
-        for(CommentContribution c : comms){
-            Proposal commProposalContent = proposalMap.get(c.getParentContribution());
-            CommentOnProposal commOnProposal = new CommentOnProposal(c, commProposalContent);
-            commsOnProposals.add(commOnProposal);
-        }
-        return commsOnProposals;
+        return proposalMap;
     }
 
 }

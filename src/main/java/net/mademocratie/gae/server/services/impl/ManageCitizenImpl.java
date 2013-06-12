@@ -4,10 +4,9 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.googlecode.objectify.cmd.LoadType;
 import com.googlecode.objectify.cmd.Query;
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.CitizenState;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.CitizenState;
 import net.mademocratie.gae.server.exception.*;
 import net.mademocratie.gae.server.services.IManageCitizen;
 
@@ -39,7 +38,7 @@ public class ManageCitizenImpl implements IManageCitizen {
         User user = userService.getCurrentUser();
         Citizen suggestCitizen = new Citizen();
         if (user != null) {
-            suggestCitizen = new Citizen(user.getNickname(), user);
+            suggestCitizen = new Citizen(user.getNickname(), user.getEmail());
         }
         return suggestCitizen;
     }
@@ -58,6 +57,7 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public Citizen findCitizenByEmail(String email) {
+        LOGGER.info("findCitizenByEmail " + email);
         Email emailVal = new Email(email);
         Citizen c= ofy().load().type(Citizen.class).filter("email", emailVal).first().get();
         LOGGER.info("findCitizenByEmail result " + (c != null ? c.toString() : "(none)"));
@@ -65,9 +65,13 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public void removeAll() {
-        // ofy().delete().type(Vote.class);
-        // ofy().delete().type(Proposal.class);
-        ofy().delete().type(Citizen.class);
+        int limit = 100;
+        List<Citizen> citizens = ofy().load().type(Citizen.class).limit(limit).list();
+        ofy().delete().entities(citizens).now();
+        LOGGER.info(citizens.size() + " citizen(s) removed");
+        if (citizens.size() == limit) {
+            removeAll();
+        }
     }
 
     public void delete(Citizen testUser) {
@@ -107,7 +111,7 @@ public class ManageCitizenImpl implements IManageCitizen {
         if (findCitizenByEmail(googleUserEmail) != null) {
             return openSession(googleUserEmail);
         }
-        Citizen registeredCitizen = register(googleUser.getNickname(), googleUser, isGoogleUserAdmin());
+        Citizen registeredCitizen = registerGoogleUser(googleUser.getNickname(), googleUser.getEmail(), isGoogleUserAdmin());
         registerNotifyGoogleCitizen(registeredCitizen, "http://www.mademocratie.net");
 
         return openSession(googleUserEmail);
@@ -130,8 +134,7 @@ public class ManageCitizenImpl implements IManageCitizen {
         }
         User googleUser = userService.getCurrentUser();
         if (googleUser != null
-                && citizen.getGoogleUser() != null
-                && googleUser.getEmail().equals(citizen.getEmail())) {
+         && googleUser.getEmail().equals(citizen.getEmail())) {
             LOGGER.info("authenticate google user " + email);
             return citizen;
         }
@@ -227,8 +230,8 @@ public class ManageCitizenImpl implements IManageCitizen {
         throw new RegisterFailedException("Unable to register with this email, you should already been registered.");
     }
 
-    public Citizen register(String pseudo, User googleUser, boolean isAdmin) throws RegisterFailedException {
-        Citizen newCitizen = new Citizen(pseudo, googleUser);
+    public Citizen registerGoogleUser(String pseudo, String googleEmail, boolean isAdmin) throws RegisterFailedException {
+        Citizen newCitizen = new Citizen(pseudo, googleEmail);
         newCitizen.setAdmin(isAdmin);
         try {
             addCitizen(newCitizen);

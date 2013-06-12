@@ -3,8 +3,8 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.entities.Contribution;
-import net.mademocratie.gae.server.entities.Proposal;
+import net.mademocratie.gae.server.entities.v1.Contribution;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.IManageContributions;
 import net.mademocratie.gae.server.services.IManageProposal;
 

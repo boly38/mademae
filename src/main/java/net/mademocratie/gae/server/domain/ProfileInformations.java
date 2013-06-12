@@ -1,8 +1,8 @@
 package net.mademocratie.gae.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.Proposal;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import javax.xml.bind.annotation.XmlRootElement;

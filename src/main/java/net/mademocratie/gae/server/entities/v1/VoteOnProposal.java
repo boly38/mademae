@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 import com.google.appengine.api.datastore.Email;
 import net.mademocratie.gae.server.services.helper.DateHelper;
@@ -38,7 +38,7 @@ public class VoteOnProposal extends Vote implements IContribution {
     }
 
     @Override                    // json need id
-    public Long getItemIt() {
+    public Long getContributionId() {
         return proposal.getId();
     }
 
@@ -50,17 +50,7 @@ public class VoteOnProposal extends Vote implements IContribution {
 
     @Override
     public String getContributionDetails() {
-        String title = getProposalContent() != null ? getProposalContent().getTitle() : getItemIt().toString();
+        String title = getProposalContent() != null ? getProposalContent().getTitle() : getContributionId().toString();
         return "a vote on proposal '" + title + "'";
-    }
-
-    @Override
-    public Email getAuthorEmail() {
-        return super.getAuthorEmail();    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public String getAuthorPseudo() {
-        return super.getAuthorPseudo();    //To change body of overridden methods use File | Settings | File Templates.
     }
 }

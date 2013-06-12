@@ -1,12 +1,11 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Text;
 import com.google.appengine.repackaged.com.google.common.base.Objects;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import net.mademocratie.gae.server.services.helper.DateHelper;
-import org.joda.time.Duration;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -44,18 +43,8 @@ public class Proposal extends Contribution implements IContribution {
     }
 
     @Override                    // json need id
-    public Long getItemIt() {
-        return super.getItemIt();
-    }
-
-    @Override
-    public Email getAuthorEmail() {
-        return super.getAuthorEmail();
-    }
-
-    @Override
-    public String getAuthorPseudo() {
-        return super.getAuthorPseudo();
+    public Long getContributionId() {
+        return super.getContributionId();
     }
 
     @Override

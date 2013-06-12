@@ -1,23 +1,23 @@
 package net.mademocratie.gae.server.services;
 
-import com.google.appengine.api.datastore.Text;
 import com.google.inject.ImplementedBy;
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.CommentContribution;
-import net.mademocratie.gae.server.entities.CommentOnProposal;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Comment;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.impl.ManageCommentImpl;
 
 import java.util.List;
+import java.util.Map;
 
 @ImplementedBy(ManageCommentImpl.class)
 public interface IManageComment {
-    CommentContribution comment(Citizen citizen, CommentContribution inComment);
+    Comment comment(Citizen citizen, Comment inComment);
 
-    List<CommentContribution> getProposalComments(Long propId);
+    List<Comment> getProposalComments(Long propId);
 
-    List<CommentContribution> latest(int max);
+    List<Comment> latest(int max);
 
-    List<CommentContribution> latest();
+    List<Comment> latest();
 
-    List<CommentOnProposal> fetchProposalsComments(List<CommentContribution> latestComments);
+    Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms);
 }

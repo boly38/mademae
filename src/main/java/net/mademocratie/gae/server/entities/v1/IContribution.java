@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.entities;
+package net.mademocratie.gae.server.entities.v1;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,13 +12,11 @@ import java.util.Date;
  * @version : $Revision$
  */
 public interface IContribution extends Serializable {
-    public abstract Long getItemIt();
+    public abstract Long getContributionId();
 
     public abstract Date getDate();
 
     public abstract String getContributionDetails();
-
-    public String getAuthorPseudo();
 
     public abstract String getContributionType();
 

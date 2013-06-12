@@ -1,9 +1,9 @@
 package net.mademocratie.gae.server.services.impl;
 
-import com.google.appengine.api.datastore.Email;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
-import net.mademocratie.gae.server.entities.Citizen;
-import net.mademocratie.gae.server.entities.Proposal;
+import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.IManageProposal;
 
 import java.util.Date;
@@ -17,17 +17,17 @@ public class ManageProposalImpl implements IManageProposal {
 
     public Proposal addProposal(Proposal inputProposal, Citizen author) {
         if (author != null) {
-            inputProposal.setAuthorEmailString(author.getEmail());
-            inputProposal.setAuthorPseudo(author.getPseudo());
+            inputProposal.setAuthor(author);
         }
         return addProposal(inputProposal);
     }
 
     public Proposal addProposal(Proposal inputProposal) {
         inputProposal.setDate(new Date());
-        ofy().save().entity(inputProposal).now();
-        LOGGER.info("* Proposal ADDED : " + inputProposal);
-        return inputProposal;
+        Key<Proposal> proposalKey = ofy().save().entity(inputProposal).now();
+        Proposal addedProposal = getById(proposalKey.getId());
+        LOGGER.info("* Proposal ADDED : " + addedProposal);
+        return addedProposal;
     }
 
     public List<Proposal> latest(int max) {
@@ -46,7 +46,13 @@ public class ManageProposalImpl implements IManageProposal {
     }
 
     public void removeAll() {
-        ofy().delete().type(Proposal.class);
+        int limit = 100;
+        List<Proposal> proposals = ofy().load().type(Proposal.class).limit(limit).list();
+        ofy().delete().entities(proposals).now();
+        LOGGER.info(proposals.size() + " proposal(s) removed");
+        if (proposals.size() == limit) {
+            removeAll();
+        }
     }
 
     public Proposal getById(Long proposalId) {
