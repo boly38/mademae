@@ -1,5 +1,6 @@
 package net.mademocratie.gae.server.entities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Contribution;
@@ -39,7 +40,11 @@ public abstract class ContributionDTO implements IContribution {
         return (author != null ? new CitizenDTO(author) : null);
     }
 
+    @JsonProperty
     public CitizenDTO getAuthor() {
+        if (author == null) {
+            return Citizen.createAnonymous();
+        }
         return author;
     }
 
@@ -61,6 +66,11 @@ public abstract class ContributionDTO implements IContribution {
 
     public String getDateFormat() {
         return DateHelper.getDateFormat(getDate());
+    }
+
+    @JsonProperty("age")
+    public String getAge() {
+        return DateHelper.getDateDuration(getDate());
     }
 
     public void setDate(Date date) {

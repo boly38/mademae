@@ -91,10 +91,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     public String getProposal(@PathParam("id") String proposalId) {
         if (proposalId == null) return null;
         Long propId = Long.valueOf(proposalId);
-        Proposal proposalRetrieved = manageProposals.getById(propId);
-        ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
-        List<Comment> proposalComments = manageComment.getProposalComments(propId);
-        ProposalInformations proposalInformations = new ProposalInformations(proposalRetrieved, proposalVotes, proposalComments);
+        ProposalInformations proposalInformations = manageMD.getProposalInformations(propId);
         log.info("getProposal " + propId + " : " + proposalInformations.toString());
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         return jsonProposalInformations.toString();

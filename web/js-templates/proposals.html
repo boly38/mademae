@@ -4,7 +4,7 @@
             <div class="page-header"><h3>${proposalsDescription}</h3></div>
             {{each proposals}}
             <div>
-                <p>${date} <span style="font-weight: bold" >${authorPseudo}</span> wrote:</p>
+                <p>${date} <span style="font-weight: bold" >${author.pseudo}</span> wrote:</p>
                     <blockquote><a href="javascript:md.contribution('${contributionId}', '${contributionType}');">${title}</a></blockquote>
             </div>
             {{/each}}

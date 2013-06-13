@@ -1,7 +1,9 @@
 package net.mademocratie.gae.server.entities.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import java.util.Date;
 
@@ -10,16 +12,6 @@ public class ProposalDTO extends ContributionDTO {
     private String content;
 
     public ProposalDTO() {
-    }
-
-    @Override
-    public String getContributionDetails() {
-        return "create proposition '" + getTitle() + "'";
-    }
-
-    @Override
-    public String getContributionType() {
-        return ContributionType.PROPOSAL.toString();
     }
 
     public ProposalDTO(Citizen author, Proposal proposal) {
@@ -43,4 +35,39 @@ public class ProposalDTO extends ContributionDTO {
     public void setTitle(String title) {
         this.title = title;
     }
+    @Override                   // json need id
+    public Date getDate() {
+        return super.getDate();
+    }
+
+    @Override
+    public String getDateFormat() {
+        return DateHelper.getDateFormat(getDate());
+    }
+
+    @Override
+    public String getAge() {
+        return super.getAge();
+    }
+
+    @JsonProperty
+    public CitizenDTO getAuthor() {
+        return super.getAuthor();
+    }
+
+    @Override                    // json need id
+    public Long getContributionId() {
+        return super.getContributionId();
+    }
+
+    @Override
+    public String getContributionDetails() {
+        return "create proposition '" + getTitle() + "'";
+    }
+
+    @Override
+    public String getContributionType() {
+        return ContributionType.PROPOSAL.toString();
+    }
+
 }

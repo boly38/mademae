@@ -17,10 +17,12 @@ public interface IManageComment {
 
     List<Comment> getProposalComments(Long propId);
 
+    CommentList getProposalCommentsAsList(Long propId);
+
     List<Comment> latest(int max);
 
-    CommentList latestAsList(int max);
 
+    CommentList latestAsList(int max);
 
     List<Comment> latest();
 

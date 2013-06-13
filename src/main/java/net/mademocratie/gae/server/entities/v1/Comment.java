@@ -65,7 +65,7 @@ public class Comment extends Contribution implements IContribution {
 
     @Override                    // json need id
     public Long getContributionId() {
-        return super.getContributionId();
+        return parentContribution.getId();
     }
 
 

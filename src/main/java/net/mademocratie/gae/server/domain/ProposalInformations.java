@@ -1,8 +1,8 @@
 package net.mademocratie.gae.server.domain;
 
 import com.google.appengine.repackaged.com.google.common.base.Objects;
-import net.mademocratie.gae.server.entities.v1.Comment;
-import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.entities.dto.CommentDTO;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.ProposalVotes;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,24 +14,24 @@ import java.util.List;
  */
 @XmlRootElement
 public class ProposalInformations {
-    Proposal proposal;
+    ProposalDTO proposal;
     ProposalVotes proposalVotes;
-    Collection<Comment> proposalComments;
+    Collection<CommentDTO> proposalComments;
 
     public ProposalInformations() {
     }
 
-    public ProposalInformations(Proposal proposalRetrieved, ProposalVotes proposalVotes, List<Comment> proposalComments) {
+    public ProposalInformations(ProposalDTO proposalRetrieved, ProposalVotes proposalVotes, List<CommentDTO> proposalComments) {
         this.proposal = proposalRetrieved;
         this.proposalVotes = proposalVotes;
         this.proposalComments = proposalComments;
     }
 
-    public Proposal getProposal() {
+    public ProposalDTO getProposal() {
         return proposal;
     }
 
-    public void setProposal(Proposal proposal) {
+    public void setProposal(ProposalDTO proposal) {
         this.proposal = proposal;
     }
 
@@ -43,11 +43,11 @@ public class ProposalInformations {
         this.proposalVotes = proposalVotes;
     }
 
-    public Collection<Comment> getProposalComments() {
+    public Collection<CommentDTO> getProposalComments() {
         return proposalComments;
     }
 
-    public void setProposalComments(Collection<Comment> proposalComments) {
+    public void setProposalComments(Collection<CommentDTO> proposalComments) {
         this.proposalComments = proposalComments;
     }
 

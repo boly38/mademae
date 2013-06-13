@@ -14,7 +14,7 @@
                         <span style="font-weight: bold">${proposal.dateFormat}
                         {{if ((typeof(proposal.age) == "undefined") || (proposal.age == ""))}}{{else}} (${proposal.age}) {{/if}}
                         </span><br/>
-                        by <span style="font-weight: bold">${proposal.authorPseudo}</span><br/>
+                        by <span style="font-weight: bold">${proposal.author.pseudo}</span><br/>
                     </p>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 {{else}}
                 {{each proposalComments}}
                 <div>
-                    <p>${dateFormat} <span style="font-weight: bold">${authorPseudo}</span>
+                    <p>${dateFormat} <span style="font-weight: bold">${author.pseudo}</span>
                         <blockquote>${content}</blockquote>
                     </p>
                 </div>

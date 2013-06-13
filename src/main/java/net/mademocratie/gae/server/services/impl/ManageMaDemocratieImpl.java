@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
+import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.CommentList;
 import net.mademocratie.gae.server.entities.ProposalList;
 import net.mademocratie.gae.server.entities.dto.CommentDTO;
@@ -29,10 +30,14 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
     IManageProposal manageProposal;
 
     @Inject
-    IManageContributions manageContribution;
+    IManageVote manageVote;
 
     @Inject
     IManageComment manageComment;
+
+    @Inject
+    IManageContributions manageContribution;
+
 
     public ProfileInformations getProfileInformations(Citizen user) throws MaDemocratieException {
         ProfileInformations profileInfos = new ProfileInformations(user);
@@ -93,9 +98,12 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         CommentList commentList = manageComment.latestAsList(max);
         Map<Key<Citizen>,Citizen> citizensByIds = manageCitizen.getCitizensByIds(commentList.fetchAuthorsIds());
         Map<Key<Contribution>,Contribution> parentContributionsByIds = manageContribution.getContributionsByIds(commentList.fetchParentContributionsIds());
-        List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>(commentList.getCount());
+        List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>();
         for(Comment c: commentList.getObject()){
             Citizen author = citizensByIds.get(c.getAuthor());
+            if (c.getParentContribution() == null) {
+                throw new RuntimeException("comment without parent ? " + c.toString());
+            }
             Contribution parentContribution = parentContributionsByIds.get(c.getParentContribution());
             CommentDTO dto = new CommentDTO(author, c, parentContribution);
             commentDTOs.add(dto);
@@ -103,5 +111,31 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         return commentDTOs;
     }
 
+    private List<CommentDTO> getProposalCommentsDTO(Long propId) {
+        Proposal parentProposal = manageProposal.getById(propId);
+        CommentList commentList = manageComment.getProposalCommentsAsList(propId);
+        Map<Key<Citizen>,Citizen> citizensByIds = manageCitizen.getCitizensByIds(commentList.fetchAuthorsIds());
+        List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>(commentList.getCount());
+        for(Comment c: commentList.getObject()){
+            Citizen author = citizensByIds.get(c.getAuthor());
+            CommentDTO dto = new CommentDTO(author, c, parentProposal);
+            commentDTOs.add(dto);
+        }
+        return commentDTOs;
+    }
 
+    public ProposalInformations getProposalInformations(Long propId) {
+        Proposal proposal = manageProposal.getById(propId);
+        if (proposal == null) {
+            throw new RuntimeException("proposal not found");
+        }
+        Citizen author = null;
+        if (proposal.getAuthor() != null) {
+            author = manageCitizen.getById(proposal.getAuthorId());
+        }
+        ProposalDTO proposalRetrieved = new ProposalDTO(author, proposal);
+        ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
+        List<CommentDTO> proposalComments = getProposalCommentsDTO(propId);
+        return new ProposalInformations(proposalRetrieved, proposalVotes, proposalComments);
+    }
 }

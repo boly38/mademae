@@ -7,6 +7,7 @@ import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import net.mademocratie.gae.server.entities.dto.CitizenDTO;
 
 import java.util.Date;
 
@@ -175,5 +176,13 @@ public class Citizen {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public static CitizenDTO createAnonymous() {
+        CitizenDTO anonymous = new CitizenDTO();
+        anonymous.setPseudo("anonymous");
+        anonymous.setEmail(null);
+        anonymous.setAdmin(false);
+        return anonymous;
     }
 }

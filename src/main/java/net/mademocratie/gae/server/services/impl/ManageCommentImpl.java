@@ -46,6 +46,10 @@ public class ManageCommentImpl implements IManageComment {
 
     }
 
+    public CommentList getProposalCommentsAsList(Long propId) {
+        return new CommentList(getProposalComments(propId));
+    }
+
     private Comment addComment(Comment comment) {
         ofy().save().entity(comment).now();
         LOGGER.fine("addComment result " + comment.toString());

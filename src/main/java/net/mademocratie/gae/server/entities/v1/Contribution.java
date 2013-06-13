@@ -63,7 +63,6 @@ public abstract class Contribution implements IContribution {
         return DateHelper.getDateFormat(getDate());
     }
 
-    @JsonProperty("age")
     public String getAge() {
         return DateHelper.getDateDuration(getDate());
     }
