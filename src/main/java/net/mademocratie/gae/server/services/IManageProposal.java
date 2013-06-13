@@ -1,8 +1,11 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
+import net.mademocratie.gae.server.entities.ProposalList;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 
 import java.util.List;
@@ -24,6 +27,8 @@ public interface IManageProposal {
      */
     List<Proposal> latest(int max);
 
+    ProposalList latestAsList(int max);
+
     List<Proposal> latest();
 
     /**
@@ -33,5 +38,5 @@ public interface IManageProposal {
 
     Proposal getById(Long proposalId);
 
-    List<Proposal> findByCitizenEmail(String email);
+    List<ProposalDTO> findByAuthor(Citizen author) throws MaDemocratieException;
 }

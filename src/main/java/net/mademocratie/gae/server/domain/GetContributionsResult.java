@@ -1,5 +1,7 @@
 package net.mademocratie.gae.server.domain;
 
+import net.mademocratie.gae.server.entities.dto.ContributionDTO;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Contribution;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import org.json.JSONObject;
@@ -10,21 +12,21 @@ import java.util.ArrayList;
 @XmlRootElement
 public class GetContributionsResult {
     private String contributionsDescription;
-    private ArrayList<Contribution> contributions;
+    private ArrayList<ContributionDTO> contributions;
     private String proposalsDescription;
-    private ArrayList<Proposal> proposals;
+    private ArrayList<ProposalDTO> proposals;
 
     public GetContributionsResult() {
     }
 
-    public GetContributionsResult(ArrayList<Contribution> contributions, String contributionsDescription, ArrayList<Proposal> proposals, String proposalsDescription) {
+    public GetContributionsResult(ArrayList<ContributionDTO> contributions, String contributionsDescription, ArrayList<ProposalDTO> proposals, String proposalsDescription) {
         this.contributions = contributions;
         this.contributionsDescription = contributionsDescription;
         this.proposals = proposals;
         this.proposalsDescription = proposalsDescription;
     }
 
-    public GetContributionsResult(ArrayList<Proposal> proposals, String proposalsTitle) {
+    public GetContributionsResult(ArrayList<ProposalDTO> proposals, String proposalsTitle) {
         this.contributions = null;
         this.contributionsDescription = null;
         this.proposals = proposals;
@@ -39,19 +41,19 @@ public class GetContributionsResult {
         this.contributionsDescription = contributionsDescription;
     }
 
-    public ArrayList<Contribution> getContributions() {
+    public ArrayList<ContributionDTO> getContributions() {
         return contributions;
     }
 
-    public void setContributions(ArrayList<Contribution> contributions) {
+    public void setContributions(ArrayList<ContributionDTO> contributions) {
         this.contributions = contributions;
     }
 
-    public ArrayList<Proposal> getProposals() {
+    public ArrayList<ProposalDTO> getProposals() {
         return proposals;
     }
 
-    public void setProposals(ArrayList<Proposal> proposals) {
+    public void setProposals(ArrayList<ProposalDTO> proposals) {
         this.proposals = proposals;
     }
 

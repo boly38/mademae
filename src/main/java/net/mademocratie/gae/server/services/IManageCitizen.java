@@ -2,11 +2,16 @@ package net.mademocratie.gae.server.services;
 
 import com.google.appengine.api.users.User;
 import com.google.inject.ImplementedBy;
+import com.googlecode.objectify.Key;
+import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.*;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @ImplementedBy(ManageCitizenImpl.class)
 public interface IManageCitizen {
@@ -63,4 +68,8 @@ public interface IManageCitizen {
     void delete(Citizen testUser);
 
     Citizen getAuthenticatedUser(String authToken);
+
+    Citizen checkCitizen(Citizen author) throws MaDemocratieException;
+
+    Map<Key<Citizen>, Citizen> getCitizensByIds(Set<Key<Citizen>> keys);
 }

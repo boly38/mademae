@@ -26,8 +26,9 @@ public class MaDemocratieGuiceModule extends ServletModule {
         bind(IManageCitizen.class).to(ManageCitizenImpl.class);
         bind(IManageProposal.class).to(ManageProposalImpl.class);
         bind(IManageVote.class).to(ManageVoteImpl.class);
-        bind(IManageContributions.class).to(ManageContributionsImpl.class);
         bind(IManageComment.class).to(ManageCommentImpl.class);
+        bind(IManageContributions.class).to(ManageContributionsImpl.class);
+        bind(IManageMaDemocratie.class).to(ManageMaDemocratieImpl.class);
 
         Map<String,String> jerseyParams = new HashMap<String,String>();
         jerseyParams.put("com.sun.jersey.config.property.packages",

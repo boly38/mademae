@@ -5,6 +5,7 @@ import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
+import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,7 +28,7 @@ public class Comment extends Contribution implements IContribution {
     public Comment(Comment inComment) {
         super(inComment);
         this.setContent(inComment.getContent());
-        parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
+        parentContribution = Key.create(Contribution.class, inComment.getParentContributionId());
         parentContributionType = inComment.getParentContributionType();
     }
 
@@ -36,8 +37,15 @@ public class Comment extends Contribution implements IContribution {
         super(inComment);
         this.setAuthor(Key.create(Citizen.class, citizen.getId()));
         this.setContent(inComment.getContent());
-        parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
+        parentContribution = Key.create(Contribution.class, inComment.getParentContributionId());
         parentContributionType = inComment.getParentContributionType();
+    }
+
+    public Comment(Citizen author, String content, Contribution parentContribution) {
+        super(author);
+        this.parentContribution = Key.create(Contribution.class, parentContribution.getContributionId());
+        this.parentContributionType = parentContribution.getContributionType();
+        this.content = new Text(content);
     }
 
     @Override
@@ -82,8 +90,12 @@ public class Comment extends Contribution implements IContribution {
         this.content = content;
     }
 
-    public Long getParentContribution() {
-        return parentContribution.getId();
+    public Key<Contribution> getParentContribution() {
+        return parentContribution;
+    }
+
+    public Long getParentContributionId() {
+        return (parentContribution != null ? parentContribution.getId() : null);
     }
 
     public void setParentContribution(Long parentContributionId) {

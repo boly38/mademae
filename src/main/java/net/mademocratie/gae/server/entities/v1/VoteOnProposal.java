@@ -1,6 +1,6 @@
 package net.mademocratie.gae.server.entities.v1;
 
-import com.google.appengine.api.datastore.Email;
+import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import java.util.Date;

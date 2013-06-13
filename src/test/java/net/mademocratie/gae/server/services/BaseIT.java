@@ -7,7 +7,6 @@ import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
-import org.junit.After;
 import org.junit.Before;
 
 public abstract class BaseIT {
@@ -20,6 +19,9 @@ public abstract class BaseIT {
 
     @Inject
     protected ManageVoteImpl manageVote;
+
+    @Inject
+    protected IManageComment manageComment;
     /*
      * needed to inject UserServiceFactory.getUserService();
      * http://man.lesca.me/local/gae/appengine/docs/java/tools/localunittesting.html#Writing_Authentication_Tests
@@ -41,6 +43,11 @@ public abstract class BaseIT {
         manageProposal.removeAll();
         manageCitizen.removeAll();
     }
+    protected void cleanProposalsAndCitizensAndComments() {
+        manageComment.removeAll();
+        cleanProposalsAndCitizens();
+    }
+
     protected void cleanVotes() {
         manageVote.removeAll();
     }

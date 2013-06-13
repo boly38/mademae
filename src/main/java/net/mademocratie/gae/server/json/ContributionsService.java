@@ -3,17 +3,14 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.entities.v1.Contribution;
 import net.mademocratie.gae.server.entities.v1.Proposal;
-import net.mademocratie.gae.server.services.IManageContributions;
+import net.mademocratie.gae.server.services.IManageMaDemocratie;
 import net.mademocratie.gae.server.services.IManageProposal;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 @Path("/contribution")
@@ -24,25 +21,14 @@ public class ContributionsService {
     @Inject
     IManageProposal manageProposals;
     @Inject
-    IManageContributions manageContributions;
-
+    IManageMaDemocratie manageMD;
 
     @GET
     @Path("/last")
     public String getContributions() {
-        List<Contribution> lastContributions = manageContributions.getLastContributions(10);
-        String contributionsTitle = lastContributions.size() + " last contributions";
-        List<Proposal> lastProposals = manageProposals.latest(10);
-        String proposalsTitle = lastProposals.size() + " last proposals";
-        GetContributionsResult result = new GetContributionsResult(
-                new ArrayList<Contribution>(lastContributions),
-                contributionsTitle,
-                new ArrayList<Proposal>(lastProposals),
-                proposalsTitle
-        );
+        GetContributionsResult result = manageMD.getLastContributions(20,20);
         return result.toJSON().toString();
     }
-
 
     @GET
     @Path("/addSample")

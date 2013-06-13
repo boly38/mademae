@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.helper.DateHelper;
@@ -12,16 +13,16 @@ import java.util.List;
 
 @XmlRootElement
 public class ProfileInformations {
-    List<Proposal> proposals;
+    List<ProposalDTO> proposals;
     String pseudo;
     Date registrationDate;
 
     public ProfileInformations() {
-        proposals = new ArrayList<Proposal>();
+        proposals = new ArrayList<ProposalDTO>();
     }
 
     public ProfileInformations(Citizen authenticatedUser) {
-        proposals = new ArrayList<Proposal>();
+        proposals = new ArrayList<ProposalDTO>();
         if (authenticatedUser == null) {
             return;
         }
@@ -29,11 +30,11 @@ public class ProfileInformations {
         pseudo = authenticatedUser.getPseudo();
     }
 
-    public void setProposals(List<Proposal> proposals) {
+    public void setProposals(List<ProposalDTO> proposals) {
         this.proposals = proposals;
     }
 
-    public List<Proposal> getProposals() {
+    public List<ProposalDTO> getProposals() {
         return proposals;
     }
 

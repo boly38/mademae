@@ -3,10 +3,12 @@ package net.mademocratie.gae.server.json;
 import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.*;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
+import net.mademocratie.gae.server.services.IManageMaDemocratie;
 import net.mademocratie.gae.server.services.IManageProposal;
 import org.json.JSONObject;
 
@@ -34,8 +36,9 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
 
     @Inject
     IManageCitizen manageCitizen;
+
     @Inject
-    IManageProposal manageProposal;
+    IManageMaDemocratie manageMD;
 
     @GET
     @Path("/login")
@@ -90,17 +93,12 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
     @GET
     @Path("/profile")
     @Produces(MediaType.APPLICATION_JSON)
-    public String geProfile(@Context HttpHeaders httpHeaders) {
+    public String geProfile(@Context HttpHeaders httpHeaders) throws MaDemocratieException {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
-        ProfileInformations profileInfos = new ProfileInformations(authenticatedUser);
-        List<Proposal> proposals = manageProposal.findByCitizenEmail(authenticatedUser.getEmail());
-        profileInfos.setPseudo(authenticatedUser.getPseudo());
-        profileInfos.setProposals(proposals);
-        profileInfos.setRegistrationDate(authenticatedUser.getDate());
+        ProfileInformations profileInfos = manageMD.getProfileInformations(authenticatedUser);
         JSONObject jsonProfileInformations = new JSONObject(profileInfos);
         return jsonProfileInformations.toString();
     }
-
 
     public IManageCitizen getManageCitizen() {
         return manageCitizen;

@@ -2,6 +2,8 @@ package net.mademocratie.gae.server.services.impl;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
+import net.mademocratie.gae.server.entities.CommentList;
+import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.services.IManageComment;
 
@@ -64,14 +66,29 @@ public class ManageCommentImpl implements IManageComment {
         return latestComments;
     }
 
+    public CommentList latestAsList(int max) {
+        return new CommentList(latest(max));
+    }
+
     public Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms) {
         int commsCount = comms.size();
         List<Long> proposalIds = new ArrayList<Long>(commsCount);
         for (Comment c : comms) {
-            proposalIds.add(c.getParentContribution());
+            proposalIds.add(c.getParentContributionId());
         }
         Map<Long, Proposal> proposalMap = ofy().load().type(Proposal.class).ids(proposalIds);
         return proposalMap;
+    }
+
+    public int removeAll() {
+        int limit = 100;
+        List<Comment> comments = ofy().load().type(Comment.class).limit(limit).list();
+        ofy().delete().entities(comments).now();
+        LOGGER.info(comments.size() + " comment(s) removed");
+        if (comments.size() == limit) {
+            return comments.size() + removeAll();
+        }
+        return comments.size();
     }
 
 }

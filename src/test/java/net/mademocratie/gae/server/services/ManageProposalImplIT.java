@@ -55,10 +55,6 @@ public class ManageProposalImplIT extends BaseIT {
         Assert.assertEquals("just created proposal content has been updated",PROPOSAL_CONTENT, testProposal.getContent());
     }
 
-
-    /**
-     * @throws Exception
-     */
     @Test
     public void testAddProposalWithAuthor() throws Exception {
         Citizen myAuthor = new Citizen("jo la frite", "frite365", "frite@jo-la.fr", "abc123");
@@ -73,9 +69,6 @@ public class ManageProposalImplIT extends BaseIT {
         Assert.assertEquals("just created proposal content has been updated",PROPOSAL_CONTENT, testProposal.getContent());
     }
 
-    /**
-     * @throws Exception
-     */
     @Test
     public void testAddProposalsWithAuthors() throws Exception {
         Citizen myAuthorA = new Citizen("jo la frite", "frite365", "frite@jo-la.fr", "abc123");

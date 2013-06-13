@@ -1,16 +1,13 @@
 package net.mademocratie.gae.server.services.impl;
 
-import com.google.inject.Inject;
+import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.entities.v1.*;
-import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.IManageContributions;
-import net.mademocratie.gae.server.services.IManageProposal;
-import net.mademocratie.gae.server.services.IManageVote;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
+
+import static com.googlecode.objectify.ObjectifyService.ofy;
 
 /**
  * ManageContributionsImpl
@@ -24,33 +21,8 @@ public class ManageContributionsImpl implements IManageContributions {
 
     private final static Logger LOGGER = Logger.getLogger(ManageContributionsImpl.class.getName());
 
-    //~services
-    @Inject
-    private IManageVote manageVote;
-
-    @Inject
-    private IManageProposal manageProposal;
-
-    @Inject
-    private IManageComment manageComment;
-
-
-    public List<Contribution> getLastContributions(int maxContributions) {
-        List<Proposal> latestProposals = manageProposal.latest(maxContributions);
-        List<Vote> latestVotes = manageVote.latest(maxContributions);
-        List<Comment> latestComments = manageComment.latest(maxContributions);
-        List<VoteOnProposal> latestVotesOnProposal = manageVote.fetchProposalsVotes(latestVotes);
-        List<Contribution> latestContributions = new ArrayList<Contribution>();
-        latestContributions.addAll(latestProposals);
-        latestContributions.addAll(latestVotesOnProposal);
-        latestContributions.addAll(latestComments);
-        if (latestContributions.size() == 0) {
-            return latestContributions;
-        }
-        Collections.sort(latestContributions, new ContributionDateComparator());
-        Collections.reverse(latestContributions);
-        int subListLastIndex = Math.min(latestContributions.size(), maxContributions);
-        LOGGER.info("returning " + subListLastIndex + " contributions");
-        return latestContributions.subList(0, subListLastIndex);
+    public Map<Key<Contribution>, Contribution> getContributionsByIds(Set<Key<Contribution>> keys) {
+        Map<Key<Contribution>, Contribution> contributions = ofy().load().keys(keys);
+        return contributions;
     }
 }

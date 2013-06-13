@@ -1,6 +1,8 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
+import net.mademocratie.gae.server.entities.CommentList;
+import net.mademocratie.gae.server.entities.ProposalList;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Comment;
 import net.mademocratie.gae.server.entities.v1.Proposal;
@@ -17,7 +19,12 @@ public interface IManageComment {
 
     List<Comment> latest(int max);
 
+    CommentList latestAsList(int max);
+
+
     List<Comment> latest();
 
     Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms);
+
+    int removeAll();
 }

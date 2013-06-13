@@ -4,9 +4,13 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
+import net.mademocratie.gae.server.domain.ProfileInformations;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.CitizenState;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.*;
 import net.mademocratie.gae.server.services.IManageCitizen;
 
@@ -19,9 +23,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -86,6 +88,18 @@ public class ManageCitizenImpl implements IManageCitizen {
         }
         LOGGER.info("getAuthenticatedUser for " + authToken + " result " + (c != null ? c.toString() : "(none)"));
         return c;
+    }
+
+    public Citizen checkCitizen(Citizen author) throws MaDemocratieException {
+        if (author != null && author.getId() != null) {
+            return getById(author.getId());
+        }
+        throw new MaDemocratieException("unknown author " + author);
+    }
+
+    public Map<Key<Citizen>, Citizen> getCitizensByIds(Set<Key<Citizen>> keys) {
+        Map<Key<Citizen>, Citizen> citizens = ofy().load().keys(keys);
+        return citizens;
     }
 
     public List<Citizen> latest(int max) {

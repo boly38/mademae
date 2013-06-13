@@ -3,13 +3,11 @@ package net.mademocratie.gae.server.json;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProposalInformations;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
-import net.mademocratie.gae.server.services.IManageCitizen;
-import net.mademocratie.gae.server.services.IManageComment;
-import net.mademocratie.gae.server.services.IManageProposal;
-import net.mademocratie.gae.server.services.IManageVote;
+import net.mademocratie.gae.server.services.*;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
@@ -24,6 +22,9 @@ import java.util.logging.Logger;
 @Produces(MediaType.APPLICATION_JSON)
 public class ProposalService extends AbstractMaDemocratieJsonService {
     Logger log = Logger.getLogger(ProposalService.class.getName());
+
+    @Inject
+    IManageMaDemocratie manageMD;
 
     @Inject
     IManageProposal manageProposals;
@@ -41,10 +42,10 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     @GET
     @Path("/last")
     public String getProposals() {
-        List<Proposal> lastProposals = manageProposals.latest(100);
+        List<ProposalDTO> lastProposals = manageMD.latestProposalsDTO(100);
         String proposalsTitle = lastProposals.size() + " last proposals";
         GetContributionsResult result = new GetContributionsResult(
-                new ArrayList<Proposal>(lastProposals),
+                new ArrayList<ProposalDTO>(lastProposals),
                 proposalsTitle
         );
         return result.toJSON().toString();
@@ -71,8 +72,8 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     @Path("/addcomment")
     public String addProposalComment(Comment inComment, @Context HttpHeaders httpHeaders) {
         if (inComment == null) return null;
-        if (inComment.getParentContribution() == null) return null;
-        if (inComment.getParentContribution() == null) return null;
+        if (inComment.getParentContributionId() == null) return null;
+        if (inComment.getParentContributionId() == null) return null;
         if (inComment.getContent() == null) return null;
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         log.info("addComment POST received : " + inComment.toString());
