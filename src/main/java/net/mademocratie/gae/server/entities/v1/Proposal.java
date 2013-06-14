@@ -26,6 +26,7 @@ public class Proposal extends Contribution implements IContribution {
         this.content = new Text(content != null ? content : "");
     }
 
+
     @Override                   // json need id
     public Date getDate() {
         return super.getDate();
@@ -78,6 +79,7 @@ public class Proposal extends Contribution implements IContribution {
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
+                .add("id", getContributionId())
                 .add("dateFormat", getDateFormat())
                 .add("age", getAge())
                 .add("title", title)

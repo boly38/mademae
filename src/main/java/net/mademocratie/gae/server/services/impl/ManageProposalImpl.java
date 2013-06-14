@@ -5,15 +5,12 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.ProposalList;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
-import net.mademocratie.gae.server.entities.v1.Citizen;
-import net.mademocratie.gae.server.entities.v1.Proposal;
+import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
@@ -87,6 +84,15 @@ public class ManageProposalImpl implements IManageProposal {
         }
         LOGGER.info("* findByCitizenEmail asked " + max + " result " + proposalsDTO.size());
         return proposalsDTO;
+    }
+
+    public Map<Long, Proposal> getProposalsByIds(Set<Key<Proposal>> keys) {
+        List<Long> proposals = new ArrayList<Long>();
+        for (Key<Proposal> key : keys) {
+            proposals.add(key.getId());
+        }
+        Map<Long, Proposal> proposalMap = ofy().load().type(Proposal.class).ids(proposals);
+        return proposalMap;
     }
 
 }

@@ -98,7 +98,7 @@ public class Comment extends Contribution implements IContribution {
         return (parentContribution != null ? parentContribution.getId() : null);
     }
 
-    public void setParentContribution(Long parentContributionId) {
+    public void setParentContributionId(Long parentContributionId) {
         this.parentContribution = Key.create(Contribution.class, parentContributionId);
     }
 

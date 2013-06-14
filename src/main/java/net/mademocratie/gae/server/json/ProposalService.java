@@ -92,7 +92,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         if (proposalId == null) return null;
         Long propId = Long.valueOf(proposalId);
         ProposalInformations proposalInformations = manageMD.getProposalInformations(propId);
-        log.info("getProposal " + propId + " : " + proposalInformations.toString());
+        log.info("getProposalId " + propId + " : " + proposalInformations.toString());
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         return jsonProposalInformations.toString();
     }

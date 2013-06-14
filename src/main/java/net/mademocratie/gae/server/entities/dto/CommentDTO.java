@@ -8,14 +8,6 @@ import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import java.util.Date;
 
-/**
- * CommentDTO
- * <p/>
- * Last update  : $LastChangedDate$
- * Last author  : $Author$
- *
- * @version : $Revision$
- */
 public class CommentDTO extends ContributionDTO {
     protected Contribution parentContribution;
     private String parentContributionType = ContributionType.PROPOSAL.toString();

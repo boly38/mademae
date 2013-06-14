@@ -3,7 +3,7 @@ package net.mademocratie.gae.server.domain;
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import net.mademocratie.gae.server.entities.dto.CommentDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
-import net.mademocratie.gae.server.entities.v1.ProposalVotes;
+import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
@@ -15,15 +15,15 @@ import java.util.List;
 @XmlRootElement
 public class ProposalInformations {
     ProposalDTO proposal;
-    ProposalVotes proposalVotes;
+    ProposalVotesDTO proposalVotesDTO;
     Collection<CommentDTO> proposalComments;
 
     public ProposalInformations() {
     }
 
-    public ProposalInformations(ProposalDTO proposalRetrieved, ProposalVotes proposalVotes, List<CommentDTO> proposalComments) {
+    public ProposalInformations(ProposalDTO proposalRetrieved, ProposalVotesDTO proposalVotesDTO, List<CommentDTO> proposalComments) {
         this.proposal = proposalRetrieved;
-        this.proposalVotes = proposalVotes;
+        this.proposalVotesDTO = proposalVotesDTO;
         this.proposalComments = proposalComments;
     }
 
@@ -35,12 +35,16 @@ public class ProposalInformations {
         this.proposal = proposal;
     }
 
-    public ProposalVotes getProposalVotes() {
-        return proposalVotes;
+    public ProposalVotesDTO getProposalVotesDTO() {
+        return proposalVotesDTO;
     }
 
-    public void setProposalVotes(ProposalVotes proposalVotes) {
-        this.proposalVotes = proposalVotes;
+    public void setProposalVotesDTO(ProposalVotesDTO proposalVotesDTO) {
+        this.proposalVotesDTO = proposalVotesDTO;
+    }
+
+    public int getProposalCommentsCount() {
+        return (proposalComments != null ? proposalComments.size():0);
     }
 
     public Collection<CommentDTO> getProposalComments() {
@@ -55,7 +59,7 @@ public class ProposalInformations {
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("proposal", proposal)
-                .add("proposalVotes", proposalVotes)
+                .add("proposalVotesDTO", proposalVotesDTO)
                 .add("proposalComments", proposalComments)
                 .toString();
     }

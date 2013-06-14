@@ -366,6 +366,7 @@ function MaDemocratie() {
     this.addProposalComment = function(addProposalCommentFormId) {
          var addProposalCommentEndPoint = "json/proposal/addcomment";
          var proposalCommentData = $("#" + addProposalCommentFormId).serializeJSON();
+         consoleInfo("addProposalComment :" + proposalCommentData);
          $.ajax({
            type: "POST",
            url: addProposalCommentEndPoint,
@@ -374,7 +375,7 @@ function MaDemocratie() {
            contentType: 'application/json',
            success: function() {
              md.info("comment added");
-             md.home();
+             md.showProposal(proposalCommentData.parentContributionId);
            }
          });
         this.track("addProposalComment");

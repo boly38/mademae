@@ -185,4 +185,12 @@ public class Citizen {
         anonymous.setAdmin(false);
         return anonymous;
     }
+
+    public static CitizenDTO createSomeone() {
+        CitizenDTO anonymous = new CitizenDTO();
+        anonymous.setPseudo("someone");
+        anonymous.setEmail(null);
+        anonymous.setAdmin(false);
+        return anonymous;
+    }
 }

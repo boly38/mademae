@@ -1,10 +1,10 @@
 package net.mademocratie.gae.server.services.impl;
 
-import com.google.appengine.api.datastore.Email;
 import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Result;
 import com.googlecode.objectify.cmd.Query;
+import net.mademocratie.gae.server.entities.VoteList;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -34,7 +34,7 @@ public class ManageVoteImpl implements IManageVote {
                 .list();
         List<Vote> proposalVotes = new ArrayList<Vote>();
         for(Vote vote : votes) {
-            if (proposalId.equals(vote.getProposal())) {
+            if (proposalId.equals(vote.getProposalId())) {
                 proposalVotes.add(vote);
             }
         }
@@ -81,11 +81,11 @@ public class ManageVoteImpl implements IManageVote {
         LOGGER.info("vote removed :" + voteToDelete.toString());
     }
 
-    public ProposalVotes getProposalVotes(Long proposalId) {
+    public VoteList getProposalVotes(Long proposalId) {
         List<Vote> votes= ofy().load().type(Vote.class)
                 .filter("proposal", Key.create(Proposal.class, proposalId))
                 .list();
-        return new ProposalVotes(votes);
+        return new VoteList(votes);
     }
 
     public void removeProposalVotes(Long proposalId) {
@@ -106,16 +106,20 @@ public class ManageVoteImpl implements IManageVote {
         return latestVotes;
     }
 
+    public VoteList latestAsList(int max) {
+        return new VoteList(latest(max));
+    }
+
     public List<VoteOnProposal> fetchProposalsVotes(List<Vote> votes) {
         int votesCount = votes.size();
         List<Long> proposalIds = new ArrayList<Long>(votesCount);
         for (Vote v : votes) {
-            proposalIds.add(v.getProposal());
+            proposalIds.add(v.getProposalId());
         }
         Map<Long, Proposal> proposalMap = ofy().load().type(Proposal.class).ids(proposalIds);
         List<VoteOnProposal> votesOnProposals = new ArrayList<VoteOnProposal>(votesCount);
         for(Vote v: votes){
-            Proposal voteProposalContent = proposalMap.get(v.getProposal());
+            Proposal voteProposalContent = proposalMap.get(v.getProposalId());
             VoteOnProposal voteOnProposal = new VoteOnProposal(v, voteProposalContent);
             votesOnProposals.add(voteOnProposal);
         }

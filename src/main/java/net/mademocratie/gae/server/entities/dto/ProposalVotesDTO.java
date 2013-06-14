@@ -1,8 +1,9 @@
-package net.mademocratie.gae.server.entities.v1;
+package net.mademocratie.gae.server.entities.dto;
 
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import net.mademocratie.gae.server.entities.dto.VoteDTO;
 
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,29 +11,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * ProposalVotes
+ * ProposalVotesDTO
  */
-@XmlRootElement
-@Entity
-public class ProposalVotes {
-    @Id
-    protected Long itemIt;
-
-    @Transient
-    private Collection<Vote> votes;
+public class ProposalVotesDTO {
+    private Collection<VoteDTO> votes;
 
     private int votesCount = -1;
     private int votesProCount = -1;
     private int votesNeutralCount = -1;
     private int votesConCount = -1;
 
-    public ProposalVotes() {
-        this.votes = new ArrayList<Vote>();
+    public ProposalVotesDTO() {
+        this.votes = new ArrayList<VoteDTO>();
     }
 
-    public ProposalVotes(Collection<Vote> proposalVotes) {
+    public ProposalVotesDTO(Collection<VoteDTO> proposalVotes) {
         if (proposalVotes == null) {
-            this.votes = new ArrayList<Vote>();
+            this.votes = new ArrayList<VoteDTO>();
             return;
         }
         this.votes = proposalVotes;
@@ -45,7 +40,7 @@ public class ProposalVotes {
         this.votesConCount = 0;
         this.votesCount = votes.size();
 
-        for(Vote vote: votes) {
+        for(VoteDTO vote: votes) {
             switch (vote.getKind()) {
                 case NEUTRAL: this.votesNeutralCount++; break;
                 case PRO: this.votesProCount++; break;
@@ -72,11 +67,11 @@ public class ProposalVotes {
         return this.votesConCount;
     }
 
-    public Collection<Vote> getVotes() {
+    public Collection<VoteDTO> getVotes() {
         return votes;
     }
 
-    public void setVotes(Collection<Vote> votes) {
+    public void setVotes(Collection<VoteDTO> votes) {
         this.votes = votes;
         calculateVotesCounts();
     }

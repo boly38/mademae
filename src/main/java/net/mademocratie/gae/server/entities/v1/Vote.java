@@ -28,7 +28,7 @@ public class Vote extends Contribution implements IContribution {
     public Vote(Vote v) {
         super(v);
         this.setKind(v.getKind());
-        this.setProposal(v.getProposal());
+        this.setProposal(v.getProposalId());
     }
 
     @Override
@@ -58,7 +58,11 @@ public class Vote extends Contribution implements IContribution {
         this.kind = kind;
     }
 
-    public Long getProposal() {
+    public Key<Proposal> getProposal() {
+        return proposal;
+    }
+
+    public Long getProposalId() {
         return proposal.getId();
     }
 
@@ -76,7 +80,7 @@ public class Vote extends Contribution implements IContribution {
         sb.append(":").append(getDate());
         sb.append("|").append(getKind())
                 .append(" by citizen#").append(getAuthor())
-                .append(" on proposal#").append(getProposal())
+                .append(" on proposal#").append(getProposalId())
                 .append("]");
         return sb.toString();
     }
@@ -94,7 +98,7 @@ public class Vote extends Contribution implements IContribution {
 
     @Override
     public String getContributionDetails() {
-        return "vote on proposal '" + getProposal() + "'";
+        return "vote on proposal '" + getProposalId() + "'";
     }
 
     public void setProposal(Key<Proposal> proposal) {

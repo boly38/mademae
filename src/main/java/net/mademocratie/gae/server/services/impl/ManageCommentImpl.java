@@ -75,8 +75,7 @@ public class ManageCommentImpl implements IManageComment {
     }
 
     public Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms) {
-        int commsCount = comms.size();
-        List<Long> proposalIds = new ArrayList<Long>(commsCount);
+        List<Long> proposalIds = new ArrayList<Long>();
         for (Comment c : comms) {
             proposalIds.add(c.getParentContributionId());
         }

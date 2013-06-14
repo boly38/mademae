@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
+import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.entities.ProposalList;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
@@ -9,6 +10,8 @@ import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @ImplementedBy(ManageProposalImpl.class)
 public interface IManageProposal {
@@ -39,4 +42,6 @@ public interface IManageProposal {
     Proposal getById(Long proposalId);
 
     List<ProposalDTO> findByAuthor(Citizen author) throws MaDemocratieException;
+
+    Map<Long, Proposal> getProposalsByIds(Set<Key<Proposal>> keys);
 }

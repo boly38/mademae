@@ -7,17 +7,13 @@ import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.CommentList;
 import net.mademocratie.gae.server.entities.ProposalList;
-import net.mademocratie.gae.server.entities.dto.CommentDTO;
-import net.mademocratie.gae.server.entities.dto.ContributionDTO;
-import net.mademocratie.gae.server.entities.dto.ProposalDTO;
+import net.mademocratie.gae.server.entities.VoteList;
+import net.mademocratie.gae.server.entities.dto.*;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ManageMaDemocratieImpl implements IManageMaDemocratie {
@@ -51,13 +47,10 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
     public List<ContributionDTO> getLastContributions(int maxContributions) {
         List<ProposalDTO> latestProposals = latestProposalsDTO(maxContributions);
         List<CommentDTO> latestComments = latestCommentsDTO(maxContributions);
-        /*
-        List<Vote> latestVotes = manageVote.latest(maxContributions);
-        List<VoteOnProposal> latestVotesOnProposal = manageVote.fetchProposalsVotes(latestVotes);
-        */
+        List<VoteDTO> latestVotes = lastestVotesDTO(maxContributions);
         List<ContributionDTO> latestContributions = new ArrayList<ContributionDTO>();
         latestContributions.addAll(latestProposals);
-        // latestContributions.addAll(latestVotesOnProposal);
+        latestContributions.addAll(latestVotes);
         latestContributions.addAll(latestComments);
         if (latestContributions.size() == 0) {
             return latestContributions;
@@ -97,18 +90,41 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
     public List<CommentDTO> latestCommentsDTO(int max) {
         CommentList commentList = manageComment.latestAsList(max);
         Map<Key<Citizen>,Citizen> citizensByIds = manageCitizen.getCitizensByIds(commentList.fetchAuthorsIds());
-        Map<Key<Contribution>,Contribution> parentContributionsByIds = manageContribution.getContributionsByIds(commentList.fetchParentContributionsIds());
+        Map<Long,Contribution> parentContributionsByIds = manageContribution.getContributionsByIds(commentList.fetchParentContributionsIds());
         List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>();
         for(Comment c: commentList.getObject()){
             Citizen author = citizensByIds.get(c.getAuthor());
-            if (c.getParentContribution() == null) {
+            Contribution parentContribution = parentContributionsByIds.get(c.getParentContributionId());
+            if (parentContribution == null) {
                 throw new RuntimeException("comment without parent ? " + c.toString());
             }
-            Contribution parentContribution = parentContributionsByIds.get(c.getParentContribution());
             CommentDTO dto = new CommentDTO(author, c, parentContribution);
             commentDTOs.add(dto);
         }
         return commentDTOs;
+    }
+
+
+    private List<VoteDTO> lastestVotesDTO(int max) {
+        VoteList voteList = manageVote.latestAsList(max);
+        LOGGER.info("lastestVotesDTO max="+ max + " voteList:" + voteList.getObject().toString());
+        Map<Key<Citizen>,Citizen> citizensByIds = manageCitizen.getCitizensByIds(voteList.fetchAuthorsIds());
+        Set<Key<Proposal>> parentProposalsKeys = voteList.fetchProposalsIds();
+        LOGGER.info("fetched proposals ids "+ parentProposalsKeys);
+        Map<Long, Proposal> parentProposalsByIds = manageProposal.getProposalsByIds(parentProposalsKeys);
+        LOGGER.info("fetched proposals "+ parentProposalsByIds);
+        List<VoteDTO> voteDTOs = new ArrayList<VoteDTO>();
+        for(Vote v: voteList.getObject()){
+            LOGGER.info("vote " + v.toString());
+            Citizen author = citizensByIds.get(v.getAuthor());
+            Proposal parentProposal = parentProposalsByIds.get(v.getProposal().getId());
+            if (parentProposal == null) {
+                throw new RuntimeException("vote without proposal? " + v.toString());
+            }
+            VoteDTO dto = new VoteDTO(author, v, new ProposalDTO(null, parentProposal));
+            voteDTOs.add(dto);
+        }
+        return voteDTOs;
     }
 
     private List<CommentDTO> getProposalCommentsDTO(Long propId) {
@@ -124,6 +140,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         return commentDTOs;
     }
 
+
     public ProposalInformations getProposalInformations(Long propId) {
         Proposal proposal = manageProposal.getById(propId);
         if (proposal == null) {
@@ -134,8 +151,9 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
             author = manageCitizen.getById(proposal.getAuthorId());
         }
         ProposalDTO proposalRetrieved = new ProposalDTO(author, proposal);
-        ProposalVotes proposalVotes = manageVote.getProposalVotes(propId);
+        VoteList proposalVotes = manageVote.getProposalVotes(propId);
+        ProposalVotesDTO proposalVotesDTO = proposalVotes.asProposalVotes(proposalRetrieved);
         List<CommentDTO> proposalComments = getProposalCommentsDTO(propId);
-        return new ProposalInformations(proposalRetrieved, proposalVotes, proposalComments);
+        return new ProposalInformations(proposalRetrieved, proposalVotesDTO, proposalComments);
     }
 }

@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import junit.framework.Assert;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
+import net.mademocratie.gae.server.domain.ProposalInformations;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.v1.*;
@@ -40,16 +41,17 @@ public class ManageMaDemocratieImplIT extends BaseIT {
 
     private static final String PROPOSAL_TITLE = "test_proposal";
     private static final String PROPOSAL_CONTENT = "test_proposal";
+    private Proposal testProposalA;
 
     @Before
     public void setUp() {
         super.setUp();
-        cleanProposalsAndCitizensAndComments();
+        cleanAll();
     }
 
     @After
     public void after() {
-        cleanProposalsAndCitizensAndComments();
+        cleanAll();
     }
 
 
@@ -76,29 +78,29 @@ public class ManageMaDemocratieImplIT extends BaseIT {
 
         Proposal testProposalAnon = new Proposal(PROPOSAL_TITLE + "Anon", PROPOSAL_CONTENT);
         Proposal testProposalAnonB = new Proposal(PROPOSAL_TITLE + "AnonB", PROPOSAL_CONTENT);
-        Proposal testProposalA = new Proposal(PROPOSAL_TITLE + "A", PROPOSAL_CONTENT);
+        testProposalA = new Proposal(PROPOSAL_TITLE + "A", PROPOSAL_CONTENT);
         Proposal testProposalB = new Proposal(PROPOSAL_TITLE + "B", PROPOSAL_CONTENT);
         Proposal testProposalA2 = new Proposal(PROPOSAL_TITLE + "A2", PROPOSAL_CONTENT);
 
-        manageProposal.addProposal(testProposalAnon, null);
-        manageProposal.addProposal(testProposalAnonB, null);
-        manageProposal.addProposal(testProposalA, myAuthorA);
+        testProposalAnon = manageProposal.addProposal(testProposalAnon, null);
+        testProposalAnonB = manageProposal.addProposal(testProposalAnonB, null);
+        testProposalA = manageProposal.addProposal(testProposalA, myAuthorA);
 
         Vote bForANeutral = manageVote.vote(myAuthorB, testProposalA.getContributionId(), VoteKind.NEUTRAL);
         Vote bForAPro = manageVote.vote(myAuthorB, testProposalA.getContributionId(), VoteKind.PRO);
 
-        manageProposal.addProposal(testProposalB, myAuthorB);
-        manageProposal.addProposal(testProposalA2, myAuthorA);
+        testProposalB = manageProposal.addProposal(testProposalB, myAuthorB);
+        testProposalA2 = manageProposal.addProposal(testProposalA2, myAuthorA);
 
         Comment authorAComment = new Comment(myAuthorA, "oodod d", testProposalB);
-        manageComment.comment(myAuthorA, authorAComment);
+        authorAComment = manageComment.comment(myAuthorA, authorAComment);
 
-        int contributionsCount = 6;
+        int contributionsCount = 7;
         return contributionsCount;
     }
 
     @Test
-    public void testGetLastContributions() throws MaDemocratieException {
+    public void should_provide_last_contributions() throws MaDemocratieException {
         // GIVEN
         int createdContributionCount = initContributions();
         int askedMaxContributions = 50; // 5; because of order
@@ -114,8 +116,25 @@ public class ManageMaDemocratieImplIT extends BaseIT {
             logger.info("/CONTRIBUTION/ '" + contribution.getContributionDetails()
                     +"' on '" + contribution.getDateFormat());
             // +"' accessible using " + contribution.getContributionPage().getSimpleName());
+            if (contribution.getContributionType().equals("COMMENT")) {
+                assertThat(contribution.getContributionId()).isNotNull();
+            }
         }
         assertThat(contributions)
                 .hasSize(Math.min(createdContributionCount, askedMaxContributions));
+    }
+
+
+    @Test
+    public void should_provide_proposal_informations() throws MaDemocratieException {
+        // GIVEN
+        int createdContributionCount = initContributions();
+        // WHEN
+        ProposalInformations proposalInformations = manageMD.getProposalInformations(testProposalA.getContributionId());
+        // THEN
+        assertThat(proposalInformations)
+                .isNotNull();
+        JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
+        logger.info(jsonProposalInformations.toString());
     }
 }

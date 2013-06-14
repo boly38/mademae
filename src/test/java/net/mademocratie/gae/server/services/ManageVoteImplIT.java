@@ -1,12 +1,10 @@
 package net.mademocratie.gae.server.services;
 
-import com.google.inject.Inject;
+import net.mademocratie.gae.server.entities.VoteList;
+import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
-import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
-import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
-import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.junit.After;
 import org.junit.Before;
@@ -117,9 +115,9 @@ public class ManageVoteImplIT extends BaseIT {
         manageVote.vote(myAuthorB, proposalId, VoteKind.NEUTRAL);
         manageVote.vote(myAuthorB, proposalId, VoteKind.PRO);
 
-        ProposalVotes proposalVotes = manageVote.getProposalVotes(proposalId);
-        assertThat(proposalVotes).isNotNull();
-        assertThat(proposalVotes.getVotesCount()).isEqualTo(1);
+        VoteList votes = manageVote.getProposalVotes(proposalId);
+        assertThat(votes).isNotNull();
+        assertThat(votes.getCount()).isEqualTo(1);
     }
 
     @Test
@@ -149,18 +147,18 @@ public class ManageVoteImplIT extends BaseIT {
         Vote testVoteB = manageVote.vote(myAuthorB, testProposalA, VoteKind.NEUTRAL);
         assertThat(testVote.getContributionId()).isNotNull();
         // WHEN
-        ProposalVotes retrievedVotes = manageVote.getProposalVotes(testProposalA.getContributionId());
+        VoteList proposalVotes = manageVote.getProposalVotes(testProposalA.getContributionId());
         //THEN
-        assertThat(retrievedVotes)
+        assertThat(proposalVotes)
                 .as("unable to retrieve a proposal's vote")
                 .isNotNull();
-        assertThat(retrievedVotes.getVotes())
+        assertThat(proposalVotes.getObject())
                 .as("unable to retrieve a proposal's vote")
                 .isNotNull();
-        assertThat(retrievedVotes.getVotesCount())
-                .as("proposal's vote count is incorrect : " + retrievedVotes.getVotesCount())
+        assertThat(proposalVotes.getCount())
+                .as("proposal's vote count is incorrect : " + proposalVotes.getCount())
                 .isEqualTo(2);
-        assertThat(retrievedVotes.getVotes())
+        assertThat(proposalVotes.getObject())
                 .as("unable to retrieve given proposal's vote")
                 .contains(testVote, testVoteB);
     }

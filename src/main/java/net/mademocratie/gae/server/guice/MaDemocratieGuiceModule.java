@@ -3,6 +3,7 @@ package net.mademocratie.gae.server.guice;
 import com.google.inject.servlet.ServletModule;
 import com.googlecode.objectify.ObjectifyService;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.services.*;
 import net.mademocratie.gae.server.services.impl.*;
@@ -19,7 +20,6 @@ public class MaDemocratieGuiceModule extends ServletModule {
         ObjectifyService.register(Citizen.class);
         ObjectifyService.register(Proposal.class);
         ObjectifyService.register(Vote.class);
-        ObjectifyService.register(ProposalVotes.class);
         ObjectifyService.register(Comment.class);
 
         // Bind services

@@ -40,19 +40,19 @@
     <!-- ********** tabs ********* -->
     <div class="tabbable">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#tabVot" data-toggle="tab">Votes (${proposalVotes.votesCount})</a></li>
+            <li class="active"><a href="#tabVot" data-toggle="tab">Votes (${proposalVotesDTO.votesCount})</a></li>
             <li><a href="#tabPro" data-toggle="tab"><i class="icon-thumbs-up"></i> Pro arguments (0)</a></li>
             <li><a href="#tabCon" data-toggle="tab"><i class="icon-thumbs-down"></i> Con arguments (0)</a></li>
-            <li><a href="#tabCom" data-toggle="tab"><i class="icon-tag"></i> Comments (0)</a></li>
+            <li><a href="#tabCom" data-toggle="tab"><i class="icon-tag"></i> Comments (${proposalCommentsCount})</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tabVot">
                 <div class="span7" id="vote-summary"><p>
-                    {{if ((typeof(proposalVotes) == "undefined") || (proposalVotes == ""))}}
+                    {{if ((typeof(proposalVotesDTO) == "undefined") || (proposalVotesDTO == ""))}}
                     {{else}}
-                    <i class="icon-thumbs-up"></i>&#160;<span style="font-weight: bold" id="proposalPro">${proposalVotes.votesProCount}</span> FOR<br/>
-                    <i class="icon-volume-off"></i>&#160;<span style="font-weight: bold" id="proposalNeutral">${proposalVotes.votesNeutralCount}</span> NEUTRAL<br/>
-                    <i class="icon-thumbs-down"></i>&#160;<span style="font-weight: bold" id="proposalCon">${proposalVotes.votesConCount}</span> CON
+                    <i class="icon-thumbs-up"></i>&#160;<span style="font-weight: bold" id="proposalPro">${proposalVotesDTO.votesProCount}</span> FOR<br/>
+                    <i class="icon-volume-off"></i>&#160;<span style="font-weight: bold" id="proposalNeutral">${proposalVotesDTO.votesNeutralCount}</span> NEUTRAL<br/>
+                    <i class="icon-thumbs-down"></i>&#160;<span style="font-weight: bold" id="proposalCon">${proposalVotesDTO.votesConCount}</span> CON
                     {{/if}}
                 </p></div>
             </div>

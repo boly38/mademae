@@ -43,13 +43,10 @@ public abstract class BaseIT {
         manageProposal.removeAll();
         manageCitizen.removeAll();
     }
-    protected void cleanProposalsAndCitizensAndComments() {
+    protected void cleanAll() {
+        manageVote.removeAll();
         manageComment.removeAll();
         cleanProposalsAndCitizens();
-    }
-
-    protected void cleanVotes() {
-        manageVote.removeAll();
     }
 
     protected Citizen assertTestCitizenPresence(String email, String pseudo) {

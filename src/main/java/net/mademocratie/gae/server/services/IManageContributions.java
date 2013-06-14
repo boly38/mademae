@@ -11,5 +11,5 @@ import java.util.Set;
 
 @ImplementedBy(ManageContributionsImpl.class)
 public interface IManageContributions {
-    Map<Key<Contribution>,Contribution> getContributionsByIds(Set<Key<Contribution>> keys);
+    Map<Long, Contribution> getContributionsByIds(Set<Key<Contribution>> keys);
 }
