@@ -9,6 +9,12 @@ Placed at the end of the document so the pages load faster
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-button.js"></script>
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-dropdown.js"></script>
 <script type="text/javascript" src="/${bootstrap.version}/js/bootstrap-typeahead.js"></script>
+
+
+<!-- html js editor jHtmlArea -->
+<script type="text/javascript" src="/js/editor/scripts/jHtmlArea-0.7.5.js"></script>
+<link rel="Stylesheet" type="text/css" href="/js/editor/style/jHtmlArea.css" />
+
 <!-- MaDemAe Js -->
 <script type="text/javascript" src="/js/md/jtools.js"></script>
 <script type="text/javascript" src="/js/md/AddProposalCommentForm.js"></script>

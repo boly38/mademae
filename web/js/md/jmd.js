@@ -232,6 +232,10 @@ function MaDemocratie() {
          var addProposalEndPoint = "json/proposal/add";
          var proposalData = $("#" + addProposalFormId).serializeJSON();
          var title = proposalData.title;
+         if (title == '') {
+             this.warn("please set a title");
+             return;
+         }
          $.ajax({
            type: "POST",
            url: addProposalEndPoint,
@@ -239,6 +243,7 @@ function MaDemocratie() {
            dataType: "json",
            contentType: 'application/json',
            success: function() {
+             md.clear();
              md.info("you just add a proposal (title:" + title + ")");
              md.home();
            }

@@ -10,6 +10,10 @@ function AddProposalForm() {
             $.template("addProposalTemplate", addProposalTemplate);
             var addProposalHtmlResult = $.tmpl("addProposalTemplate", "");
             parentAP.updateContent(addProposalHtmlResult);
+            $("#proposalContent").htmlarea({
+                toolbar: ["html","bold", "italic", "underline", "|", "h1", "h2", "|", "link", "unlink"
+                ]
+            });
         });
     };
 
