@@ -69,7 +69,9 @@ public class ManageCitizenImpl implements IManageCitizen {
     public void removeAll() {
         int limit = 100;
         List<Citizen> citizens = ofy().load().type(Citizen.class).limit(limit).list();
-        ofy().delete().entities(citizens).now();
+        if (citizens.size()>0) {
+            ofy().delete().entities(citizens).now();
+        }
         LOGGER.info(citizens.size() + " citizen(s) removed");
         if (citizens.size() == limit) {
             removeAll();

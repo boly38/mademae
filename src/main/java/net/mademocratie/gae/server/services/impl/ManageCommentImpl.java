@@ -86,7 +86,9 @@ public class ManageCommentImpl implements IManageComment {
     public int removeAll() {
         int limit = 100;
         List<Comment> comments = ofy().load().type(Comment.class).limit(limit).list();
-        ofy().delete().entities(comments).now();
+        if (comments.size() > 0) {
+            ofy().delete().entities(comments).now();
+        }
         LOGGER.info(comments.size() + " comment(s) removed");
         if (comments.size() == limit) {
             return comments.size() + removeAll();

@@ -129,7 +129,9 @@ public class ManageVoteImpl implements IManageVote {
     public void removeAll() {
         int limit = 100;
         List<Vote> votes = ofy().load().type(Vote.class).limit(limit).list();
-        ofy().delete().entities(votes).now();
+        if (votes.size() > 0) {
+            ofy().delete().entities(votes).now();
+        }
         LOGGER.info(votes.size() + " vote(s) removed");
         if (votes.size() == limit) {
             removeAll();

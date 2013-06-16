@@ -59,7 +59,9 @@ public class ManageProposalImpl implements IManageProposal {
     public void removeAll() {
         int limit = 100;
         List<Proposal> proposals = ofy().load().type(Proposal.class).limit(limit).list();
-        ofy().delete().entities(proposals).now();
+        if (proposals.size()>0) {
+            ofy().delete().entities(proposals).now();
+        }
         LOGGER.info(proposals.size() + " proposal(s) removed");
         if (proposals.size() == limit) {
             removeAll();

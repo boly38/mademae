@@ -24,14 +24,6 @@ import java.util.logging.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
 
-/**
- * ManageCitizenImplIT
- * <p/>
- * Last update  : $LastChangedDate$
- * Last author  : $Author$
- *
- * @version : $Revision$
- */
 @RunWith(GuiceJUnitRunner.class)
 @GuiceJUnitRunner.GuiceModules({ MaDemocratieGuiceModule.class })
 public class ManageMaDemocratieImplIT extends BaseIT {
