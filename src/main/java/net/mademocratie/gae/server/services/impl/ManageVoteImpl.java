@@ -129,6 +129,10 @@ public class ManageVoteImpl implements IManageVote {
     public void removeAll() {
         int limit = 100;
         List<Vote> votes = ofy().load().type(Vote.class).limit(limit).list();
+        if (votes.size() == 1 && votes.get(0) == null) {
+            LOGGER.warning("unable to remove null entity (ofy bug?) :" + votes.get(0));
+            return;
+        }
         if (votes.size() > 0) {
             LOGGER.info("will remove " + votes.size() + " vote(s) :" + votes.toString());
             ofy().delete().entities(votes).now();

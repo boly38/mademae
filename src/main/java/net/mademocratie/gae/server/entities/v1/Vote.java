@@ -28,7 +28,7 @@ public class Vote extends Contribution implements IContribution {
     public Vote(Vote v) {
         super(v);
         this.setKind(v.getKind());
-        this.setProposal(v.getProposalId());
+        this.proposal = v.getProposal();
     }
 
     @Override
@@ -64,10 +64,6 @@ public class Vote extends Contribution implements IContribution {
 
     public Long getProposalId() {
         return proposal.getId();
-    }
-
-    public void setProposal(Long proposal) {
-        this.proposal =  Key.create(Proposal.class, proposal);
     }
 
     @Override
