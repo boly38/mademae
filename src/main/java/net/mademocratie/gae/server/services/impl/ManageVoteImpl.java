@@ -64,6 +64,7 @@ public class ManageVoteImpl implements IManageVote {
     private void removeVotes(List<Vote> existingVotes) {
         if (existingVotes == null
          || existingVotes.size() == 0) return;
+        existingVotes = removeNullEntities(existingVotes);
         Result<Void> entitiesToDelete = ofy().delete().entities(existingVotes);
         entitiesToDelete.now();
         LOGGER.info("vote removed :" + existingVotes.size());
@@ -77,6 +78,7 @@ public class ManageVoteImpl implements IManageVote {
     }
 
     private void removeVote(Vote voteToDelete) {
+        if (voteToDelete == null) return;
         ofy().delete().entity(voteToDelete).now();
         LOGGER.info("vote removed :" + voteToDelete.toString());
     }
@@ -129,10 +131,7 @@ public class ManageVoteImpl implements IManageVote {
     public void removeAll() {
         int limit = 100;
         List<Vote> votes = ofy().load().type(Vote.class).limit(limit).list();
-        if (votes.size() == 1 && votes.get(0) == null) {
-            LOGGER.warning("unable to remove null entity (ofy bug?) :" + votes.get(0));
-            return;
-        }
+        votes = removeNullEntities(votes);
         if (votes.size() > 0) {
             LOGGER.info("will remove " + votes.size() + " vote(s) :" + votes.toString());
             ofy().delete().entities(votes).now();
@@ -141,5 +140,18 @@ public class ManageVoteImpl implements IManageVote {
         if (votes.size() == limit) {
             removeAll();
         }
+    }
+
+    private <T> List<T> removeNullEntities(List<T> entities) {
+        List<T> resultEntities = new ArrayList();
+        for(T entity : entities) {
+            if (entity == null) {
+                LOGGER.warning("*ignore* null entity");
+            }
+            if (entity != null) {
+                resultEntities.add(entity);
+            }
+        }
+        return resultEntities;
     }
 }
