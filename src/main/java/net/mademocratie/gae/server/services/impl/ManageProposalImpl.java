@@ -23,7 +23,7 @@ public class ManageProposalImpl implements IManageProposal {
 
     public Proposal addProposal(Proposal inputProposal, Citizen author) {
         if (author != null) {
-            inputProposal.setAuthor(author);
+            inputProposal.setAuthorFromValue(author);
         }
         return addProposal(inputProposal);
     }

@@ -37,9 +37,6 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
     @Inject
     IManageCitizen manageCitizen;
 
-    @Inject
-    IManageMaDemocratie manageMD;
-
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -98,9 +95,5 @@ public class CitizensService extends AbstractMaDemocratieJsonService {
         ProfileInformations profileInfos = manageMD.getProfileInformations(authenticatedUser);
         JSONObject jsonProfileInformations = new JSONObject(profileInfos);
         return jsonProfileInformations.toString();
-    }
-
-    public IManageCitizen getManageCitizen() {
-        return manageCitizen;
     }
 }

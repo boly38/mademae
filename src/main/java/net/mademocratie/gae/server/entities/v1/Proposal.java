@@ -60,7 +60,7 @@ public class Proposal extends Contribution implements IContribution {
     public String getContent() {
         return (content != null ? content.getValue():null);
     }
-    public void setContent(String content) {
+    public void setContentFromString(String content) {
         this.content = new Text(content != null ? content : "");
     }
 

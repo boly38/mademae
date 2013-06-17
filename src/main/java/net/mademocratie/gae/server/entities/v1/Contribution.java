@@ -1,6 +1,5 @@
 package net.mademocratie.gae.server.entities.v1;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -32,7 +31,7 @@ public abstract class Contribution implements IContribution {
 
     protected Contribution(Citizen author) {
         this.date = new Date();
-        setAuthor(author);
+        setAuthorFromValue(author);
     }
 
     public Contribution(Contribution c) {
@@ -74,7 +73,7 @@ public abstract class Contribution implements IContribution {
     public void setAuthor(Key<Citizen> author) {
         this.author = author;
     }
-    public void setAuthor(Citizen author) {
+    public void setAuthorFromValue(Citizen author) {
         setAuthor(Key.create(Citizen.class, author.getId()));
     }
 

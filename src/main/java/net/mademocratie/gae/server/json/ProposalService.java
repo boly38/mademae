@@ -24,13 +24,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     Logger log = Logger.getLogger(ProposalService.class.getName());
 
     @Inject
-    IManageMaDemocratie manageMD;
-
-    @Inject
     IManageProposal manageProposals;
-
-    @Inject
-    IManageCitizen manageCitizen;
 
     @Inject
     IManageVote manageVote;
@@ -59,7 +53,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());
         if (authenticatedUser != null) {
-            newProposal.setAuthor(authenticatedUser);
+            newProposal.setAuthorFromValue(authenticatedUser);
         }
         log.info("addProposal POST received : " + proposal.toString());
         Proposal addedProposal = manageProposals.addProposal(newProposal);
@@ -124,9 +118,4 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
     }
-
-    public IManageCitizen getManageCitizen() {
-        return manageCitizen;
-    }
-
 }

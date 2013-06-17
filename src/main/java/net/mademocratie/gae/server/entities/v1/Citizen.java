@@ -101,7 +101,7 @@ public class Citizen {
         return (email != null ? email.getEmail() : null);
     }
 
-    public void setEmail(String email) {
+    public void setEmailFromString(String email) {
         this.email = (email != null ? new Email(email) : null);
     }
 

@@ -1,6 +1,8 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
+import net.mademocratie.gae.server.domain.DbImport;
+import net.mademocratie.gae.server.entities.v1.DatabaseContentV1;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.domain.ProposalInformations;
@@ -22,4 +24,14 @@ public interface IManageMaDemocratie {
     List<CommentDTO> latestCommentsDTO(int max);
 
     ProposalInformations getProposalInformations(Long propId);
+
+    boolean isUserAdmin();
+
+    void notifyAdminReport() throws MaDemocratieException;
+
+    Citizen getAuthenticatedUser(String authToken);
+
+    DatabaseContentV1 dbExportV1();
+
+    void dbImportV1(DbImport dbImport);
 }

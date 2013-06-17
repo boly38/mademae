@@ -1,7 +1,10 @@
 package net.mademocratie.gae.server.services.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
+import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.domain.ProposalInformations;
@@ -12,7 +15,9 @@ import net.mademocratie.gae.server.entities.dto.*;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.*;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -155,5 +160,55 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         ProposalVotesDTO proposalVotesDTO = proposalVotes.asProposalVotes(proposalRetrieved);
         List<CommentDTO> proposalComments = getProposalCommentsDTO(propId);
         return new ProposalInformations(proposalRetrieved, proposalVotesDTO, proposalComments);
+    }
+
+    public boolean isUserAdmin() {
+        return manageCitizen.isGoogleUserAdmin();
+    }
+
+    public void notifyAdminReport() throws MaDemocratieException {
+        manageCitizen.notifyAdminReport();
+    }
+
+    public Citizen getAuthenticatedUser(String authToken) {
+        return manageCitizen.getAuthenticatedUser(authToken);
+    }
+
+    public DatabaseContentV1 dbExportV1() {
+        List<Citizen> citizens = manageCitizen.latest();
+        List<Proposal> proposals = manageProposal.latest();
+        List<Vote> votes = manageVote.latest();
+        List<Comment> comments = manageComment.latest();
+        return new DatabaseContentV1(
+                new ArrayList<Citizen>(citizens),
+                new ArrayList<Proposal>(proposals),
+                new ArrayList<Vote>(votes),
+                new ArrayList<Comment>(comments)
+        );
+    }
+
+    public void dbImportV1(DbImport dbImport) {
+        if (dbImport== null) return;
+        JSONObject jsonDbImport = new JSONObject(dbImport);
+        LOGGER.info("dbImport POST received : " + jsonDbImport.toString());
+        ObjectMapper mapper = new ObjectMapper();
+        DatabaseContentV1 databaseImportV1;
+        try {
+            databaseImportV1= mapper.readValue(dbImport.getDbcontent(), DatabaseContentV1.class);
+            LOGGER.info("dbImport stats : " + databaseImportV1.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("manageCitizen", manageCitizen)
+                .add("manageProposal", manageProposal)
+                .add("manageVote", manageVote)
+                .add("manageComment", manageComment)
+                .add("manageContribution", manageContribution)
+                .toString();
     }
 }

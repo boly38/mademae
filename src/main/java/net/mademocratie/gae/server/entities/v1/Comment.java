@@ -86,10 +86,6 @@ public class Comment extends Contribution implements IContribution {
         this.content = new Text(content != null ? content : "");
     }
 
-    public void setContent(Text content) {
-        this.content = content;
-    }
-
     public Key<Contribution> getParentContribution() {
         return parentContribution;
     }

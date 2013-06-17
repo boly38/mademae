@@ -1,7 +1,9 @@
 package net.mademocratie.gae.server.json;
 
+import com.google.inject.Inject;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.services.IManageCitizen;
+import net.mademocratie.gae.server.services.IManageMaDemocratie;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
@@ -14,7 +16,8 @@ import java.net.URISyntaxException;
  */
 public abstract class AbstractMaDemocratieJsonService {
 
-    abstract IManageCitizen getManageCitizen();
+    @Inject
+    IManageMaDemocratie manageMD;
 
 
     protected Response returnForbidden() {
@@ -34,7 +37,7 @@ public abstract class AbstractMaDemocratieJsonService {
         String authTokenKey = "md-authentication";
         Citizen authenticatedUser = null;
         if (headerParams.containsKey(authTokenKey)) {
-            authenticatedUser = getManageCitizen().getAuthenticatedUser(headerParams.getFirst(authTokenKey));
+            authenticatedUser = manageMD.getAuthenticatedUser(headerParams.getFirst(authTokenKey));
         }
         return authenticatedUser;
     }
