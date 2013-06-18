@@ -194,7 +194,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         ObjectMapper mapper = new ObjectMapper();
         DatabaseContentV1 databaseImportV1;
         try {
-            databaseImportV1= mapper.readValue(dbImport.getDbcontent(), DatabaseContentV1.class);
+            databaseImportV1= mapper.readValue(dbImport.getImportContent(), DatabaseContentV1.class);
             LOGGER.info("dbImport stats : " + databaseImportV1.toString());
         } catch (IOException e) {
             e.printStackTrace();

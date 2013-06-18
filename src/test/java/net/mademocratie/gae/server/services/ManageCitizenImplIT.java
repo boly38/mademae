@@ -1,14 +1,12 @@
 package net.mademocratie.gae.server.services;
 
-import com.google.inject.Inject;
 import junit.framework.Assert;
+import net.mademocratie.gae.server.AbstractIT;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.exception.RegisterFailedException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
-import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,10 +19,8 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(GuiceJUnitRunner.class)
 @GuiceJUnitRunner.GuiceModules({ MaDemocratieGuiceModule.class })
-public class ManageCitizenImplIT extends BaseIT {
+public class ManageCitizenImplIT extends AbstractIT {
     private static final Logger LOGGER = Logger.getLogger(ManageCitizenImplIT.class.getName());
-    @Inject
-    private ManageCitizenImpl manageCitizen;
 
     private static final String TEST_USER_MAIL = "boly38@gmail.com";
     private static final String TEST_USER_PSEUDO = "bobo";

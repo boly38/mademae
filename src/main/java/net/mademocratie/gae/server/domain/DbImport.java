@@ -1,19 +1,29 @@
 package net.mademocratie.gae.server.domain;
 
+import net.mademocratie.gae.server.entities.IDatabaseContent;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class DbImport {
-    private String dbcontent;
+public class DbImport implements IDatabaseContent {
+    private String importContent;
 
     public DbImport() {
     }
 
-    public String getDbcontent() {
-        return dbcontent;
+    public String getImportContent() {
+        return importContent;
     }
 
-    public void setDbcontent(String dbcontent) {
-        this.dbcontent = dbcontent;
+    public String getContent() {
+        return importContent;
+    }
+
+    public void setImportContent(String importContent) {
+        this.importContent = importContent;
+    }
+
+    public String getSchemaVersion() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

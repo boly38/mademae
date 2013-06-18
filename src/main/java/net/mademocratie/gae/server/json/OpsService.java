@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 
 @Path("/ops")
 @Produces(MediaType.APPLICATION_JSON)
-public class OpsService extends AbstractMaDemocratieJsonService {
+public class OpsService extends AbstractMaDemocratieJsonService implements IOpsService {
     Logger log = Logger.getLogger(OpsService.class.getName());
 
 

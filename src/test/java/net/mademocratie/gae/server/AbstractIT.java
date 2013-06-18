@@ -1,15 +1,17 @@
-package net.mademocratie.gae.server.services;
+package net.mademocratie.gae.server;
+
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
+import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 import org.junit.Before;
 
-public abstract class BaseIT {
+public class AbstractIT {
 
     @Inject
     protected ManageCitizenImpl manageCitizen;

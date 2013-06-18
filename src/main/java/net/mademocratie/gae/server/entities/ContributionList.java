@@ -23,7 +23,8 @@ public class ContributionList <T extends Contribution> {
             return authorsIds;
         }
         for(Contribution contribution: contributions) {
-            if (contribution.getAuthor() != null) {
+            if (contribution != null
+             && contribution.getAuthor() != null) {
                 authorsIds.add(contribution.getAuthor());
             }
         }

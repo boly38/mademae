@@ -5,6 +5,8 @@ import com.googlecode.objectify.ObjectifyService;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
 import net.mademocratie.gae.server.entities.v1.*;
+import net.mademocratie.gae.server.json.IOpsService;
+import net.mademocratie.gae.server.json.OpsService;
 import net.mademocratie.gae.server.services.*;
 import net.mademocratie.gae.server.services.impl.*;
 
@@ -29,6 +31,8 @@ public class MaDemocratieGuiceModule extends ServletModule {
         bind(IManageComment.class).to(ManageCommentImpl.class);
         bind(IManageContributions.class).to(ManageContributionsImpl.class);
         bind(IManageMaDemocratie.class).to(ManageMaDemocratieImpl.class);
+
+        bind(IOpsService.class).to(OpsService.class);
 
         Map<String,String> jerseyParams = new HashMap<String,String>();
         jerseyParams.put("com.sun.jersey.config.property.packages",

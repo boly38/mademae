@@ -1,7 +1,7 @@
 package net.mademocratie.gae.server.services;
 
+import net.mademocratie.gae.server.AbstractIT;
 import net.mademocratie.gae.server.entities.VoteList;
-import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
@@ -18,7 +18,7 @@ import static org.fest.assertions.Assertions.*;
 
 @RunWith(GuiceJUnitRunner.class)
 @GuiceJUnitRunner.GuiceModules({ MaDemocratieGuiceModule.class })
-public class ManageVoteImplIT extends BaseIT {
+public class ManageVoteImplIT extends AbstractIT {
     private static final Logger logger = Logger.getLogger(ManageVoteImplIT.class.getName());
 
 

@@ -2,6 +2,7 @@ package net.mademocratie.gae.server.services;
 
 import com.google.inject.Inject;
 import junit.framework.Assert;
+import net.mademocratie.gae.server.AbstractIT;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.domain.ProposalInformations;
@@ -10,6 +11,7 @@ import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
+import net.mademocratie.gae.server.json.IOpsService;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.json.JSONObject;
@@ -18,15 +20,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
 
 @RunWith(GuiceJUnitRunner.class)
 @GuiceJUnitRunner.GuiceModules({ MaDemocratieGuiceModule.class })
-public class ManageMaDemocratieImplIT extends BaseIT {
+public class ManageMaDemocratieImplIT extends AbstractIT {
     private static final Logger logger = Logger.getLogger(ManageMaDemocratieImplIT.class.getName());
     @Inject
     private IManageMaDemocratie  manageMD;
@@ -34,6 +37,7 @@ public class ManageMaDemocratieImplIT extends BaseIT {
     private static final String PROPOSAL_TITLE = "test_proposal";
     private static final String PROPOSAL_CONTENT = "test_proposal";
     private Proposal testProposalA;
+
 
     @Before
     public void setUp() {
@@ -129,4 +133,5 @@ public class ManageMaDemocratieImplIT extends BaseIT {
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         logger.info(jsonProposalInformations.toString());
     }
+
 }

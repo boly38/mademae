@@ -87,8 +87,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         Long propId = Long.valueOf(proposalId);
         ProposalInformations proposalInformations = manageMD.getProposalInformations(propId);
         log.info("getProposalId " + propId + " : " + proposalInformations.toString());
-        JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
-        return jsonProposalInformations.toString();
+        return proposalInformations.toJsonString();
     }
 
     private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException, MaDemocratieException {

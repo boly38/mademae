@@ -4,6 +4,7 @@ import com.google.appengine.repackaged.com.google.common.base.Objects;
 import net.mademocratie.gae.server.entities.dto.CommentDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalVotesDTO;
+import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
@@ -62,5 +63,14 @@ public class ProposalInformations {
                 .add("proposalVotesDTO", proposalVotesDTO)
                 .add("proposalComments", proposalComments)
                 .toString();
+    }
+
+    public String toJsonString() {
+        JSONObject jsonProposalInformations = toJson();
+        return jsonProposalInformations.toString();
+    }
+
+    private JSONObject toJson() {
+        return new JSONObject(this);
     }
 }

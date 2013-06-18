@@ -1,11 +1,10 @@
 package net.mademocratie.gae.server.services;
 
-import com.google.inject.Inject;
 import junit.framework.Assert;
+import net.mademocratie.gae.server.AbstractIT;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
-import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.junit.After;
@@ -22,7 +21,7 @@ import static org.junit.Assert.*;
 
 @RunWith(GuiceJUnitRunner.class)
 @GuiceJUnitRunner.GuiceModules({ MaDemocratieGuiceModule.class })
-public class ManageProposalImplIT extends BaseIT {
+public class ManageProposalImplIT extends AbstractIT {
     private static final Logger logger = Logger.getLogger(ManageProposalImplIT.class.getName());
 
     private static final String PROPOSAL_TITLE = "test_proposal";

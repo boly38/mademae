@@ -16,14 +16,14 @@
                     <form name="propForm" class="well form-horizontal" action="" id="dbimportForm">
                         <fieldset>
                             <div class="control-group">
-                                <label class="control-label" for="dbcontent">Import content</label>
+                                <label class="control-label" for="importContent">Import content</label>
                                 <div class="controls">
-                                    <textarea class="input-xlarge" cols="60" rows="3" placeholder="database content" id="dbcontent" name="dbcontent"></textarea>
+                                    <textarea class="input-xlarge" cols="60" rows="3" placeholder="database content" id="importContent" name="importContent"></textarea>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="controls docs-input-sizes">
-                                    <a name="dbImportSubmit" class="btn" href="javascript:md.dbImport('dbimportForm');$('textarea#dbcontent').val('');"><span>Import</span></a>
+                                    <a name="dbImportSubmit" class="btn" href="javascript:md.dbImport('dbimportForm');$('textarea#importContent').val('');"><span>Import</span></a>
                                     <a id="dsExport" class="btn btn-info" target="_new" href="/json/ops/dbexport" ><i class="icon-eject"></i> database export</a>
                                 </div>
                             </div>
