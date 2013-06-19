@@ -16,6 +16,8 @@ public interface IManageVote {
     Vote vote(Citizen author, Long proposalId, VoteKind kind) throws MaDemocratieException;
     Vote vote(Citizen author, Proposal proposal, VoteKind kind) throws MaDemocratieException;
 
+    void importVotes(List<Vote> votes);
+
     VoteList getProposalVotes(Long proposalId);
 
     List<Vote> latest(int maxVotes);

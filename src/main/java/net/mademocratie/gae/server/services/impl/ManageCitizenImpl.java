@@ -58,6 +58,16 @@ public class ManageCitizenImpl implements IManageCitizen {
         return inputCitizen;
     }
 
+    public void importCitizens(List<Citizen> citizens) {
+        for(Citizen c : citizens) {
+            try {
+                addCitizen(c);
+            } catch (CitizenAlreadyExistsException e) {
+                LOGGER.warning("citizen alrady exists : " + c.toString());
+            }
+        }
+    }
+
     public Citizen findCitizenByEmail(String email) {
         LOGGER.info("findCitizenByEmail " + email);
         Email emailVal = new Email(email);

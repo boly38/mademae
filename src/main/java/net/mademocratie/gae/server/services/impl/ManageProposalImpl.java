@@ -6,6 +6,7 @@ import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.entities.ProposalList;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.*;
+import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import net.mademocratie.gae.server.services.IManageProposal;
@@ -34,6 +35,12 @@ public class ManageProposalImpl implements IManageProposal {
         Proposal addedProposal = getById(proposalKey.getId());
         LOGGER.info("* Proposal ADDED : " + addedProposal);
         return addedProposal;
+    }
+
+    public void importProposals(List<Proposal> proposals) {
+        for(Proposal p : proposals) {
+            addProposal(p);
+        }
     }
 
     public List<Proposal> latest(int max) {

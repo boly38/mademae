@@ -57,8 +57,13 @@ public class ManageVoteImpl implements IManageVote {
         }
         Vote vote = new Vote(author, proposal, kind);
         addVote(vote);
-        LOGGER.info("* Vote ADDED : " + vote);
         return vote;
+    }
+
+    public void importVotes(List<Vote> votes) {
+        for(Vote v : votes) {
+            addVote(v);
+        }
     }
 
     private void removeVotes(List<Vote> existingVotes) {
@@ -73,7 +78,7 @@ public class ManageVoteImpl implements IManageVote {
 
     private Vote addVote(Vote vote) {
         ofy().save().entity(vote).now();
-        LOGGER.fine("addVote result " + vote.toString());
+        LOGGER.info("* addVote result " + vote.toString());
         return vote;
     }
 

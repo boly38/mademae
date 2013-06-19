@@ -24,8 +24,13 @@ public class ManageCommentImpl implements IManageComment {
             comment = new Comment(citizen, inComment);
         }
         addComment(comment);
-        LOGGER.info("* Comment ADDED : " + comment);
         return comment;
+    }
+
+    public void importComments(List<Comment> comments) {
+        for(Comment p : comments) {
+            addComment(p);
+        }
     }
 
     public List<Comment> getProposalComments(Long proposalId) {
@@ -52,7 +57,7 @@ public class ManageCommentImpl implements IManageComment {
 
     private Comment addComment(Comment comment) {
         ofy().save().entity(comment).now();
-        LOGGER.fine("addComment result " + comment.toString());
+        LOGGER.info("* addComment result " + comment.toString());
         return comment;
     }
 

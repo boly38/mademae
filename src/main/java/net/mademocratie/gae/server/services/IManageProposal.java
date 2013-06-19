@@ -22,6 +22,8 @@ public interface IManageProposal {
     public Proposal addProposal(Proposal inputProposal, Citizen author);
     public Proposal addProposal(Proposal inputProposal);
 
+    void importProposals(List<Proposal> proposals);
+
     /**
      * Return the latest proposals, ordered by descending date.
      *

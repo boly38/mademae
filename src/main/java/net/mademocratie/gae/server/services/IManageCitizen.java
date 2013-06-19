@@ -63,6 +63,8 @@ public interface IManageCitizen {
 
     Citizen addCitizen(Citizen myAuthorA) throws CitizenAlreadyExistsException;
 
+    void importCitizens(List<Citizen> citizens);
+
     void removeAll();
 
     void delete(Citizen testUser);

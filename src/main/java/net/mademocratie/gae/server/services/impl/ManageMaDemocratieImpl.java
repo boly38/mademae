@@ -195,8 +195,13 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         DatabaseContentV1 databaseImportV1;
         try {
             databaseImportV1= mapper.readValue(dbImport.getImportContent(), DatabaseContentV1.class);
+            manageCitizen.importCitizens(databaseImportV1.getCitizens());
+            manageProposal.importProposals(databaseImportV1.getProposals());
+            manageComment.importComments(databaseImportV1.getComments());
+            manageVote.importVotes(databaseImportV1.getVotes());
             LOGGER.info("dbImport stats : " + databaseImportV1.toString());
         } catch (IOException e) {
+            LOGGER.warning("dbImport failed (io exception) : " + e.getMessage());
             e.printStackTrace();
         }
     }

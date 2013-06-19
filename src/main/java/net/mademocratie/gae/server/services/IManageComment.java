@@ -15,12 +15,14 @@ import java.util.Map;
 public interface IManageComment {
     Comment comment(Citizen citizen, Comment inComment);
 
+    void importComments(List<Comment> comments);
+
     List<Comment> getProposalComments(Long propId);
 
     CommentList getProposalCommentsAsList(Long propId);
 
-    List<Comment> latest(int max);
 
+    List<Comment> latest(int max);
 
     CommentList latestAsList(int max);
 

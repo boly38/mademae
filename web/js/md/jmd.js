@@ -290,7 +290,7 @@ function MaDemocratie() {
            dataType: "json",
            contentType: 'application/json',
            success: function() {
-             md.warn("import not yet implemented");
+             md.info("import done : check server logs for details.");
              md.home();
            }
          });
