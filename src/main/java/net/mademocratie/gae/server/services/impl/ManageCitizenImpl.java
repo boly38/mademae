@@ -219,7 +219,7 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public void notifyAdminReport() throws MaDemocratieException {
-        sendMail("info@mademocratie.net",
+        sendMail("boly38@mademocratie.net",
                 "mademocratie.net",
                 "[MaDemocratie.net] Report",
                 "that is.");
