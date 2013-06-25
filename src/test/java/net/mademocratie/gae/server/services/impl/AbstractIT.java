@@ -1,19 +1,25 @@
-package net.mademocratie.gae.server;
+package net.mademocratie.gae.server.services.impl;
 
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
+import com.google.appengine.tools.development.testing.*;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageComment;
 import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.server.services.impl.ManageProposalImpl;
 import net.mademocratie.gae.server.services.impl.ManageVoteImpl;
 import org.junit.Before;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.spy;
 
 public class AbstractIT {
 
-    @Inject
+    @Inject @Spy
     protected ManageCitizenImpl manageCitizen;
 
     @Inject
@@ -29,16 +35,23 @@ public class AbstractIT {
      * http://man.lesca.me/local/gae/appengine/docs/java/tools/localunittesting.html#Writing_Authentication_Tests
      */
     protected final LocalServiceTestHelper helper =
-            new LocalServiceTestHelper(new LocalUserServiceTestConfig())
+            new LocalServiceTestHelper(
+                        new LocalUserServiceTestConfig(),
+                        new LocalURLFetchServiceTestConfig(),
+                        new LocalMailServiceTestConfig())
                     .setEnvIsAdmin(true)
                     .setEnvIsLoggedIn(true)
-                    .setEnvEmail("toto@yoyo.fr")
-                    .setEnvAuthDomain("yoyo.fr");
+                    .setEnvEmail("boly38@mademocratie.net")
+                    .setEnvAuthDomain("mademocratie.net")
+                    ;
+
 
     @Before
-    public void setUp() {
+    public void setUp() throws MaDemocratieException {
+        MockitoAnnotations.initMocks(this);
         // google service
         helper.setUp();
+        doNothing().when(manageCitizen).sendMail(anyString(), anyString(), anyString(), anyString());
     }
 
     protected void cleanProposalsAndCitizens() {

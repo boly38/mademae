@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.json;
+package net.mademocratie.gae.server.json.impl;
 
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
@@ -7,8 +7,8 @@ import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.json.IProposalService;
 import net.mademocratie.gae.server.services.*;
-import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -18,9 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Path("/proposal")
-@Produces(MediaType.APPLICATION_JSON)
-public class ProposalService extends AbstractMaDemocratieJsonService {
+
+public class ProposalService extends AbstractMaDemocratieJsonService implements IProposalService {
     Logger log = Logger.getLogger(ProposalService.class.getName());
 
     @Inject
@@ -33,8 +32,6 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     IManageComment manageComment;
 
 
-    @GET
-    @Path("/last")
     public String getProposals() {
         List<ProposalDTO> lastProposals = manageMD.latestProposalsDTO(100);
         String proposalsTitle = lastProposals.size() + " last proposals";
@@ -46,8 +43,6 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     }
 
 
-    @POST
-    @Path("/add")
     public String addProposal(Proposal proposal, @Context HttpHeaders httpHeaders) {
         if (proposal == null) return null;
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
@@ -62,8 +57,6 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     }
 
 
-    @POST
-    @Path("/addcomment")
     public String addProposalComment(Comment inComment, @Context HttpHeaders httpHeaders) {
         if (inComment == null) return null;
         if (inComment.getParentContributionId() == null) return null;
@@ -80,8 +73,6 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
     /*
      src: http://stackoverflow.com/questions/7430270/post-put-delete-http-json-with-additional-parameters-in-jersey-general-design
      */
-    @GET
-    @Path("/proposal/{id}")
     public String getProposal(@PathParam("id") String proposalId) {
         if (proposalId == null) return null;
         Long propId = Long.valueOf(proposalId);
@@ -100,20 +91,14 @@ public class ProposalService extends AbstractMaDemocratieJsonService {
         return manageVote.vote(authenticatedUser, Long.valueOf(proposalId), voteKind);
     }
 
-    @GET
-    @Path("/proposal/vote/pro/{id}")
     public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.PRO);
     }
 
-    @GET
-    @Path("/proposal/vote/con/{id}")
     public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.CON);
     }
 
-    @GET
-    @Path("/proposal/vote/neutral/{id}")
     public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
         return voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
     }

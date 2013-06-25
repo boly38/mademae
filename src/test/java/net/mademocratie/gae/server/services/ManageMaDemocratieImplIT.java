@@ -2,7 +2,7 @@ package net.mademocratie.gae.server.services;
 
 import com.google.inject.Inject;
 import junit.framework.Assert;
-import net.mademocratie.gae.server.AbstractIT;
+import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
 import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.domain.ProposalInformations;
@@ -11,17 +11,14 @@ import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
-import net.mademocratie.gae.server.json.IOpsService;
-import net.mademocratie.gae.server.services.impl.ManageCitizenImpl;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -40,7 +37,7 @@ public class ManageMaDemocratieImplIT extends AbstractIT {
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws MaDemocratieException {
         super.setUp();
         cleanAll();
     }
@@ -132,6 +129,15 @@ public class ManageMaDemocratieImplIT extends AbstractIT {
                 .isNotNull();
         JSONObject jsonProposalInformations = new JSONObject(proposalInformations);
         logger.info(jsonProposalInformations.toString());
+    }
+
+    @Test
+    @Ignore("TO FIX :(")
+    public void should_notif_admin_report() throws MaDemocratieException {
+        // GIVEN
+        int createdContributionCount = initContributions();
+        // WHEN
+        manageMD.notifyAdminReport();
     }
 
 }

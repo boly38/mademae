@@ -1,15 +1,11 @@
-package net.mademocratie.gae.server.json;
+package net.mademocratie.gae.server.json.impl;
 
 import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.*;
-import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
-import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.IManageCitizen;
-import net.mademocratie.gae.server.services.IManageMaDemocratie;
-import net.mademocratie.gae.server.services.IManageProposal;
 import org.json.JSONObject;
 
 import javax.ws.rs.GET;
@@ -19,7 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**

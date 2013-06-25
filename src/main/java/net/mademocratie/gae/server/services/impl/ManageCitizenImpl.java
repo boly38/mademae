@@ -7,6 +7,7 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import net.mademocratie.gae.server.domain.ProfileInformations;
+import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.CitizenState;
@@ -220,14 +221,19 @@ public class ManageCitizenImpl implements IManageCitizen {
                 "You just complete your registration, so hope you will be back soon : " + activateDestination);
     }
 
-    public void notifyAdminReport() throws MaDemocratieException {
+    public void notifyAdminReport(List<ContributionDTO> contributions) throws MaDemocratieException {
+        if (contributions == null || contributions.size() == 0) {
+            LOGGER.info("no contribution so skip the admin report");
+            return;
+        }
+        String notifContent = "last contributions:\n" + contributions.toString();
         sendMail(MADEM_REPORT_EMAIL,
                 MADEM_REPORT_NAME,
                 "[MaDemocratie.net] Report",
-                "that is.");
+                notifContent);
     }
 
-    private void sendMail(String toEmail, String toString, String title, String body) throws MaDemocratieException {
+    void sendMail(String toEmail, String toString, String title, String body) throws MaDemocratieException {
         Properties props = new Properties();
         // props.put("mail.smtp.host", "smtp");
         // props.put("mail.smtp.port", 25);

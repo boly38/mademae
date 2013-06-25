@@ -4,6 +4,7 @@ import com.google.appengine.api.users.User;
 import com.google.inject.ImplementedBy;
 import com.googlecode.objectify.Key;
 import net.mademocratie.gae.server.domain.ProfileInformations;
+import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.*;
@@ -51,7 +52,7 @@ public interface IManageCitizen {
     Citizen register(String pseudo, String email) throws RegisterFailedException;
     void registerNotifyCitizen(Citizen justRegisteredCitizen, String activateDestination) throws MaDemocratieException;
 
-    void notifyAdminReport() throws MaDemocratieException;
+    void notifyAdminReport(List<ContributionDTO> contributions) throws MaDemocratieException;
 
     Citizen getById(Long cId);
 

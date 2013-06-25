@@ -108,9 +108,16 @@ public class ManageVoteImpl implements IManageVote {
             orderedVotes = orderedVotes.limit(max);
         }
         List<Vote> latestVotes = orderedVotes.list();
-        int resultCount = latestVotes != null ? latestVotes.size() : 0;
+        // avoid getting null values !? ofy or appengine patch here
+        List<Vote> notNullLatestVotes = new ArrayList<Vote>();
+        for(Vote v : latestVotes) {
+            if (v != null) {
+              notNullLatestVotes.add(v);
+            }
+        }
+        int resultCount = notNullLatestVotes != null ? notNullLatestVotes.size() : 0;
         LOGGER.info("* latest votes asked " + (max > 0 ? max : "unlimited") + " result " +resultCount);
-        return latestVotes;
+        return notNullLatestVotes;
     }
 
     public VoteList latestAsList(int max) {

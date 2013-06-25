@@ -1,8 +1,11 @@
 package net.mademocratie.gae.server.services;
 
 import junit.framework.Assert;
-import net.mademocratie.gae.server.AbstractIT;
+import net.mademocratie.gae.server.services.impl.AbstractIT;
+import net.mademocratie.gae.server.entities.dto.ContributionDTO;
+import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.exception.RegisterFailedException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
@@ -11,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -26,7 +30,7 @@ public class ManageCitizenImplIT extends AbstractIT {
     private static final String TEST_USER_PSEUDO = "bobo";
 
     @Before
-    public void setUp() {
+    public void setUp() throws MaDemocratieException {
         super.setUp();
         cleanTestData();
     }
@@ -80,5 +84,15 @@ public class ManageCitizenImplIT extends AbstractIT {
         assertNotNull("could not authenticate a true user ?", authCitizen);
     }
 
+    @Test
+    public void testSendMail() throws MaDemocratieException {
+        // GIVEN
+        ArrayList<ContributionDTO> contributions = new ArrayList<ContributionDTO>();
+        ProposalDTO proposalDTO = new ProposalDTO();
+        proposalDTO.setContent("sample fake contrib");
+        contributions.add(proposalDTO);
 
+        // WHEN
+        manageCitizen.notifyAdminReport(contributions);
+    }
 }

@@ -1,13 +1,15 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.AbstractIT;
+import net.mademocratie.gae.server.services.impl.AbstractIT;
+import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -31,7 +33,7 @@ public class OpsServiceIT extends AbstractIT {
 
 
     @Before
-    public void setUp() {
+    public void setUp() throws MaDemocratieException {
         super.setUp();
         cleanAll();
     }
@@ -81,5 +83,26 @@ public class OpsServiceIT extends AbstractIT {
         // Response exportContent = Response.ok(databaseContentV1).type(MediaType.APPLICATION_JSON_TYPE).build();
         assertThat(response.getEntity().toString()).isNotNull();
         logger.info("db export : " + response.getEntity().toString());
+    }
+
+    @Test
+    @Ignore("DEV IN PROGRESS")
+    public void should_export_import_citizen_admin_feature() throws MaDemocratieException {
+        // GIVEN
+        Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "jc la frite");
+        Response response = opsService.dbExport();
+        DatabaseContentV1 exportContent = (DatabaseContentV1) response.getEntity();
+        String jsonExport = exportContent.toJSON().toString();
+        logger.info("export content:" + jsonExport);
+        cleanAll();
+
+        // WHEN
+        DbImport dbImport = new DbImport();
+        dbImport.setImportContent(jsonExport);
+        opsService.dbImport(dbImport);
+
+        // THEN
+        Citizen reImportedCitizen = manageCitizen.getById(myAuthor.getId());
+        assertThat(reImportedCitizen).isEqualTo(myAuthor);
     }
 }

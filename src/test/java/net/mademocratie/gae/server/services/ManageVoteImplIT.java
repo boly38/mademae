@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.services;
 
-import net.mademocratie.gae.server.AbstractIT;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.entities.VoteList;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.CitizenAlreadyExistsException;
@@ -32,7 +33,7 @@ public class ManageVoteImplIT extends AbstractIT {
     private Proposal testProposalA2;
 
     @Before
-    public void init() throws CitizenAlreadyExistsException {
+    public void init() throws MaDemocratieException {
         super.setUp();
         cleanTestData();
         myAuthorA = assertTestCitizenPresence("friteA@jo-la.fr", "jo la frite");

@@ -1,7 +1,8 @@
 package net.mademocratie.gae.server.services;
 
 import junit.framework.Assert;
-import net.mademocratie.gae.server.AbstractIT;
+import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
@@ -28,7 +29,7 @@ public class ManageProposalImplIT extends AbstractIT {
     private static final String PROPOSAL_CONTENT = "test_proposal";
 
     @Before
-    public void setUp() {
+    public void setUp() throws MaDemocratieException {
         super.setUp();
         cleanProposalsAndCitizens();
     }

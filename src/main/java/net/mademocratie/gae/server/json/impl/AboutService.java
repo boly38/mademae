@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.json;
+package net.mademocratie.gae.server.json.impl;
 
 import net.mademocratie.gae.server.domain.AboutInformations;
 

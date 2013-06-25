@@ -167,7 +167,8 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
     }
 
     public void notifyAdminReport() throws MaDemocratieException {
-        manageCitizen.notifyAdminReport();
+        List<ContributionDTO> lastContributions = getLastContributions(10);
+        manageCitizen.notifyAdminReport(lastContributions);
     }
 
     public Citizen getAuthenticatedUser(String authToken) {

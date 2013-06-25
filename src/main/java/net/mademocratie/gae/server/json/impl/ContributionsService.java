@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.json;
+package net.mademocratie.gae.server.json.impl;
 
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.domain.GetContributionsResult;
