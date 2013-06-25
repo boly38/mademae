@@ -68,7 +68,8 @@ public class CommentDTO extends ContributionDTO {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("CommentDTO{");
-        sb.append("content='").append(content).append('\'');
+        sb.append(super.toString());
+        sb.append(", content='").append(content).append('\'');
         sb.append(", parentContribution=").append(parentContribution);
         sb.append(", parentContributionType='").append(parentContributionType).append('\'');
         sb.append('}');

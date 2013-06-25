@@ -73,7 +73,8 @@ public class ProposalDTO extends ContributionDTO {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ProposalDTO{");
-        sb.append("content='").append(content).append('\'');
+        sb.append(super.toString());
+        sb.append(", content='").append(content).append('\'');
         sb.append(", title='").append(title).append('\'');
         sb.append('}');
         return sb.toString();
