@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.json.impl;
+package net.mademocratie.gae.server.json;
 
 import com.google.appengine.api.users.User;
 import com.google.inject.Inject;

@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.json.impl;
+package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
 import net.mademocratie.gae.server.entities.v1.Citizen;
