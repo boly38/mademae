@@ -82,4 +82,14 @@ public class VoteDTO extends ContributionDTO {
     public void setKind(VoteKind kind) {
         this.kind = kind;
     }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("VoteDTO{");
+        sb.append("kind=").append(kind);
+        sb.append(", proposalContent=").append(proposalContent);
+        sb.append('}');
+        return sb.toString();
+    }
 }

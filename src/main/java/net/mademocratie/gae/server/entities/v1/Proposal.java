@@ -78,12 +78,11 @@ public class Proposal extends Contribution implements IContribution {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("id", getContributionId())
-                .add("dateFormat", getDateFormat())
-                .add("age", getAge())
-                .add("title", title)
-                .add("content", content)
-                .toString();
+        final StringBuilder sb = new StringBuilder("Proposal{");
+        sb.append(super.toString());
+        sb.append(", content=").append(content);
+        sb.append(", title='").append(title).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

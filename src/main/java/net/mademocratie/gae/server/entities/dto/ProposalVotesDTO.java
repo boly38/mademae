@@ -94,11 +94,13 @@ public class ProposalVotesDTO {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("votesCount", votesCount)
-                .add("votesProCount", votesProCount)
-                .add("votesNeutralCount", votesNeutralCount)
-                .add("votesConCount", votesConCount)
-                .toString();
+        final StringBuilder sb = new StringBuilder("ProposalVotesDTO{");
+        sb.append("votes=").append(votes);
+        sb.append(", votesCount=").append(votesCount);
+        sb.append(", votesProCount=").append(votesProCount);
+        sb.append(", votesNeutralCount=").append(votesNeutralCount);
+        sb.append(", votesConCount=").append(votesConCount);
+        sb.append('}');
+        return sb.toString();
     }
 }

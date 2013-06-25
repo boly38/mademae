@@ -74,4 +74,17 @@ public class CitizenDTO {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("CitizenDTO{");
+        sb.append("admin=").append(admin);
+        sb.append(", id=").append(id);
+        sb.append(", date=").append(date);
+        sb.append(", pseudo='").append(pseudo).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", location='").append(location).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

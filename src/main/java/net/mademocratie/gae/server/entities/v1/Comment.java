@@ -108,12 +108,12 @@ public class Comment extends Contribution implements IContribution {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("dateFormat", getDateFormat())
-                .add("age", getAge())
-                .add("content", content)
-                .add("parentContribution", parentContribution)
-                .add("parentContributionType", parentContributionType)
-                .toString();
+        final StringBuilder sb = new StringBuilder("Comment{");
+        sb.append(super.toString());
+        sb.append(", content=").append(content);
+        sb.append(", parentContribution=").append(parentContribution);
+        sb.append(", parentContributionType='").append(parentContributionType).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

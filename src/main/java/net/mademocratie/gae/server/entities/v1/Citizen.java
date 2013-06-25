@@ -151,21 +151,6 @@ public class Citizen {
         this.citizenStateData = citizenStateData;
     }
 
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Citizen[");
-        sb.append("id:").append(id);
-        sb.append(", pseudo:").append(pseudo);
-        sb.append(", email:").append(email);
-        if (citizenState.equals(CitizenState.CREATED)) {
-            sb.append(" *non validated*");
-        }
-        sb.append(", state:").append(citizenState.toString());
-        sb.append(", location:").append(location);
-        sb.append("]");
-        return sb.toString();
-    }
-
     public boolean isPasswordEqualsTo(String password) {
         return this.password != null && this.password.equals(password);
     }
@@ -192,5 +177,23 @@ public class Citizen {
         anonymous.setEmail(null);
         anonymous.setAdmin(false);
         return anonymous;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Citizen{");
+        sb.append("admin=").append(admin);
+        sb.append(", id=").append(id);
+        // sb.append(", authToken='").append(authToken).append('\'');
+        sb.append(", date=").append(date);
+        sb.append(", pseudo='").append(pseudo).append('\'');
+        // sb.append(", password='").append(password).append('\'');
+        sb.append(", email=").append(email);
+        sb.append(", citizenState=").append(citizenState);
+        sb.append(", citizenStateData='").append(citizenStateData).append('\'');
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", authProvider=").append(authProvider);
+        sb.append('}');
+        return sb.toString();
     }
 }

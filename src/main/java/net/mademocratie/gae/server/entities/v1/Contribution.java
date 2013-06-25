@@ -84,4 +84,14 @@ public abstract class Contribution implements IContribution {
     public Long getAuthorId() {
         return (author != null ? author.getId() : null);
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Contribution{");
+        sb.append("author=").append(author);
+        sb.append(", contributionId=").append(contributionId);
+        sb.append(", date=").append(date);
+        sb.append('}');
+        return sb.toString();
+    }
 }

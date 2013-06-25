@@ -67,12 +67,13 @@ public class DatabaseContentV1 implements IDatabaseContent {
 
     @Override
     public String toString() {
-        return Objects.toStringHelper(this)
-                .add("citizens", citizens)
-                .add("schemaVersion", schemaVersion)
-                .add("proposals", proposals)
-                .add("votes", votes)
-                .add("comments", comments)
-                .toString();
+        final StringBuilder sb = new StringBuilder("DatabaseContentV1{");
+        sb.append("citizens=").append(citizens);
+        sb.append(", schemaVersion='").append(schemaVersion).append('\'');
+        sb.append(", proposals=").append(proposals);
+        sb.append(", votes=").append(votes);
+        sb.append(", comments=").append(comments);
+        sb.append('}');
+        return sb.toString();
     }
 }

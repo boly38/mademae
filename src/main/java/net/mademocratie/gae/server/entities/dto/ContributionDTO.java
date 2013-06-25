@@ -79,4 +79,14 @@ public abstract class ContributionDTO implements IContribution {
 
     public abstract String getContributionDetails();
     public abstract String getContributionType();
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ContributionDTO{");
+        sb.append("author=").append(author);
+        sb.append(", contributionId=").append(contributionId);
+        sb.append(", date=").append(date);
+        sb.append('}');
+        return sb.toString();
+    }
 }

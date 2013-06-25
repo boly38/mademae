@@ -70,4 +70,12 @@ public class ProposalDTO extends ContributionDTO {
         return ContributionType.PROPOSAL.toString();
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ProposalDTO{");
+        sb.append("content='").append(content).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
