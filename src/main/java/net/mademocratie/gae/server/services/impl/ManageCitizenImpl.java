@@ -30,9 +30,11 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 public class ManageCitizenImpl implements IManageCitizen {
     private final static Logger LOGGER = Logger.getLogger(ManageCitizenImpl.class.getName());
+    public static final String MADEM_REPORT_EMAIL = "info@mademocratie.net";
+    public static final String MADEM_REPORT_NAME = "mademocratie.net";
 
     private UserService userService = UserServiceFactory.getUserService();
-    private static final String MADEM_FROM_EMAIL = "info@mademocratie.net";
+    private static final String MADEM_FROM_EMAIL = "boly38@mademocratie.net";
     private static final String MADEM_FROM_NAME = "MaDemocratie";
 
 
@@ -219,8 +221,8 @@ public class ManageCitizenImpl implements IManageCitizen {
     }
 
     public void notifyAdminReport() throws MaDemocratieException {
-        sendMail("boly38@mademocratie.net",
-                "mademocratie.net",
+        sendMail(MADEM_REPORT_EMAIL,
+                MADEM_REPORT_NAME,
                 "[MaDemocratie.net] Report",
                 "that is.");
     }
