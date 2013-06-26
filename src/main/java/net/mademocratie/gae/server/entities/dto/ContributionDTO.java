@@ -33,7 +33,7 @@ public abstract class ContributionDTO implements IContribution {
     public ContributionDTO(Citizen author, Contribution contribution) {
         this.author = setAuthorFromCitizen(author);
         this.contributionId = contribution.getContributionId();
-        this.date = contribution.getDate();
+        this.date = contribution.getDateValue();
     }
 
     private CitizenDTO setAuthorFromCitizen(Citizen author) {
@@ -60,17 +60,17 @@ public abstract class ContributionDTO implements IContribution {
         this.contributionId = contributionId;
     }
 
-    public Date getDate() {
+    public Date getDateValue() {
         return date;
     }
 
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @JsonProperty("age")
     public String getAge() {
-        return DateHelper.getDateDuration(getDate());
+        return DateHelper.getDateDuration(getDateValue());
     }
 
     public void setDate(Date date) {

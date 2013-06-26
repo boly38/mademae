@@ -23,13 +23,13 @@ public class CommentDTO extends ContributionDTO {
         this.content = comment.getContent();
     }
     @Override                   // json need id
-    public Date getDate() {
-        return super.getDate();
+    public Date getDateValue() {
+        return super.getDateValue();
     }
 
     @Override
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override

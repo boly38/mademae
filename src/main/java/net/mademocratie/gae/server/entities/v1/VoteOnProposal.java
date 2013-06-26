@@ -23,13 +23,13 @@ public class VoteOnProposal extends Vote implements IContribution {
 
 
     @Override
-    public Date getDate() {
+    public Date getDateValue() {
         return date;
     }
 
     @Override
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override

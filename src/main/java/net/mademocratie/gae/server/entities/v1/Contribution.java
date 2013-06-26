@@ -36,8 +36,8 @@ public abstract class Contribution implements IContribution {
 
     public Contribution(Contribution c) {
         setContributionId(c.getContributionId());
-        setDate(c.getDate());
-        if (getDate() == null) {
+        setDate(c.getDateValue());
+        if (getDateValue() == null) {
             setDate(new Date());
         }
         this.setAuthor(c.getAuthor());
@@ -51,7 +51,12 @@ public abstract class Contribution implements IContribution {
         this.contributionId = contributionId;
     }
 
-    public Date getDate() {
+    public String getDate() {
+        return DateHelper.getDateSerializeFormat(getDateValue());
+    }
+
+    @JsonIgnore
+    public Date getDateValue() {
         return date;
     }
     public void setDate(Date date) {
@@ -59,11 +64,11 @@ public abstract class Contribution implements IContribution {
     }
 
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     public String getAge() {
-        return DateHelper.getDateDuration(getDate());
+        return DateHelper.getDateDuration(getDateValue());
     }
 
     public abstract String getContributionDetails();
@@ -93,5 +98,27 @@ public abstract class Contribution implements IContribution {
         sb.append(", date=").append(date);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contribution)) return false;
+
+        Contribution that = (Contribution) o;
+
+        if (author != null ? !author.equals(that.author) : that.author != null) return false;
+        if (!contributionId.equals(that.contributionId)) return false;
+        if (!date.equals(that.date)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = contributionId.hashCode();
+        result = 31 * result + date.hashCode();
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        return result;
     }
 }

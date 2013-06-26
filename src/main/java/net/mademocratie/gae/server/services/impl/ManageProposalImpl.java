@@ -31,6 +31,10 @@ public class ManageProposalImpl implements IManageProposal {
 
     public Proposal addProposal(Proposal inputProposal) {
         inputProposal.setDate(new Date());
+        return importProposal(inputProposal);
+    }
+
+    public Proposal importProposal(Proposal inputProposal) {
         Key<Proposal> proposalKey = ofy().save().entity(inputProposal).now();
         Proposal addedProposal = getById(proposalKey.getId());
         LOGGER.info("* Proposal ADDED : " + addedProposal);
@@ -39,7 +43,7 @@ public class ManageProposalImpl implements IManageProposal {
 
     public void importProposals(List<Proposal> proposals) {
         for(Proposal p : proposals) {
-            addProposal(p);
+            importProposal(p);
         }
     }
 

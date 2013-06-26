@@ -3,16 +3,11 @@ package net.mademocratie.gae.server.entities.v1;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.Email;
-import com.google.appengine.api.users.User;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.dto.CitizenDTO;
-import sun.util.calendar.BaseCalendar;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.text.SimpleDateFormat;
+import net.mademocratie.gae.server.services.helper.DateHelper;
 import java.util.Date;
 
 
@@ -135,8 +130,7 @@ public class Citizen {
     }
 
     public String getDate() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        return sdf.format(getDateValue());
+        return DateHelper.getDateSerializeFormat(getDateValue());
     }
 
     @JsonIgnore

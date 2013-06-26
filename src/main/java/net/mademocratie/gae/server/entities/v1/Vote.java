@@ -32,13 +32,13 @@ public class Vote extends Contribution implements IContribution {
     }
 
     @Override
-    public Date getDate() {
-        return super.getDate();
+    public Date getDateValue() {
+        return super.getDateValue();
     }
 
     @Override
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override
@@ -73,7 +73,7 @@ public class Vote extends Contribution implements IContribution {
         if (getContributionId() != null) {
             sb.append("#").append(getContributionId());
         }
-        sb.append(":").append(getDate());
+        sb.append(":").append(getDateValue());
         sb.append("|").append(getKind())
                 .append(" by citizen#").append(getAuthor())
                 .append(" on proposal#").append(getProposalId())

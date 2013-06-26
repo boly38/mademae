@@ -1,7 +1,6 @@
 package net.mademocratie.gae.server.entities.v1;
 
 import com.google.appengine.api.datastore.Text;
-import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
@@ -49,13 +48,13 @@ public class Comment extends Contribution implements IContribution {
     }
 
     @Override
-    public Date getDate() {
-        return super.getDate();
+    public Date getDateValue() {
+        return super.getDateValue();
     }
 
     @Override
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override

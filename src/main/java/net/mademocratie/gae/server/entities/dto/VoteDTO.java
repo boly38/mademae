@@ -1,6 +1,5 @@
 package net.mademocratie.gae.server.entities.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 
@@ -33,13 +32,13 @@ public class VoteDTO extends ContributionDTO {
     }
 
     @Override                   // json need id
-    public Date getDate() {
-        return super.getDate();
+    public Date getDateValue() {
+        return super.getDateValue();
     }
 
     @Override
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override

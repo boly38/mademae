@@ -71,7 +71,7 @@ public class OpsServiceIT extends AbstractIT {
     }
 
     @Test
-    public void should_provide_exportv1_admin_feature() throws MaDemocratieException {
+    public void should_provide_exportv1() throws MaDemocratieException {
         logger.info("should_provide_exportv1_admin_feature");
         // GIVEN
         int createdContributionCount = initContributions();
@@ -86,9 +86,9 @@ public class OpsServiceIT extends AbstractIT {
     }
 
     @Test
-    public void should_export_import_citizen_admin_feature() throws MaDemocratieException {
+    public void should_export_import_citizen() throws MaDemocratieException {
         // GIVEN
-        Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "jc la frite");
+        Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "François avec accentué");
         Response response = opsService.dbExport();
         DatabaseContentV1 exportContent = (DatabaseContentV1) response.getEntity();
         String jsonExport = exportContent.toJSON().toString();
@@ -103,5 +103,27 @@ public class OpsServiceIT extends AbstractIT {
         // THEN
         Citizen reImportedCitizen = manageCitizen.getById(myAuthor.getId());
         assertThat(reImportedCitizen).isEqualTo(myAuthor);
+    }
+
+    @Test
+    public void should_export_import_proposal() throws MaDemocratieException {
+        // GIVEN
+        Proposal myProposal = new Proposal("ooOtitle","oOoContent");
+        myProposal = manageProposal.addProposal(myProposal);
+
+        Response response = opsService.dbExport();
+        DatabaseContentV1 exportContent = (DatabaseContentV1) response.getEntity();
+        String jsonExport = exportContent.toJSON().toString();
+        logger.info("export content:" + jsonExport);
+        cleanAll();
+
+        // WHEN
+        DbImport dbImport = new DbImport();
+        dbImport.setImportContent(jsonExport);
+        opsService.dbImport(dbImport);
+
+        // THEN
+        Proposal reImportedProposal = manageProposal.getById(myProposal.getContributionId());
+        assertThat(reImportedProposal).isEqualTo(myProposal);
     }
 }

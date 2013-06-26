@@ -17,6 +17,14 @@ public class DateHelper {
         return dateFormat.format(myDate);
     }
 
+    public static String getDateSerializeFormat(Date myDate) {
+        if (myDate == null) {
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        return sdf.format(myDate);
+    }
+
     public static String getDateDuration(Date givenDate) {
         Duration duration = new Duration(givenDate.getTime(), new Date().getTime());
         if (duration.getStandardDays() > 1) {

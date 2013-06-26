@@ -1,7 +1,7 @@
 package net.mademocratie.gae.server.entities.v1;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.appengine.api.datastore.Text;
-import com.google.appengine.repackaged.com.google.common.base.Objects;
 import com.googlecode.objectify.annotation.Entity;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
@@ -26,18 +26,24 @@ public class Proposal extends Contribution implements IContribution {
         this.content = new Text(content != null ? content : "");
     }
 
+    public String getDate() {
+        return DateHelper.getDateSerializeFormat(getDateValue());
+    }
 
     @Override                   // json need id
-    public Date getDate() {
-        return super.getDate();
+    @JsonIgnore
+    public Date getDateValue() {
+        return super.getDateValue();
     }
 
     @Override
+    @JsonIgnore
     public String getDateFormat() {
-        return DateHelper.getDateFormat(getDate());
+        return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override
+    @JsonIgnore
     public String getAge() {
         return super.getAge();
     }
@@ -48,11 +54,13 @@ public class Proposal extends Contribution implements IContribution {
     }
 
     @Override
+    @JsonIgnore
     public String getContributionType() {
         return ContributionType.PROPOSAL.toString();
     }
 
     @Override
+    @JsonIgnore
     public String getContributionDetails() {
         return "create proposition '" + getTitle() + "'";
     }
@@ -84,5 +92,25 @@ public class Proposal extends Contribution implements IContribution {
         sb.append(", title='").append(title).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Proposal)) return false;
+
+        Proposal proposal = (Proposal) o;
+
+        if (content != null ? !content.equals(proposal.content) : proposal.content != null) return false;
+        if (!title.equals(proposal.title)) return false;
+
+        return super.equals(o) && true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = 31 * result + (content != null ? content.hashCode() : 0);
+        return result;
     }
 }
