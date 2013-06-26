@@ -8,7 +8,11 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.dto.CitizenDTO;
+import sun.util.calendar.BaseCalendar;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -39,7 +43,7 @@ public class Citizen {
     @Index
     private Email email;
 
-    private CitizenState citizenState;
+    private String citizenState;
 
     /**
      * depend on citizenState value :
@@ -63,7 +67,7 @@ public class Citizen {
         this.pseudo = pseudo;
         this.email = new Email(ggEmail);
         this.date = new Date();
-        this.citizenState = CitizenState.ACTIVE;
+        this.citizenState = CitizenState.ACTIVE.value();
         this.citizenStateData = (new Date()).toString();
         this.authProvider = CitizenAuthProvider.GOOGLE;
     }
@@ -73,7 +77,7 @@ public class Citizen {
         this.password = password;
         this.email = (email != null ? new Email(email) : null);
         date = new Date();
-        citizenState = CitizenState.CREATED;
+        citizenState = CitizenState.CREATED.value();
         citizenStateData = accessKey;
     }
 
@@ -91,6 +95,10 @@ public class Citizen {
 
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -113,7 +121,26 @@ public class Citizen {
         this.location = location;
     }
 
-    public Date getDate() {
+    public String getAuthProvider() {
+        return authProvider.value();
+    }
+
+    @JsonIgnore
+    public CitizenAuthProvider getAuthProviderEnum() {
+        return authProvider;
+    }
+
+    public void setAuthProvider(CitizenAuthProvider authProvider) {
+        this.authProvider = authProvider;
+    }
+
+    public String getDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        return sdf.format(getDateValue());
+    }
+
+    @JsonIgnore
+    public Date getDateValue() {
         return date;
     }
 
@@ -135,12 +162,16 @@ public class Citizen {
         this.email = email;
     }
 
-    public CitizenState getCitizenState() {
+    public String getCitizenState() {
         return citizenState;
+    }
+    @JsonIgnore
+    public CitizenState getCitizenStateEnum() {
+        return CitizenState.fromValue(citizenState);
     }
 
     public void setCitizenState(CitizenState citizenState) {
-        this.citizenState = citizenState;
+        this.citizenState = citizenState.value();
     }
 
     public String getCitizenStateData() {
@@ -184,10 +215,10 @@ public class Citizen {
         final StringBuilder sb = new StringBuilder("Citizen{");
         sb.append("admin=").append(admin);
         sb.append(", id=").append(id);
-        // sb.append(", authToken='").append(authToken).append('\'');
+        sb.append(", authToken='").append(authToken).append('\'');
         sb.append(", date=").append(date);
         sb.append(", pseudo='").append(pseudo).append('\'');
-        // sb.append(", password='").append(password).append('\'');
+        sb.append(", password=**hashed='").append(password != null ? password.hashCode() : -1).append("'**");
         sb.append(", email=").append(email);
         sb.append(", citizenState=").append(citizenState);
         sb.append(", citizenStateData='").append(citizenStateData).append('\'');
@@ -195,5 +226,43 @@ public class Citizen {
         sb.append(", authProvider=").append(authProvider);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Citizen)) return false;
+
+        Citizen citizen = (Citizen) o;
+
+        if (admin != citizen.admin) return false;
+        if (authProvider != citizen.authProvider) return false;
+        if (authToken != null ? !authToken.equals(citizen.authToken) : citizen.authToken != null) return false;
+        if (!citizenState.equals(citizen.citizenState)) return false;
+        if (citizenStateData != null ? !citizenStateData.equals(citizen.citizenStateData) : citizen.citizenStateData != null) return false;
+        if (!date.equals(citizen.date)) return false;
+        if (!email.equals(citizen.email)) return false;
+        if (!id.equals(citizen.id)) return false;
+        if (location != null ? !location.equals(citizen.location) : citizen.location != null) return false;
+        if (!password.equals(citizen.password)) return false;
+        if (!pseudo.equals(citizen.pseudo)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (authToken != null ? authToken.hashCode() : 0);
+        result = 31 * result + date.hashCode();
+        result = 31 * result + pseudo.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + citizenState.hashCode();
+        result = 31 * result + (citizenStateData != null ? citizenStateData.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
+        result = 31 * result + (admin ? 1 : 0);
+        result = 31 * result + authProvider.hashCode();
+        return result;
     }
 }

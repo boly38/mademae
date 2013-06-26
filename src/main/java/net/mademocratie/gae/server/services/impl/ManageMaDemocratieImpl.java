@@ -45,7 +45,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         List<ProposalDTO> proposals = manageProposal.findByAuthor(user);
         profileInfos.setPseudo(user.getPseudo());
         profileInfos.setProposals(proposals);
-        profileInfos.setRegistrationDate(user.getDate());
+        profileInfos.setRegistrationDate(user.getDateValue());
         return profileInfos;
     }
 

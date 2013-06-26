@@ -3,7 +3,6 @@ package net.mademocratie.gae.server.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;
-import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,7 +25,7 @@ public class ProfileInformations {
         if (authenticatedUser == null) {
             return;
         }
-        registrationDate = authenticatedUser.getDate();
+        registrationDate = authenticatedUser.getDateValue();
         pseudo = authenticatedUser.getPseudo();
     }
 

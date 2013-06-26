@@ -312,7 +312,7 @@ public class ManageCitizenImpl implements IManageCitizen {
             LOGGER.warning("deprecated activation link (citizen null)");
             throw new DeprecatedActivationLinkException();
         }
-        CitizenState citizenState = justRegisteredCitizen.getCitizenState();
+        CitizenState citizenState = justRegisteredCitizen.getCitizenStateEnum();
         if (citizenState == null) {
             LOGGER.warning("activation link of a wrong state citizen " + justRegisteredCitizen);
             throw new DeprecatedActivationLinkException();
@@ -336,7 +336,7 @@ public class ManageCitizenImpl implements IManageCitizen {
             LOGGER.warning("unable to change password of a null citizen");
             throw new ChangePasswordException();
         }
-        CitizenState citizenState = citizen.getCitizenState();
+        CitizenState citizenState = citizen.getCitizenStateEnum();
         if (citizenState == null) {
             LOGGER.warning("unable to change password of a wrong state citizen " + citizen);
             throw new ChangePasswordException();

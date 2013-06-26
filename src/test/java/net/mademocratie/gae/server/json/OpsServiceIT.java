@@ -86,7 +86,6 @@ public class OpsServiceIT extends AbstractIT {
     }
 
     @Test
-    @Ignore("DEV IN PROGRESS")
     public void should_export_import_citizen_admin_feature() throws MaDemocratieException {
         // GIVEN
         Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "jc la frite");

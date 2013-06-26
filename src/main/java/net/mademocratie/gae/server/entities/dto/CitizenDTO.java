@@ -20,7 +20,7 @@ public class CitizenDTO {
 
     public CitizenDTO(Citizen citizen) {
         this.id = citizen.getId();
-        this.date = citizen.getDate();
+        this.date = citizen.getDateValue();
         this.pseudo = citizen.getPseudo();
         this.email = citizen.getEmail();
         this.location = citizen.getLocation();
