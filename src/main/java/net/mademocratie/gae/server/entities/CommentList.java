@@ -19,8 +19,8 @@ public class CommentList extends ContributionList<Comment> {
             return parentContributionsIds;
         }
         for(Comment contribution: contributions) {
-            if (contribution.getParentContributionId() != null) {
-                parentContributionsIds.add(contribution.getParentContribution());
+            if (contribution.getParentContribution() != null) {
+                parentContributionsIds.add(contribution.getParentContributionKey());
             }
         }
         return parentContributionsIds;

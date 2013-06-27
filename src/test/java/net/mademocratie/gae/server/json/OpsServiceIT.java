@@ -1,12 +1,19 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
+import net.mademocratie.gae.server.services.helper.JsonHelper;
 import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
+import org.apache.geronimo.mail.util.StringBufferOutputStream;
+import org.codehaus.jackson.JsonFactory;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -15,6 +22,9 @@ import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Response;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.logging.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -81,23 +91,23 @@ public class OpsServiceIT extends AbstractIT {
         assertThat(response).isNotNull();
 
         // Response exportContent = Response.ok(databaseContentV1).type(MediaType.APPLICATION_JSON_TYPE).build();
-        assertThat(response.getEntity().toString()).isNotNull();
-        logger.info("db export : " + response.getEntity().toString());
+        assertThat(response.getEntity()).isNotNull();
+        logger.info("db export : " + response.getEntity());
     }
 
     @Test
     public void should_export_import_citizen() throws MaDemocratieException {
         // GIVEN
         Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "François avec accentué");
+
         Response response = opsService.dbExport();
-        DatabaseContentV1 exportContent = (DatabaseContentV1) response.getEntity();
-        String jsonExport = exportContent.toJSON().toString();
-        logger.info("export content:" + jsonExport);
+        String exportContent = (String) response.getEntity();
+        logger.info("export content:" + exportContent);
         cleanAll();
 
         // WHEN
         DbImport dbImport = new DbImport();
-        dbImport.setImportContent(jsonExport);
+        dbImport.setImportContent(exportContent);
         opsService.dbImport(dbImport);
 
         // THEN
@@ -112,18 +122,47 @@ public class OpsServiceIT extends AbstractIT {
         myProposal = manageProposal.addProposal(myProposal);
 
         Response response = opsService.dbExport();
-        DatabaseContentV1 exportContent = (DatabaseContentV1) response.getEntity();
-        String jsonExport = exportContent.toJSON().toString();
-        logger.info("export content:" + jsonExport);
+        String exportContent = (String) response.getEntity();
+        logger.info("export content:" + exportContent);
         cleanAll();
 
         // WHEN
         DbImport dbImport = new DbImport();
-        dbImport.setImportContent(jsonExport);
+        dbImport.setImportContent(exportContent);
         opsService.dbImport(dbImport);
 
         // THEN
         Proposal reImportedProposal = manageProposal.getById(myProposal.getContributionId());
         assertThat(reImportedProposal).isEqualTo(myProposal);
+    }
+
+    @Test
+    public void should_export_import_vote() throws MaDemocratieException, IOException {
+        // GIVEN
+        Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "François avec accentué");
+
+        Proposal myProposal = new Proposal("ooOtitle","oOoContent");
+        myProposal.setAuthorFromValue(myAuthor);
+
+        myProposal = manageProposal.addProposal(myProposal);
+
+        Vote myVote = manageVote.vote(myAuthor, myProposal, VoteKind.CON);
+
+        Response response = opsService.dbExport();
+        String exportContent = (String) response.getEntity();
+        logger.info("export content:" + exportContent);
+        cleanAll();
+
+        // WHEN
+        DbImport dbImport = new DbImport();
+        dbImport.setImportContent(exportContent);
+        opsService.dbImport(dbImport);
+
+        // THEN
+        Proposal reImportedProposal = manageProposal.getById(myProposal.getContributionId());
+        assertThat(reImportedProposal).isEqualTo(myProposal);
+
+        Vote reImportedVote = manageVote.getById(myVote.getContributionId());
+        assertThat(reImportedVote).isEqualTo(myVote);
     }
 }

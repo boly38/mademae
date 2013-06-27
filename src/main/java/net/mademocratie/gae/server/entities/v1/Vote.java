@@ -1,18 +1,19 @@
 package net.mademocratie.gae.server.entities.v1;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.codehaus.jackson.annotate.JsonProperty;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-@XmlRootElement
 @Entity
 public class Vote extends Contribution implements IContribution {
     @Index
+    @JsonProperty("proposal")
     protected Key<Proposal> proposal;
 
     protected VoteKind kind;
@@ -28,7 +29,39 @@ public class Vote extends Contribution implements IContribution {
     public Vote(Vote v) {
         super(v);
         this.setKind(v.getKind());
-        this.proposal = v.getProposal();
+        this.proposal = v.getProposalKey();
+    }
+
+
+    @Override
+    public Long getAuthor() {
+        return super.getAuthor();
+    }
+
+    @Override
+    public void setAuthor(Long authorId) {
+        super.setAuthor(authorId);
+    }
+
+    public String getDate() {
+        return DateHelper.getDateSerializeFormat(getDateValue());
+    }
+
+    @Override                    // json need id
+    public Long getContributionId() {
+        return super.getContributionId();
+    }
+
+    @Override
+    @JsonIgnore
+    public String getContributionType() {
+        return ContributionType.VOTE.toString();
+    }
+
+    @Override
+    @JsonIgnore
+    public String getContributionDetails() {
+        return "vote on proposal '" + getProposalId() + "'";
     }
 
     @Override
@@ -37,11 +70,13 @@ public class Vote extends Contribution implements IContribution {
     }
 
     @Override
+    @JsonIgnore
     public String getDateFormat() {
         return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override
+    @JsonIgnore
     public String getAge() {
         return super.getAge();
     }
@@ -58,12 +93,26 @@ public class Vote extends Contribution implements IContribution {
         this.kind = kind;
     }
 
-    public Key<Proposal> getProposal() {
+    @JsonIgnore
+    public Key<Proposal> getProposalKey() {
         return proposal;
     }
 
+    public void setProposalKey(Key<Proposal> proposal) {
+        this.proposal = proposal;
+    }
+
+    public Long getProposal() {
+        return (proposal != null ? proposal.getId() : null);
+    }
+
+    public void setProposal(Long proposalId) {
+        setProposalKey(Key.create(Proposal.class, proposalId));
+    }
+
+    @JsonIgnore
     public Long getProposalId() {
-        return proposal.getId();
+        return getProposal();
     }
 
     @Override
@@ -75,29 +124,12 @@ public class Vote extends Contribution implements IContribution {
         }
         sb.append(":").append(getDateValue());
         sb.append("|").append(getKind())
-                .append(" by citizen#").append(getAuthor())
+                .append(" by citizen#").append(getAuthorKey())
                 .append(" on proposal#").append(getProposalId())
                 .append("]");
         return sb.toString();
     }
 
-    @Override                    // json need id
-    public Long getContributionId() {
-        return proposal.getId();
-    }
 
 
-    @Override
-    public String getContributionType() {
-        return ContributionType.VOTE.toString();
-    }
-
-    @Override
-    public String getContributionDetails() {
-        return "vote on proposal '" + getProposalId() + "'";
-    }
-
-    public void setProposal(Key<Proposal> proposal) {
-        this.proposal = proposal;
-    }
 }

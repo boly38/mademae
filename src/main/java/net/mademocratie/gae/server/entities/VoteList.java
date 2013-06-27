@@ -26,8 +26,8 @@ public class VoteList extends ContributionList<Vote> {
             return proposalsIds;
         }
         for(Vote contribution: contributions) {
-            if (contribution != null && contribution.getProposal() != null) {
-                proposalsIds.add(contribution.getProposal());
+            if (contribution != null && contribution.getProposalKey() != null) {
+                proposalsIds.add(contribution.getProposalKey());
             }
         }
         return proposalsIds;

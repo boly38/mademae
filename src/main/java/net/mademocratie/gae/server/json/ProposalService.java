@@ -12,11 +12,13 @@ import net.mademocratie.gae.server.services.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 @Path("/proposal")
+@Produces(MediaType.APPLICATION_JSON)
 public class ProposalService extends AbstractMaDemocratieJsonService implements IProposalService {
     Logger log = Logger.getLogger(ProposalService.class.getName());
 
@@ -60,8 +62,8 @@ public class ProposalService extends AbstractMaDemocratieJsonService implements 
     @Path("/addcomment")
     public String addProposalComment(Comment inComment, @Context HttpHeaders httpHeaders) {
         if (inComment == null) return null;
-        if (inComment.getParentContributionId() == null) return null;
-        if (inComment.getParentContributionId() == null) return null;
+        if (inComment.getParentContribution() == null) return null;
+        if (inComment.getParentContribution() == null) return null;
         if (inComment.getContent() == null) return null;
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         log.info("addComment POST received : " + inComment.toString());

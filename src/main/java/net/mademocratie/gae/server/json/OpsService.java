@@ -4,12 +4,14 @@ import net.mademocratie.gae.server.entities.v1.DatabaseContentV1;
 import net.mademocratie.gae.server.domain.DbImport;
 import net.mademocratie.gae.server.domain.JsonServiceResponse;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.services.helper.JsonHelper;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 @Path("/ops")
@@ -26,7 +28,15 @@ public class OpsService extends AbstractMaDemocratieJsonService implements IOpsS
             return returnForbidden();
         }
         DatabaseContentV1 exportResult = manageMD.dbExportV1();
-        return javax.ws.rs.core.Response.ok(exportResult).type(MediaType.APPLICATION_JSON_TYPE).build();
+        String jsonExport = null;
+        try {
+            jsonExport = JsonHelper.convertIntoJson(exportResult);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            log.warning("unable to send dbExport : error" + e.getMessage());
+            return javax.ws.rs.core.Response.serverError().build();
+        }
+        return javax.ws.rs.core.Response.ok(jsonExport).type(MediaType.APPLICATION_JSON_TYPE).build();
     }
 
     @POST

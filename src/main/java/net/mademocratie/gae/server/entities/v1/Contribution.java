@@ -7,6 +7,7 @@ import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.persistence.Transient;
 import java.util.Date;
@@ -23,6 +24,7 @@ public abstract class Contribution implements IContribution {
     protected Date date;
 
     @Index
+    @JsonProperty("author")
     protected Key<Citizen> author;
 
     public Contribution() {
@@ -40,7 +42,7 @@ public abstract class Contribution implements IContribution {
         if (getDateValue() == null) {
             setDate(new Date());
         }
-        this.setAuthor(c.getAuthor());
+        this.setAuthorKey(c.getAuthorKey());
     }
 
     public Long getContributionId() {
@@ -75,19 +77,27 @@ public abstract class Contribution implements IContribution {
 
     public abstract String getContributionType();
 
-    public void setAuthor(Key<Citizen> author) {
+    public void setAuthorKey(Key<Citizen> author) {
         this.author = author;
     }
     public void setAuthorFromValue(Citizen author) {
-        setAuthor(Key.create(Citizen.class, author.getId()));
+        setAuthorKey(Key.create(Citizen.class, author.getId()));
     }
 
     @JsonIgnore
-    public Key<Citizen> getAuthor() {
+    public Key<Citizen> getAuthorKey() {
         return author;
     }
-    public Long getAuthorId() {
+
+    public Long getAuthor() {
         return (author != null ? author.getId() : null);
+    }
+    public void setAuthor(Long authorId) {
+        if (authorId == null) {
+            setAuthorKey(null);
+            return;
+        }
+        setAuthorKey(Key.create(Citizen.class, authorId));;
     }
 
     @Override

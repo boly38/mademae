@@ -154,6 +154,10 @@ public class ManageVoteImpl implements IManageVote {
         }
     }
 
+    public Vote getById(Long contributionId) {
+        return ofy().load().type(Vote.class).id(contributionId).get();
+    }
+
     private <T> List<T> removeNullEntities(List<T> entities) {
         List<T> resultEntities = new ArrayList();
         for(T entity : entities) {

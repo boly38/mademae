@@ -5,6 +5,7 @@ import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -24,6 +25,17 @@ public class Proposal extends Contribution implements IContribution {
         super();
         this.title = title;
         this.content = new Text(content != null ? content : "");
+    }
+
+    @Override
+    @JsonProperty
+    public Long getAuthor() {
+        return super.getAuthor();    //To change body of overridden methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setAuthor(Long authorId) {
+        super.setAuthor(authorId);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     public String getDate() {

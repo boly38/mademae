@@ -6,6 +6,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
@@ -14,6 +16,7 @@ import java.util.Date;
 @Entity
 public class Comment extends Contribution implements IContribution {
     @Index
+    @JsonProperty("parentContribution")
     protected Key<Contribution> parentContribution;
 
     private String parentContributionType = ContributionType.PROPOSAL.toString();
@@ -27,16 +30,16 @@ public class Comment extends Contribution implements IContribution {
     public Comment(Comment inComment) {
         super(inComment);
         this.setContent(inComment.getContent());
-        parentContribution = Key.create(Contribution.class, inComment.getParentContributionId());
+        parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
         parentContributionType = inComment.getParentContributionType();
     }
 
 
     public Comment(Citizen citizen, Comment inComment) {
         super(inComment);
-        this.setAuthor(Key.create(Citizen.class, citizen.getId()));
+        this.setAuthorKey(Key.create(Citizen.class, citizen.getId()));
         this.setContent(inComment.getContent());
-        parentContribution = Key.create(Contribution.class, inComment.getParentContributionId());
+        parentContribution = Key.create(Contribution.class, inComment.getParentContribution());
         parentContributionType = inComment.getParentContributionType();
     }
 
@@ -85,15 +88,16 @@ public class Comment extends Contribution implements IContribution {
         this.content = new Text(content != null ? content : "");
     }
 
-    public Key<Contribution> getParentContribution() {
+    @JsonIgnore
+    public Key<Contribution> getParentContributionKey() {
         return parentContribution;
     }
 
-    public Long getParentContributionId() {
+    public Long getParentContribution() {
         return (parentContribution != null ? parentContribution.getId() : null);
     }
 
-    public void setParentContributionId(Long parentContributionId) {
+    public void setParentContribution(Long parentContributionId) {
         this.parentContribution = Key.create(Contribution.class, parentContributionId);
     }
 

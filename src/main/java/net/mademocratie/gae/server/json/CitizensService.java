@@ -17,14 +17,6 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import java.util.logging.Logger;
 
-/**
- * Citizen
- * <p/>
- * Last update  : $LastChangedDate$
- * Last author  : $Author$
- *
- * @version : $Revision$
- */
 @Path("/citizen")
 public class CitizensService extends AbstractMaDemocratieJsonService {
     Logger log = Logger.getLogger(CitizensService.class.getName());

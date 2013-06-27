@@ -15,7 +15,6 @@ import net.mademocratie.gae.server.entities.dto.*;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.*;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.*;
@@ -85,7 +84,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         Map<Key<Citizen>,Citizen> authorsIds = manageCitizen.getCitizensByIds(proposalList.fetchAuthorsIds());
         List<ProposalDTO> proposalDTOs = new ArrayList<ProposalDTO>(proposalList.getCount());
         for(Proposal p: proposalList.getObject()){
-            Citizen author = authorsIds.get(p.getAuthor());
+            Citizen author = authorsIds.get(p.getAuthorKey());
             ProposalDTO dto = new ProposalDTO(author, p);
             proposalDTOs.add(dto);
         }
@@ -98,8 +97,8 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         Map<Long,Contribution> parentContributionsByIds = manageContribution.getContributionsByIds(commentList.fetchParentContributionsIds());
         List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>();
         for(Comment c: commentList.getObject()){
-            Citizen author = citizensByIds.get(c.getAuthor());
-            Contribution parentContribution = parentContributionsByIds.get(c.getParentContributionId());
+            Citizen author = citizensByIds.get(c.getAuthorKey());
+            Contribution parentContribution = parentContributionsByIds.get(c.getParentContribution());
             if (parentContribution == null) {
                 throw new RuntimeException("comment without parent ? " + c.toString());
             }
@@ -121,8 +120,8 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         List<VoteDTO> voteDTOs = new ArrayList<VoteDTO>();
         for(Vote v: voteList.getObject()){
             LOGGER.info("vote " + v.toString());
-            Citizen author = citizensByIds.get(v.getAuthor());
-            Proposal parentProposal = parentProposalsByIds.get(v.getProposal().getId());
+            Citizen author = citizensByIds.get(v.getAuthorKey());
+            Proposal parentProposal = parentProposalsByIds.get(v.getProposalKey().getId());
             if (parentProposal == null) {
                 throw new RuntimeException("vote without proposal? " + v.toString());
             }
@@ -138,7 +137,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         Map<Key<Citizen>,Citizen> citizensByIds = manageCitizen.getCitizensByIds(commentList.fetchAuthorsIds());
         List<CommentDTO> commentDTOs = new ArrayList<CommentDTO>(commentList.getCount());
         for(Comment c: commentList.getObject()){
-            Citizen author = citizensByIds.get(c.getAuthor());
+            Citizen author = citizensByIds.get(c.getAuthorKey());
             CommentDTO dto = new CommentDTO(author, c, parentProposal);
             commentDTOs.add(dto);
         }
@@ -152,8 +151,8 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
             throw new RuntimeException("proposal not found");
         }
         Citizen author = null;
-        if (proposal.getAuthor() != null) {
-            author = manageCitizen.getById(proposal.getAuthorId());
+        if (proposal.getAuthorKey() != null) {
+            author = manageCitizen.getById(proposal.getAuthorKey().getId());
         }
         ProposalDTO proposalRetrieved = new ProposalDTO(author, proposal);
         VoteList proposalVotes = manageVote.getProposalVotes(propId);
@@ -190,8 +189,8 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
 
     public void dbImportV1(DbImport dbImport) {
         if (dbImport== null) return;
-        JSONObject jsonDbImport = new JSONObject(dbImport);
-        LOGGER.info("dbImport POST received : " + jsonDbImport.toString());
+        // JSONObject jsonDbImport = new JSONObject(dbImport);
+        LOGGER.info("dbImport POST received : " + dbImport.getContent());
         ObjectMapper mapper = new ObjectMapper();
         DatabaseContentV1 databaseImportV1;
         try {

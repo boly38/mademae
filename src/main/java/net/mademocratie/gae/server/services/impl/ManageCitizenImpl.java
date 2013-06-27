@@ -6,6 +6,10 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
+import freemarker.template.Configuration;
+import freemarker.template.DefaultObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import net.mademocratie.gae.server.domain.ProfileInformations;
 import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
@@ -14,6 +18,8 @@ import net.mademocratie.gae.server.entities.v1.CitizenState;
 import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.exception.*;
 import net.mademocratie.gae.server.services.IManageCitizen;
+import net.mademocratie.gae.server.services.helper.TemplateHelper;
+import org.apache.geronimo.mail.util.StringBufferOutputStream;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -21,7 +27,10 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.*;
@@ -226,12 +235,23 @@ public class ManageCitizenImpl implements IManageCitizen {
             LOGGER.info("no contribution so skip the admin report");
             return;
         }
-        String notifContent = "last contributions:\n" + contributions.toString();
+        String contributionsTemplate = "contributions.tpl";
+        String notifContent = null;
+        try {
+            notifContent = TemplateHelper.processTemplate(contributions, contributionsTemplate);
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (TemplateException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        // LOGGER.info("notif content" + notifContent);
+        // String notifContent = "last contributions:\n" + contributions.toString();
         sendMail(MADEM_REPORT_EMAIL,
                 MADEM_REPORT_NAME,
                 "[MaDemocratie.net] Report",
                 notifContent);
     }
+
 
     void sendMail(String toEmail, String toString, String title, String body) throws MaDemocratieException {
         Properties props = new Properties();

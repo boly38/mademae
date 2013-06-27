@@ -31,4 +31,6 @@ public interface IManageVote {
     List<VoteOnProposal> fetchProposalsVotes(List<Vote> latestVotes);
 
     void removeAll();
+
+    Vote getById(Long contributionId);
 }

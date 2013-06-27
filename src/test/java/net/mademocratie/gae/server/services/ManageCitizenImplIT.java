@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.services;
 
 import junit.framework.Assert;
+import net.mademocratie.gae.server.entities.v1.Proposal;
 import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
@@ -88,8 +89,7 @@ public class ManageCitizenImplIT extends AbstractIT {
     public void testSendMail() throws MaDemocratieException {
         // GIVEN
         ArrayList<ContributionDTO> contributions = new ArrayList<ContributionDTO>();
-        ProposalDTO proposalDTO = new ProposalDTO();
-        proposalDTO.setContent("sample fake contrib");
+        ProposalDTO proposalDTO = new ProposalDTO(null, new Proposal("my Test title", "my test content"));
         contributions.add(proposalDTO);
 
         // WHEN
