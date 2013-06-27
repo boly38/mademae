@@ -1,7 +1,7 @@
 package net.mademocratie.gae.server.services.helper;
 
+import com.google.inject.Inject;
 import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
@@ -18,36 +18,29 @@ import java.util.logging.Logger;
 public class TemplateHelper {
     private final static Logger LOGGER = Logger.getLogger(TemplateHelper.class.getName());
 
-    public static String processTemplate(Object data, String curTemplate) throws IOException, TemplateException, MaDemocratieException {
+    @Inject
+    Configuration configuration;
+
+    public String processTemplate(Object data, String curTemplate) throws IOException, TemplateException, MaDemocratieException {
         Map root = new HashMap();
         root.put("data", data);
-        Configuration configuration = new Configuration();
+        // Configuration configuration = new Configuration();
         // configuration.setClassForTemplateLoading(TemplateHelper.class.getClass(), "/");
         URL resource = TemplateHelper.class.getResource("/" + curTemplate);
         if (resource == null) {
             throw new MaDemocratieException("unable to find template " + curTemplate);
         }
-        String resourceDir = calculateResourceDir(curTemplate, resource);
-        configuration.setDirectoryForTemplateLoading(new File(resourceDir));
-        configuration.setObjectWrapper(new DefaultObjectWrapper());
-        // URL templateResource = TemplateHelper.class.getResource("/" + curTemplate);
-        // String templatePath = templateResource != null ? templateResource.getPath().substring(1) : null;
-        // LOGGER.info("template : " + templatePath);
         Template temp = configuration.getTemplate(curTemplate);
+        LOGGER.info("FM template : " + temp.toString());
 
         StringBufferWriter sbw = new TemplateHelper.StringBufferWriter();
         temp.process(root, sbw);
-        return sbw.getStringBuffer().toString();
+        String templateResult = sbw.getStringBuffer().toString();
+        LOGGER.info("FM template result : " + templateResult);
+        return templateResult;
     }
 
-    private static String calculateResourceDir(String curTemplate, URL resource) {
-        String resourceDir = resource.getPath().substring(1);
-        resourceDir = resourceDir.substring(0, resourceDir.length()-curTemplate.length());
-        LOGGER.info("resourceDir : " + resourceDir);
-        return resourceDir;
-    }
-
-    private static class StringBufferWriter extends Writer
+    private class StringBufferWriter extends Writer
     {
         /* ------------------------------------------------------------ */
         private StringBuffer _buffer;

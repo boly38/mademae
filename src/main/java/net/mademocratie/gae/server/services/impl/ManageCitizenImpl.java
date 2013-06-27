@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.inject.Inject;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.cmd.Query;
 import freemarker.template.Configuration;
@@ -47,6 +48,8 @@ public class ManageCitizenImpl implements IManageCitizen {
     private static final String MADEM_FROM_EMAIL = "boly38@mademocratie.net";
     private static final String MADEM_FROM_NAME = "MaDemocratie";
 
+    @Inject
+    TemplateHelper templateHelper;
 
     public Citizen suggestCitizen() {
         User user = userService.getCurrentUser();
@@ -235,17 +238,20 @@ public class ManageCitizenImpl implements IManageCitizen {
             LOGGER.info("no contribution so skip the admin report");
             return;
         }
-        String contributionsTemplate = "contributions.tpl";
+        String contributionsTemplate = "fm_contributions.html";
         String notifContent = null;
+
         try {
-            notifContent = TemplateHelper.processTemplate(contributions, contributionsTemplate);
+            notifContent = templateHelper.processTemplate(contributions, contributionsTemplate);
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            String msg = "error (IO) while processTemplate :" + e.getMessage();
+            LOGGER.severe(msg);
+            throw new MaDemocratieException(msg, e);
         } catch (TemplateException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            String msg = "error (TemplateException) while processTemplate :" + e.getMessage();
+            LOGGER.severe(msg);
+            throw new MaDemocratieException(msg, e);
         }
-        // LOGGER.info("notif content" + notifContent);
-        // String notifContent = "last contributions:\n" + contributions.toString();
         sendMail(MADEM_REPORT_EMAIL,
                 MADEM_REPORT_NAME,
                 "[MaDemocratie.net] Report",
@@ -260,14 +266,18 @@ public class ManageCitizenImpl implements IManageCitizen {
         Session session = Session.getDefaultInstance(props);
         Message msg = new MimeMessage(session);
         String sendMailLogStr = "sendMail to " + toEmail + " title=" + title + " body=" + body;
+        if (title == null || body == null)  {
+            LOGGER.info(sendMailLogStr + " *aborted* ");
+            return;
+        }
+        LOGGER.info(sendMailLogStr);
         try {
             msg.setFrom(new InternetAddress(MADEM_FROM_EMAIL, MADEM_FROM_NAME));
             msg.addRecipient(Message.RecipientType.TO,
                     new InternetAddress(toEmail, toString));
+            msg.setContent(body, "text/html; charset=utf-8");
             msg.setSubject(title);
-            msg.setText(body);
             Transport.send(msg);
-            LOGGER.info(sendMailLogStr);
         } catch (MessagingException e) {
             LOGGER.severe("Exception while " + sendMailLogStr + ": " + e.getMessage());
             e.printStackTrace();
