@@ -24,8 +24,6 @@ public class TemplateHelper {
     public String processTemplate(Object data, String curTemplate) throws IOException, TemplateException, MaDemocratieException {
         Map root = new HashMap();
         root.put("data", data);
-        // Configuration configuration = new Configuration();
-        // configuration.setClassForTemplateLoading(TemplateHelper.class.getClass(), "/");
         URL resource = TemplateHelper.class.getResource("/" + curTemplate);
         if (resource == null) {
             throw new MaDemocratieException("unable to find template " + curTemplate);
