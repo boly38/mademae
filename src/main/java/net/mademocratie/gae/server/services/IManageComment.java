@@ -31,4 +31,6 @@ public interface IManageComment {
     Map<Long, Proposal> fetchCommentsProposals(List<Comment> comms);
 
     int removeAll();
+
+    Comment getById(Long contributionId);
 }

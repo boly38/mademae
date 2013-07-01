@@ -1,10 +1,10 @@
 package net.mademocratie.gae.server.entities.v1;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.appengine.api.datastore.Text;
 import com.googlecode.objectify.annotation.Entity;
 import net.mademocratie.gae.server.entities.IContribution;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import javax.xml.bind.annotation.XmlRootElement;

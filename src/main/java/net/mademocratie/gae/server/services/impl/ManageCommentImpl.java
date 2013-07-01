@@ -101,4 +101,8 @@ public class ManageCommentImpl implements IManageComment {
         return comments.size();
     }
 
+    public Comment getById(Long commentId) {
+        return ofy().load().type(Comment.class).id(commentId).get();
+    }
+
 }

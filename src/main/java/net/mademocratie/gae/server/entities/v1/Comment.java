@@ -56,11 +56,13 @@ public class Comment extends Contribution implements IContribution {
     }
 
     @Override
+    @JsonIgnore
     public String getDateFormat() {
         return DateHelper.getDateFormat(getDateValue());
     }
 
     @Override
+    @JsonIgnore
     public String getAge() {
         return super.getAge();
     }
@@ -72,11 +74,13 @@ public class Comment extends Contribution implements IContribution {
 
 
     @Override
+    @JsonIgnore
     public String getContributionType() {
         return ContributionType.COMMENT.toString();
     }
 
     @Override
+    @JsonIgnore
     public String getContributionDetails() {
         return "comment on '" + parentContributionType + "'";
     }

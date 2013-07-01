@@ -1,13 +1,14 @@
 package net.mademocratie.gae.server.entities.v1;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.appengine.api.datastore.Email;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import net.mademocratie.gae.server.entities.dto.CitizenDTO;
 import net.mademocratie.gae.server.services.helper.DateHelper;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.util.Date;
 
 

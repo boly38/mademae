@@ -165,4 +165,35 @@ public class OpsServiceIT extends AbstractIT {
         Vote reImportedVote = manageVote.getById(myVote.getContributionId());
         assertThat(reImportedVote).isEqualTo(myVote);
     }
+
+    @Test
+    public void should_export_import_comment() throws MaDemocratieException, IOException {
+        // GIVEN
+        Citizen myAuthor = assertTestCitizenPresence("froteC@jo-la.fr", "François avec accentué");
+
+        Proposal myProposal = new Proposal("ooOtitle","oOoContent");
+        myProposal.setAuthorFromValue(myAuthor);
+
+        myProposal = manageProposal.addProposal(myProposal);
+
+        Comment inComment = new Comment(myAuthor, "this is just a comment : c'est bon çà !", myProposal);
+        Comment comment = manageComment.comment(myAuthor, inComment);
+
+        Response response = opsService.dbExport();
+        String exportContent = (String) response.getEntity();
+        logger.info("export content:" + exportContent);
+        cleanAll();
+
+        // WHEN
+        DbImport dbImport = new DbImport();
+        dbImport.setImportContent(exportContent);
+        opsService.dbImport(dbImport);
+
+        // THEN
+        Proposal reImportedProposal = manageProposal.getById(myProposal.getContributionId());
+        assertThat(reImportedProposal).isEqualTo(myProposal);
+
+        Comment reImportedComment = manageComment.getById(comment.getContributionId());
+        assertThat(reImportedComment).isEqualTo(comment);
+    }
 }
