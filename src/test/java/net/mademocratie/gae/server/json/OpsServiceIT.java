@@ -1,6 +1,7 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
+import net.mademocratie.gae.server.domain.JsonServiceResponse;
 import net.mademocratie.gae.server.services.helper.JsonHelper;
 import net.mademocratie.gae.server.services.impl.AbstractIT;
 import net.mademocratie.gae.server.domain.DbImport;
@@ -94,6 +95,24 @@ public class OpsServiceIT extends AbstractIT {
         assertThat(response.getEntity()).isNotNull();
         logger.info("db export : " + response.getEntity());
     }
+
+
+    @Test
+    public void import_should_handle_wrong_data() throws MaDemocratieException {
+        // GIVEN
+        String importContent = "<Wrong format {!json data}>";
+        logger.info("import content:" + importContent);
+        // WHEN
+        DbImport dbImport = new DbImport();
+        dbImport.setImportContent(importContent);
+        JsonServiceResponse jsonServiceResponse = opsService.dbImport(dbImport);
+
+        assertThat(jsonServiceResponse).isNotNull();
+        assertThat(jsonServiceResponse.getStatus()).isEqualTo(JsonServiceResponse.ResponseStatus.FAILED);
+        assertThat(jsonServiceResponse.getMessage()).contains("unable to import data");
+        assertThat(jsonServiceResponse.getContext()).contains("wrong import data");
+    }
+
 
     @Test
     public void should_export_import_citizen() throws MaDemocratieException {

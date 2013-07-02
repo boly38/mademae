@@ -14,6 +14,6 @@ import javax.ws.rs.core.MediaType;
 @ImplementedBy(OpsService.class)
 public interface IOpsService {
     javax.ws.rs.core.Response dbExport() throws MaDemocratieException;
-    javax.ws.rs.core.Response dbImport(DbImport dbImport);
+    JsonServiceResponse dbImport(DbImport dbImport);
     JsonServiceResponse sendReport() throws MaDemocratieException;
 }

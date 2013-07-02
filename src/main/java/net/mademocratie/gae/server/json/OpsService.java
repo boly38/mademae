@@ -41,9 +41,14 @@ public class OpsService extends AbstractMaDemocratieJsonService implements IOpsS
 
     @POST
     @Path("/dbimport")
-    public javax.ws.rs.core.Response dbImport(DbImport dbImport) {
-        manageMD.dbImportV1(dbImport);
-        return javax.ws.rs.core.Response.ok().build();
+    public JsonServiceResponse dbImport(DbImport dbImport) {
+        try {
+            manageMD.dbImportV1(dbImport);
+            return new JsonServiceResponse();
+        } catch (MaDemocratieException md) {
+            return new JsonServiceResponse(md.getMessage(), "unable to import data", JsonServiceResponse.ResponseStatus.FAILED);
+        }
+
     }
 
 

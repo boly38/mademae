@@ -33,5 +33,5 @@ public interface IManageMaDemocratie {
 
     DatabaseContentV1 dbExportV1();
 
-    void dbImportV1(DbImport dbImport);
+    void dbImportV1(DbImport dbImport) throws MaDemocratieException;
 }

@@ -187,7 +187,7 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         );
     }
 
-    public void dbImportV1(DbImport dbImport) {
+    public void dbImportV1(DbImport dbImport) throws MaDemocratieException {
         if (dbImport== null) return;
         // JSONObject jsonDbImport = new JSONObject(dbImport);
         LOGGER.info("dbImport POST received : " + dbImport.getContent());
@@ -195,14 +195,24 @@ public class ManageMaDemocratieImpl implements IManageMaDemocratie {
         DatabaseContentV1 databaseImportV1;
         try {
             databaseImportV1= mapper.readValue(dbImport.getImportContent(), DatabaseContentV1.class);
-            manageCitizen.importCitizens(databaseImportV1.getCitizens());
-            manageProposal.importProposals(databaseImportV1.getProposals());
-            manageComment.importComments(databaseImportV1.getComments());
-            manageVote.importVotes(databaseImportV1.getVotes());
-            LOGGER.info("dbImport stats : " + databaseImportV1.toString());
         } catch (IOException e) {
             LOGGER.warning("dbImport failed (io exception) : " + e.getMessage());
-            e.printStackTrace();
+            throw new MaDemocratieException("wrong import data :" + e.getMessage(), e);
+        }
+        String action = "import citizens";
+        try {
+            manageCitizen.importCitizens(databaseImportV1.getCitizens());
+            action = "import proposals";
+            manageProposal.importProposals(databaseImportV1.getProposals());
+            action = "import comments";
+            manageComment.importComments(databaseImportV1.getComments());
+            action = "import votes";
+            manageVote.importVotes(databaseImportV1.getVotes());
+            LOGGER.info("dbImport stats : " + databaseImportV1.toString());
+        } catch (Throwable throwable) {
+            String importError = throwable.getClass().getSimpleName() + " while " + action + " : " + throwable.getMessage();
+            LOGGER.warning("dbImport failed : " + importError);
+            throw new MaDemocratieException("unable to import data :" + importError, throwable);
         }
     }
 
