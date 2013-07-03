@@ -4,7 +4,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.security.auth.login.FailedLoginException;
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Logger;
 
 public class WikiIT {
@@ -28,6 +30,13 @@ public class WikiIT {
         wiki.login(BOT_TEST, BOT_TEST_PW.toCharArray());
         String mainPageText = wiki.getPageText("Main Page");
         logger.info("main page : " + mainPageText);
+        wiki.setMarkBot(true);
+        wiki.setMarkMinor(true);
+        try {
+            wiki.edit("WikiPage", "this page is handled remotly ; last update " + (new Date()).toString(), "automated");
+        } catch (LoginException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
         wiki.logout();
     }
 }
