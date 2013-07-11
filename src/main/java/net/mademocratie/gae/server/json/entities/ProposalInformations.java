@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.domain;
+package net.mademocratie.gae.server.json.entities;
 
 import com.google.appengine.repackaged.com.google.common.base.Objects;
 import net.mademocratie.gae.server.entities.dto.CommentDTO;

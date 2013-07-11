@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.domain;
+package net.mademocratie.gae.server.json.entities;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ResourceBundle;

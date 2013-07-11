@@ -1,12 +1,13 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.domain.GetContributionsResult;
-import net.mademocratie.gae.server.domain.ProposalInformations;
+import net.mademocratie.gae.server.json.entities.GetContributionsResult;
+import net.mademocratie.gae.server.json.entities.ProposalInformations;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.AnonymousCantVoteException;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.json.entities.ProposalInput;
 import net.mademocratie.gae.server.services.*;
 
 import javax.ws.rs.*;
@@ -45,7 +46,7 @@ public class ProposalService extends AbstractMaDemocratieJsonService implements 
 
     @POST
     @Path("/add")
-    public String addProposal(Proposal proposal, @Context HttpHeaders httpHeaders) {
+    public String addProposal(ProposalInput proposal, @Context HttpHeaders httpHeaders) {
         if (proposal == null) return null;
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         Proposal newProposal = new Proposal(proposal.getTitle(), proposal.getContent());

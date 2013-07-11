@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.domain;
+package net.mademocratie.gae.server.json.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;

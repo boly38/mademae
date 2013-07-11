@@ -1,11 +1,11 @@
 package net.mademocratie.gae.server.services;
 
 import com.google.inject.ImplementedBy;
-import net.mademocratie.gae.server.domain.DbImport;
+import net.mademocratie.gae.server.json.entities.DbImport;
 import net.mademocratie.gae.server.entities.v1.DatabaseContentV1;
-import net.mademocratie.gae.server.domain.GetContributionsResult;
-import net.mademocratie.gae.server.domain.ProfileInformations;
-import net.mademocratie.gae.server.domain.ProposalInformations;
+import net.mademocratie.gae.server.json.entities.GetContributionsResult;
+import net.mademocratie.gae.server.json.entities.ProfileInformations;
+import net.mademocratie.gae.server.json.entities.ProposalInformations;
 import net.mademocratie.gae.server.entities.dto.CommentDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;
 import net.mademocratie.gae.server.entities.v1.Citizen;

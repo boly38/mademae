@@ -1,4 +1,4 @@
-package net.mademocratie.gae.server.domain;
+package net.mademocratie.gae.server.json.entities;
 
 import net.mademocratie.gae.server.entities.dto.ContributionDTO;
 import net.mademocratie.gae.server.entities.dto.ProposalDTO;

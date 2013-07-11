@@ -1,31 +1,21 @@
 package net.mademocratie.gae.server.json;
 
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.domain.JsonServiceResponse;
-import net.mademocratie.gae.server.services.helper.JsonHelper;
+import net.mademocratie.gae.server.json.entities.JsonServiceResponse;
 import net.mademocratie.gae.server.services.impl.AbstractIT;
-import net.mademocratie.gae.server.domain.DbImport;
+import net.mademocratie.gae.server.json.entities.DbImport;
 import net.mademocratie.gae.server.entities.v1.*;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.guice.MaDemocratieGuiceModule;
 import net.mademocratie.gae.test.GuiceJUnitRunner;
-import org.apache.geronimo.mail.util.StringBufferOutputStream;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Response;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.logging.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;

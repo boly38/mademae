@@ -1,8 +1,8 @@
 package net.mademocratie.gae.server.json;
 
 import net.mademocratie.gae.server.entities.v1.DatabaseContentV1;
-import net.mademocratie.gae.server.domain.DbImport;
-import net.mademocratie.gae.server.domain.JsonServiceResponse;
+import net.mademocratie.gae.server.json.entities.DbImport;
+import net.mademocratie.gae.server.json.entities.JsonServiceResponse;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
 import net.mademocratie.gae.server.services.helper.JsonHelper;
 

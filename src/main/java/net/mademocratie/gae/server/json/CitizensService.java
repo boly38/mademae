@@ -2,9 +2,9 @@ package net.mademocratie.gae.server.json;
 
 import com.google.appengine.api.users.User;
 import com.google.inject.Inject;
-import net.mademocratie.gae.server.domain.*;
 import net.mademocratie.gae.server.entities.v1.Citizen;
 import net.mademocratie.gae.server.exception.MaDemocratieException;
+import net.mademocratie.gae.server.json.entities.*;
 import net.mademocratie.gae.server.services.IManageCitizen;
 import org.json.JSONObject;
 

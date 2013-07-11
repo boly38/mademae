@@ -1,6 +1,6 @@
 package net.mademocratie.gae.server.json;
 
-import net.mademocratie.gae.server.domain.AboutInformations;
+import net.mademocratie.gae.server.json.entities.AboutInformations;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
