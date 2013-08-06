@@ -87,31 +87,31 @@ public class ProposalService extends AbstractMaDemocratieJsonService implements 
         return proposalInformations.toJsonString();
     }
 
-    private Vote voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException, MaDemocratieException {
+    private void voteProposal(String proposalId, HttpHeaders httpHeaders, VoteKind voteKind) throws AnonymousCantVoteException, MaDemocratieException {
         Citizen authenticatedUser = getAuthenticatedCitizen(httpHeaders);
         if (authenticatedUser == null) {
             // throw new AnonymousCantVoteException();
             log.info("vote "+ voteKind.toString()+" on proposal id " + proposalId + " *ignored* : anonymous can't vote");
-            return null;
+            return;
         }
-        return manageVote.vote(authenticatedUser, Long.valueOf(proposalId), voteKind);
+        manageVote.vote(authenticatedUser, Long.valueOf(proposalId), voteKind);
     }
 
     @GET
     @Path("/proposal/vote/pro/{id}")
-    public Vote voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
-        return voteProposal(proposalId, httpHeaders, VoteKind.PRO);
+    public void voteProposalPro(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
+        voteProposal(proposalId, httpHeaders, VoteKind.PRO);
     }
 
     @GET
     @Path("/proposal/vote/con/{id}")
-    public Vote voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
-        return voteProposal(proposalId, httpHeaders, VoteKind.CON);
+    public void voteProposalCon(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
+        voteProposal(proposalId, httpHeaders, VoteKind.CON);
     }
 
     @GET
     @Path("/proposal/vote/neutral/{id}")
-    public Vote voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
-        return voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
+    public void  voteProposalNeutral(@PathParam("id") String proposalId, @Context HttpHeaders httpHeaders) throws AnonymousCantVoteException, MaDemocratieException {
+        voteProposal(proposalId, httpHeaders, VoteKind.NEUTRAL);
     }
 }
